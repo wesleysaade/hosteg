@@ -1,4 +1,4 @@
-import { query } from '@/lib/db/local'
+import { createClient } from '@/lib/supabase/server'
 import type { BillingPlan, PeriodKey } from '@/components/PlanBillingSection'
 
 const VALID_PERIODS: PeriodKey[] = ['mensal','trimestral','semestral','anual','bianual']
@@ -8,44 +8,48 @@ export async function fetchBillingPlans(slug: string): Promise<{
   availablePeriods: PeriodKey[]
 }> {
   try {
+    const supabase = createClient()
+
     // Busca o produto
-    const products = await query<{ id: string; available_periods: string[] }>(
-      `SELECT id, available_periods FROM product_pages WHERE slug = $1 LIMIT 1`,
-      [slug]
-    )
-    if (!products.length) return { plans: [], availablePeriods: ['mensal'] }
-    const product = products[0]
+    const { data: product, error: productError } = await supabase
+      .from('product_pages')
+      .select('id, available_periods')
+      .eq('slug', slug)
+      .single()
+
+    if (productError || !product) return { plans: [], availablePeriods: ['mensal'] }
 
     // Busca os planos
-    const plans = await query<any>(
-      `SELECT id, name, monthly_price, description, popular, position, cta_href,
-              price_trimestral, price_semestral, price_anual, price_bianual, price_36months,
-              setup_mensal, setup_anual, setup_bianual, setup_36months
-       FROM plans
-       WHERE product_page_id = $1
-       ORDER BY position ASC`,
-      [product.id]
-    )
+    const { data: plans, error: plansError } = await supabase
+      .from('plans')
+      .select(`id, name, monthly_price, description, popular, position, cta_href,
+               price_trimestral, price_semestral, price_anual, price_bianual, price_36months,
+               setup_mensal, setup_anual, setup_bianual, setup_36months`)
+      .eq('product_page_id', product.id)
+      .order('position', { ascending: true })
 
-    if (!plans.length) return { plans: [], availablePeriods: ['mensal'] }
+    if (plansError || !plans?.length) return { plans: [], availablePeriods: ['mensal'] }
+
+    const planIds = plans.map((p) => p.id)
 
     // Busca specs e features de todos os planos de uma vez
-    const planIds = plans.map((p: any) => p.id)
-    const specs = await query<any>(
-      `SELECT plan_id, label, value, tip, position FROM plan_specs
-       WHERE plan_id = ANY($1) ORDER BY position ASC`,
-      [planIds]
-    )
-    const features = await query<any>(
-      `SELECT plan_id, text, tip, position FROM plan_features
-       WHERE plan_id = ANY($1) ORDER BY position ASC`,
-      [planIds]
-    )
+    const [{ data: specs }, { data: features }] = await Promise.all([
+      supabase
+        .from('plan_specs')
+        .select('plan_id, label, value, tip, position')
+        .in('plan_id', planIds)
+        .order('position', { ascending: true }),
+      supabase
+        .from('plan_features')
+        .select('plan_id, text, tip, position')
+        .in('plan_id', planIds)
+        .order('position', { ascending: true }),
+    ])
 
     const specsByPlan: Record<string, any[]> = {}
     const featuresByPlan: Record<string, any[]> = {}
-    for (const s of specs)    (specsByPlan[s.plan_id]    ??= []).push(s)
-    for (const f of features) (featuresByPlan[f.plan_id] ??= []).push(f)
+    for (const s of (specs ?? []))    (specsByPlan[s.plan_id]    ??= []).push(s)
+    for (const f of (features ?? [])) (featuresByPlan[f.plan_id] ??= []).push(f)
 
     const billingPlans: BillingPlan[] = plans.map((p: any) => ({
       name:         p.name,
