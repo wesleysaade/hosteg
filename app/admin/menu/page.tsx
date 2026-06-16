@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { Navigation, Plus } from 'lucide-react'
+import { ConfirmDeleteButton } from '@/app/admin/_components/ConfirmDeleteButton'
 
 export const dynamic = 'force-dynamic'
 
@@ -229,15 +230,12 @@ export default async function AdminMenuPage() {
                       {/* Delete (separate form) */}
                       <form action={deleteMenuItem} className="mt-2">
                         <input type="hidden" name="id" value={item.id} />
-                        <button
-                          type="submit"
+                        <ConfirmDeleteButton
+                          message={`Excluir "${item.label}"?`}
                           className="text-[10px] text-zinc-600 hover:text-red-400 transition-colors"
-                          onClick={(e) => {
-                            if (!confirm(`Excluir "${item.label}"?`)) e.preventDefault()
-                          }}
                         >
                           Excluir item
-                        </button>
+                        </ConfirmDeleteButton>
                       </form>
                     </div>
                   ))}

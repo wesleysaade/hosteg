@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { FileText, Plus } from 'lucide-react'
+import { ConfirmDeleteButton } from '@/app/admin/_components/ConfirmDeleteButton'
 
 export const dynamic = 'force-dynamic'
 
@@ -139,13 +140,12 @@ export default async function AdminContractsPage() {
 
                 <form action={deleteContract} className="mt-3">
                   <input type="hidden" name="id" value={contract.id} />
-                  <button
-                    type="submit"
+                  <ConfirmDeleteButton
+                    message={`Excluir contrato de "${contract.product_name}"?`}
                     className="text-[10px] text-zinc-600 hover:text-red-400 transition-colors"
-                    onClick={(e) => { if (!confirm(`Excluir contrato de "${contract.product_name}"?`)) e.preventDefault() }}
                   >
                     Excluir contrato
-                  </button>
+                  </ConfirmDeleteButton>
                 </form>
               </div>
             ))}

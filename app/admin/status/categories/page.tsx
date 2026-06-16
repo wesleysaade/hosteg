@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { Tag } from 'lucide-react'
+import { ConfirmDeleteButton } from '@/app/admin/_components/ConfirmDeleteButton'
 
 export const dynamic = 'force-dynamic'
 
@@ -115,19 +116,16 @@ export default async function AdminCategoriesPage() {
                 {/* Delete — separate form so it doesn't inherit the edit inputs */}
                 <form action={deleteCategory}>
                   <input type="hidden" name="id" value={cat.id} />
-                  <button
-                    type="submit"
-                    className="shrink-0 text-xs px-2.5 py-1.5 rounded-lg border border-zinc-700 text-zinc-500 hover:text-red-400 hover:border-red-500/30 transition-colors"
-                    onClick={(e) => {
-                      const count = (cat.status_services ?? []).length
-                      const msg = count > 0
-                        ? `Excluir "${cat.name}" e seus ${count} serviço(s) vinculados?`
+                  <ConfirmDeleteButton
+                    message={
+                      (cat.status_services ?? []).length > 0
+                        ? `Excluir "${cat.name}" e seus ${(cat.status_services ?? []).length} serviço(s) vinculados?`
                         : `Excluir "${cat.name}"?`
-                      if (!confirm(msg)) e.preventDefault()
-                    }}
+                    }
+                    className="shrink-0 text-xs px-2.5 py-1.5 rounded-lg border border-zinc-700 text-zinc-500 hover:text-red-400 hover:border-red-500/30 transition-colors"
                   >
                     Excluir
-                  </button>
+                  </ConfirmDeleteButton>
                 </form>
               </div>
             ))}

@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { Server, ExternalLink } from 'lucide-react'
+import { ConfirmDeleteButton } from '@/app/admin/_components/ConfirmDeleteButton'
 
 export const dynamic = 'force-dynamic'
 
@@ -163,15 +164,12 @@ export default async function AdminServicesPage() {
                       {/* Delete */}
                       <form action={deleteService}>
                         <input type="hidden" name="id" value={svc.id} />
-                        <button
-                          type="submit"
+                        <ConfirmDeleteButton
+                          message={`Excluir "${svc.name}"?`}
                           className="text-xs px-2.5 py-1.5 rounded-lg border border-zinc-700 text-zinc-500 hover:text-red-400 hover:border-red-500/30 transition-colors"
-                          onClick={(e) => {
-                            if (!confirm(`Excluir "${svc.name}"?`)) e.preventDefault()
-                          }}
                         >
                           Excluir
-                        </button>
+                        </ConfirmDeleteButton>
                       </form>
                     </div>
                   ))}

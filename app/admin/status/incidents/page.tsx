@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { AlertTriangle, CheckCircle, Wrench } from 'lucide-react'
+import { ConfirmDeleteButton } from '@/app/admin/_components/ConfirmDeleteButton'
 
 export const dynamic = 'force-dynamic'
 
@@ -244,15 +245,12 @@ export default async function AdminIncidentsPage() {
                     {/* Delete */}
                     <form action={deleteIncident}>
                       <input type="hidden" name="id" value={inc.id} />
-                      <button
-                        type="submit"
+                      <ConfirmDeleteButton
+                        message="Excluir este registro?"
                         className="text-xs px-2.5 py-1.5 rounded-lg border border-zinc-700 text-zinc-500 hover:text-red-400 hover:border-red-500/30 transition-colors"
-                        onClick={(e) => {
-                          if (!confirm('Excluir este registro?')) e.preventDefault()
-                        }}
                       >
                         Excluir
-                      </button>
+                      </ConfirmDeleteButton>
                     </form>
                   </div>
                 </div>

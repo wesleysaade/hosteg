@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { MapPin, Cpu, Plus, ExternalLink } from 'lucide-react'
+import { ConfirmDeleteButton } from '@/app/admin/_components/ConfirmDeleteButton'
 
 export const dynamic = 'force-dynamic'
 
@@ -232,11 +233,12 @@ export default async function AdminDatacenterPage() {
 
                 <form action={deleteLocation} className="mt-2">
                   <input type="hidden" name="id" value={loc.id} />
-                  <button type="submit"
+                  <ConfirmDeleteButton
+                    message={`Excluir "${loc.name}"?`}
                     className="text-[10px] text-zinc-600 hover:text-red-400 transition-colors"
-                    onClick={(e) => { if (!confirm(`Excluir "${loc.name}"?`)) e.preventDefault() }}>
+                  >
                     Excluir localização
-                  </button>
+                  </ConfirmDeleteButton>
                 </form>
               </div>
             ))}
@@ -337,11 +339,12 @@ export default async function AdminDatacenterPage() {
 
                 <form action={deleteTechnology} className="mt-1.5">
                   <input type="hidden" name="id" value={tech.id} />
-                  <button type="submit"
+                  <ConfirmDeleteButton
+                    message={`Excluir "${tech.title}"?`}
                     className="text-[10px] text-zinc-600 hover:text-red-400 transition-colors"
-                    onClick={(e) => { if (!confirm(`Excluir "${tech.title}"?`)) e.preventDefault() }}>
+                  >
                     Excluir
-                  </button>
+                  </ConfirmDeleteButton>
                 </form>
               </div>
             ))}
