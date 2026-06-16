@@ -28,7 +28,7 @@ export function groupByCategory(
     }
     map.get(cat)!.push(item)
   }
-  return [...map.entries()]
+  return Array.from(map.entries())
     .sort((a, b) => (firstIndex.get(a[0]) ?? 0) - (firstIndex.get(b[0]) ?? 0))
     .map(([category, items]) => ({ category, items }))
 }
