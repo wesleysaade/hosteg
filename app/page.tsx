@@ -123,8 +123,8 @@ const vpsPlans = [
 const features = [
   {
     icon: Zap,
-    title: 'NVMe Gen4 — 7.000 MB/s',
-    desc: 'Storage de última geração com até 7 GB/s de leitura sequencial. Aplicações e bancos de dados respondem em milissegundos.',
+    title: 'NVMe — até 7.000 MB/s',
+    desc: 'Storage de alta performance com até 7 GB/s de leitura sequencial. Aplicações e bancos de dados respondem em milissegundos.',
   },
   {
     icon: Shield,
@@ -143,8 +143,8 @@ const features = [
   },
   {
     icon: Globe,
-    title: 'SP + Canadá — escolha a região',
-    desc: 'Ascenty SP4 em São Paulo e Montreal no Canadá. Latência otimizada para seu público onde ele estiver.',
+    title: 'SP, Toronto ou Washington — escolha a região',
+    desc: 'Ascenty SP4 em São Paulo, Toronto no Canadá e Washington nos EUA. Latência otimizada para seu público onde ele estiver.',
   },
   {
     icon: Star,
@@ -207,7 +207,7 @@ export default async function HomePage() {
           {/* Badge animado */}
           <div className="inline-flex items-center gap-2 mb-8 px-4 py-1.5 rounded-full border border-[#0EA5E9]/30 bg-[#0EA5E9]/10 text-[#38BDF8] text-xs font-bold uppercase tracking-widest">
             <span className="w-1.5 h-1.5 rounded-full bg-[#0EA5E9] animate-pulse" />
-            NVMe Gen4 · Anti-DDoS · Suporte 24/7
+            NVMe · Anti-DDoS · Suporte 24/7
           </div>
 
           {/* Headline */}
@@ -236,7 +236,7 @@ export default async function HomePage() {
               href="/cloud-vps"
               className="inline-flex items-center gap-2.5 px-8 py-4 bg-[#0EA5E9] hover:bg-[#0284C7] text-white font-bold rounded-xl text-base transition-all shadow-2xl shadow-[#0EA5E9]/30"
             >
-              Ver planos VPS <ArrowRight size={17} />
+              Ver Planos CloudVPS <ArrowRight size={17} />
             </Link>
             <Link
               href="/bare-metal"
@@ -357,7 +357,7 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
             <div>
-              <p className="text-[#0EA5E9] text-xs font-black uppercase tracking-widest mb-2">Cloud VPS NVMe Gen4</p>
+              <p className="text-[#0EA5E9] text-xs font-black uppercase tracking-widest mb-2">Cloud VPS NVMe</p>
               <h2 className="text-3xl sm:text-4xl font-black text-zinc-900">Os planos mais populares</h2>
             </div>
             <Link href="/cloud-vps" className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-[#0EA5E9] font-semibold transition-colors whitespace-nowrap">
@@ -480,29 +480,38 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <p className="text-[#0EA5E9] text-xs font-black uppercase tracking-widest mb-3">Infraestrutura</p>
-            <h2 className="text-3xl sm:text-4xl font-black text-zinc-900 mb-3">Dois datacenters, zero compromisso</h2>
+            <h2 className="text-3xl sm:text-4xl font-black text-zinc-900 mb-3">Três datacenters, zero compromisso</h2>
             <p className="text-zinc-500 max-w-md mx-auto">Escolha a região mais próxima do seu público no momento do pedido.</p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-5">
+          <div className="grid md:grid-cols-3 gap-5">
             {[
               {
                 flag: '🇧🇷',
                 city: 'São Paulo — Ascenty SP4',
                 tier: 'Tier III',
-                latency: '< 1 ms',
+                latency: '~20 ms BR',
                 color: '#10B981',
-                specs: ['Conectividade IX.br', 'Anti-DDoS camadas 3/4/7', 'NVMe Gen4', 'Redundância N+1'],
+                specs: ['Conectividade IX.br', 'Anti-DDoS camadas 3/4/7', 'NVMe até 7.000 MB/s', 'Redundância N+1'],
                 desc: 'Datacenter Tier III certificado no coração de São Paulo. Peering direto com os maiores provedores do Brasil.',
               },
               {
                 flag: '🇨🇦',
-                city: 'Canadá — Montreal',
+                city: 'Toronto — Canadá',
                 tier: 'Tier III',
-                latency: '< 5 ms NA',
+                latency: '~130 ms BR',
                 color: '#0EA5E9',
-                specs: ['Conectividade Cogent/GTT', 'Anti-DDoS incluso', 'NVMe Gen4', 'Redundância N+1'],
+                specs: ['Conectividade Cogent/GTT', 'Anti-DDoS incluso', 'NVMe até 7.000 MB/s', 'Redundância N+1'],
                 desc: 'Localização estratégica na América do Norte para aplicações globais e audiências internacionais.',
+              },
+              {
+                flag: '🇺🇸',
+                city: 'Washington — EUA',
+                tier: 'Tier III',
+                latency: '~110 ms BR',
+                color: '#8B5CF6',
+                specs: ['Conectividade premium EUA', 'Anti-DDoS incluso', 'NVMe até 7.000 MB/s', 'Redundância N+1'],
+                desc: 'Cobertura na costa leste dos EUA com excelente conectividade para o mercado americano e transatlântico.',
               },
             ].map((dc) => (
               <div key={dc.city} className="rounded-2xl border border-zinc-200 bg-white overflow-hidden">

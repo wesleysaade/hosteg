@@ -27,7 +27,7 @@ import {
   Buildings,
   MapPin,
   Info,
-  Headset,
+  Heartbeat,
 } from '@phosphor-icons/react'
 
 // ── Produtos megamenu (3 colunas) ─────────────────────────────────────────────
@@ -63,8 +63,9 @@ const produtosMenu = [
 
 // ── Institucional dropdown ────────────────────────────────────────────────────
 const institucionalItems = [
-  { icon: Info,      title: 'Sobre a Hosteg',  desc: 'Nossa história, missão e valores',          href: '/sobre' },
-  { icon: MapPin,    title: 'Datacenter',       desc: 'Infraestrutura física e certificações',     href: '/datacenter' },
+  { icon: Info,     title: 'Sobre a Hosteg', desc: 'Nossa história, missão e valores',            href: '/sobre' },
+  { icon: MapPin,   title: 'Datacenter',     desc: 'Infraestrutura física e certificações',       href: '/datacenter' },
+  { icon: Heartbeat, title: 'Status',         desc: 'Disponibilidade dos serviços em tempo real',  href: '/status' },
 ]
 
 // ── Cloud APPs megamenu (2 colunas) ──────────────────────────────────────────
@@ -237,17 +238,44 @@ export default function Navbar() {
               </button>
 
               {/* Institucional button */}
-              <button
-                onClick={() => toggle('institucional')}
-                className={linkCls(openMenu === 'institucional' || isActive('/sobre') || isActive('/datacenter') || isActive('/contratos'))}
-              >
-                <span className="flex items-center gap-1">
-                  Institucional
-                  <CaretDown size={13} weight="bold"
-                    className={`transition-transform duration-200 ${openMenu === 'institucional' ? 'rotate-180' : ''}`}
-                  />
-                </span>
-              </button>
+              <div className="relative">
+                <button
+                  onClick={() => toggle('institucional')}
+                  className={linkCls(openMenu === 'institucional' || isActive('/sobre') || isActive('/datacenter') || isActive('/contratos') || isActive('/status'))}
+                >
+                  <span className="flex items-center gap-1">
+                    Institucional
+                    <CaretDown size={13} weight="bold"
+                      className={`transition-transform duration-200 ${openMenu === 'institucional' ? 'rotate-180' : ''}`}
+                    />
+                  </span>
+                </button>
+                {openMenu === 'institucional' && (
+                  <div className="absolute top-full right-0 mt-2.5 w-64 bg-white border border-zinc-200 rounded-2xl shadow-2xl shadow-black/10 overflow-hidden z-50">
+                    <div className="p-2">
+                      {institucionalItems.map((item) => {
+                        const Icon = item.icon
+                        return (
+                          <Link
+                            key={item.title}
+                            href={item.href}
+                            className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#0EA5E9]/5 transition-colors group"
+                            onClick={() => setOpenMenu(null)}
+                          >
+                            <div className="w-8 h-8 rounded-lg bg-zinc-100 flex items-center justify-center flex-shrink-0 group-hover:bg-[#0EA5E9]/12 transition-colors">
+                              <Icon size={15} weight="fill" className="text-zinc-400 group-hover:text-[#0EA5E9] transition-colors" />
+                            </div>
+                            <div>
+                              <div className="text-sm font-bold text-zinc-800 group-hover:text-zinc-900">{item.title}</div>
+                              <div className="text-xs text-zinc-400 mt-0.5">{item.desc}</div>
+                            </div>
+                          </Link>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
             </nav>
 
             {/* ── CTAs — right anchor ── */}
@@ -287,9 +315,9 @@ export default function Navbar() {
               }
             </button>
 
-            {/* ── Megamenu dropdowns ────────────────────────────────────────── */}
-            {/* Rendered here (navRef level) so absolute top-full is relative   */}
-            {/* to the full-width header container, ensuring correct centering. */}
+            {/* ── Megamenu dropdowns (Produtos + Cloud APPs) ───────────────── */}
+            {/* Rendered at navRef level for centered positioning via left-1/2. */}
+            {/* Institucional is rendered inside the nav button (relative wrap). */}
 
             {openMenu === 'produtos' && (
               <div
@@ -309,31 +337,6 @@ export default function Navbar() {
               </div>
             )}
 
-            {openMenu === 'institucional' && (
-              <div className="absolute top-full right-0 mt-2.5 w-64 bg-white border border-zinc-200 rounded-2xl shadow-2xl shadow-black/10 overflow-hidden z-50">
-                <div className="p-2">
-                  {institucionalItems.map((item) => {
-                    const Icon = item.icon
-                    return (
-                      <Link
-                        key={item.title}
-                        href={item.href}
-                        className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#0EA5E9]/5 transition-colors group"
-                        onClick={() => setOpenMenu(null)}
-                      >
-                        <div className="w-8 h-8 rounded-lg bg-zinc-100 flex items-center justify-center flex-shrink-0 group-hover:bg-[#0EA5E9]/12 transition-colors">
-                          <Icon size={15} weight="fill" className="text-zinc-400 group-hover:text-[#0EA5E9] transition-colors" />
-                        </div>
-                        <div>
-                          <div className="text-sm font-bold text-zinc-800 group-hover:text-zinc-900">{item.title}</div>
-                          <div className="text-xs text-zinc-400 mt-0.5">{item.desc}</div>
-                        </div>
-                      </Link>
-                    )
-                  })}
-                </div>
-              </div>
-            )}
 
           </div>
         </div>

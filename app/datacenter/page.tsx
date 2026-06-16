@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Datacenter — Infraestrutura',
-  description: 'Infraestrutura de alto nível em São Paulo (Ascenty SP4) e Canadá. Anti-DDoS, NVMe Gen4, rede 10 Gbps e Tier III certificado.',
+  description: 'Infraestrutura de alto nível em São Paulo, Toronto e Washington. Anti-DDoS, NVMe até 7.000 MB/s, rede 10 Gbps e Tier III certificado.',
 }
 
 const locations = [
@@ -18,7 +18,7 @@ const locations = [
     city: 'São Paulo',
     facility: 'Ascenty SP4',
     tier: 'Tier III',
-    latency: '< 1ms (SP)',
+    latency: '~20ms BR',
     uptime: '99.995%',
     power: 'Redundante 2N',
     cooling: 'CRAH N+1',
@@ -37,10 +37,10 @@ const locations = [
   {
     flag: '🇨🇦',
     country: 'Canadá',
-    city: 'Montreal',
-    facility: 'Montreal DC',
+    city: 'Toronto',
+    facility: 'Toronto DC',
     tier: 'Tier III',
-    latency: '< 5ms (NA)',
+    latency: '~130ms BR',
     uptime: '99.99%',
     power: 'Redundante N+1',
     cooling: 'Precision cooling',
@@ -49,12 +49,34 @@ const locations = [
     specs: [
       'Conectividade ao backbone Norte-Americano',
       'Baixa latência para EUA e Europa',
-      'Energia limpa (hidrelétrica)',
-      'Refrigeração eficiente no clima frio',
+      'Energia limpa e renovável',
+      'Refrigeração de alta precisão',
       'Acesso físico com biometria',
       'Monitoramento 24/7',
     ],
-    desc: 'Montreal é conhecida por seu clima frio, que reduz custos de refrigeração, e pela excelente conectividade com EUA e Europa, ideal para aplicações globais.',
+    desc: 'Toronto oferece excelente conectividade com EUA e Europa, localização estratégica na América do Norte para aplicações globais com baixa latência transatlântica.',
+  },
+  {
+    flag: '🇺🇸',
+    country: 'Estados Unidos',
+    city: 'Washington',
+    facility: 'Washington DC',
+    tier: 'Tier III',
+    latency: '~110ms BR',
+    uptime: '99.99%',
+    power: 'Redundante N+1',
+    cooling: 'Precision cooling',
+    network: '10 Gbps uplink',
+    certifications: ['Tier III', 'ISO 27001'],
+    specs: [
+      'Conectividade premium na costa leste dos EUA',
+      'Proximidade com grandes data hubs americanos',
+      'Múltiplos provedores de trânsito',
+      'Redundância de fibra N+1',
+      'Acesso físico com biometria',
+      'Monitoramento 24/7',
+    ],
+    desc: 'Washington oferece cobertura premium na costa leste dos EUA com excelente conectividade para o mercado americano e para rotas transatlânticas.',
   },
 ]
 
@@ -66,8 +88,8 @@ const technologies = [
   },
   {
     icon: Zap,
-    title: 'NVMe Gen4',
-    desc: 'Storage NVMe de 4ª geração com velocidades de até 7.000 MB/s de leitura sequencial. Latência abaixo de 0.1ms.',
+    title: 'NVMe — até 7.000 MB/s',
+    desc: 'Storage NVMe de alta performance com velocidades de até 7.000 MB/s de leitura sequencial. Latência abaixo de 0.1ms.',
   },
   {
     icon: Network,
@@ -95,8 +117,8 @@ export default async function DatacenterPage() {
   const hero = await getHero('datacenter', {
     badge:    'Infraestrutura',
     title:    'Datacenter',
-    subtitle: 'Infraestrutura de nível enterprise no Brasil e Canadá.',
-    desc:     'Tier III certificado, anti-DDoS, NVMe Gen4 e rede 10 Gbps.',
+    subtitle: 'Infraestrutura de nível enterprise no Brasil, Canadá e EUA.',
+    desc:     'Tier III certificado, anti-DDoS, NVMe até 7.000 MB/s e rede 10 Gbps.',
   })
   return (
     <div className="min-h-screen bg-white text-zinc-900">
@@ -126,7 +148,7 @@ export default async function DatacenterPage() {
       {/* Locations */}
       <section className="pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {locations.map((loc) => (
               <div
                 key={loc.city}
