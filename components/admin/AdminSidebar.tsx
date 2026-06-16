@@ -6,22 +6,36 @@ import { createClient } from '@/lib/supabase/client'
 import {
   House, BookOpen, CurrencyDollar, SignOut, Globe, Package, Folders,
   PencilSimple, PuzzlePiece, Heartbeat, Server, Tag, Warning,
+  Gear, NavigationArrow, MapPin, FileText,
 } from '@phosphor-icons/react'
 
 const nav = [
-  { href: '/admin',                          label: 'Dashboard',   icon: House,          sub: false },
-  { href: '/admin/content',                  label: 'Conteúdo',    icon: PencilSimple,   sub: false },
-  { href: '/admin/plans',                    label: 'Planos',      icon: CurrencyDollar, sub: false },
-  { href: '/admin/addons',                   label: 'Adicionais',  icon: PuzzlePiece,    sub: false },
-  { href: '/admin/docs',                     label: 'Docs',        icon: BookOpen,       sub: false },
-  { href: '/admin/docs/categories',          label: 'Categorias',  icon: Folders,        sub: true  },
-  { href: '/admin/cloud-apps',               label: 'Cloud APPs',  icon: Package,        sub: false },
-  { href: '/admin/cloud-apps/categories',    label: 'Categorias',  icon: Folders,        sub: true  },
-  { href: '/admin/status/services',          label: 'Status',      icon: Heartbeat,      sub: false },
-  { href: '/admin/status/services',          label: 'Serviços',    icon: Server,         sub: true  },
-  { href: '/admin/status/categories',        label: 'Categorias',  icon: Tag,            sub: true  },
-  { href: '/admin/status/incidents',         label: 'Incidentes',  icon: Warning,        sub: true  },
+  { href: '/admin',                          label: 'Dashboard',     icon: House,            sub: false },
+  // ── Conteúdo ──────────────────────────────────────────────────────────────
+  { href: '/admin/content',                  label: 'Conteúdo',      icon: PencilSimple,     sub: false },
+  { href: '/admin/plans',                    label: 'Planos',        icon: CurrencyDollar,   sub: false },
+  { href: '/admin/addons',                   label: 'Adicionais',    icon: PuzzlePiece,      sub: false },
+  { href: '/admin/docs',                     label: 'Docs',          icon: BookOpen,         sub: false },
+  { href: '/admin/docs/categories',          label: 'Categorias',    icon: Folders,          sub: true  },
+  { href: '/admin/cloud-apps',               label: 'Cloud APPs',    icon: Package,          sub: false },
+  { href: '/admin/cloud-apps/categories',    label: 'Categorias',    icon: Folders,          sub: true  },
+  // ── Site ──────────────────────────────────────────────────────────────────
+  { href: '/admin/settings',                 label: 'Configurações', icon: Gear,             sub: false },
+  { href: '/admin/menu',                     label: 'Menu do Site',  icon: NavigationArrow,  sub: false },
+  { href: '/admin/datacenter',               label: 'Datacenter',    icon: MapPin,           sub: false },
+  { href: '/admin/contracts',                label: 'Contratos',     icon: FileText,         sub: false },
+  // ── Status ────────────────────────────────────────────────────────────────
+  { href: '/admin/status/services',          label: 'Status',        icon: Heartbeat,        sub: false },
+  { href: '/admin/status/services',          label: 'Serviços',      icon: Server,           sub: true  },
+  { href: '/admin/status/categories',        label: 'Categorias',    icon: Tag,              sub: true  },
+  { href: '/admin/status/incidents',         label: 'Incidentes',    icon: Warning,          sub: true  },
 ]
+
+// ── Section separators ────────────────────────────────────────────────────────
+const sectionBefore: Record<string, string> = {
+  '/admin/settings':        'Site',
+  '/admin/status/services': 'Status',
+}
 
 export default function AdminSidebar({ userEmail }: { userEmail: string }) {
   const pathname = usePathname()
@@ -47,30 +61,39 @@ export default function AdminSidebar({ userEmail }: { userEmail: string }) {
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 px-3 py-4 space-y-0.5">
+      <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
         {nav.map(({ href, label, icon: Icon, sub }, idx) => {
-          // "Status" parent entry should highlight for any /admin/status/* path
+          // Section header
+          const sectionLabel = !sub ? sectionBefore[href] : undefined
+          // Active detection
           const isStatusParent = href === '/admin/status/services' && label === 'Status'
           const active = href === '/admin'
             ? pathname === '/admin'
             : isStatusParent
               ? pathname.startsWith('/admin/status')
               : pathname === href || pathname.startsWith(href + '/')
+
           return (
-            <Link
-              key={href}
-              href={href}
-              className={`flex items-center gap-3 rounded-xl text-sm font-medium transition-all ${
-                sub ? 'px-3 py-2 ml-5' : 'px-3 py-2.5'
-              } ${
-                active
-                  ? 'bg-[#0EA5E9]/10 text-[#0EA5E9] border border-[#0EA5E9]/20'
-                  : 'text-zinc-400 hover:text-white hover:bg-zinc-800'
-              }`}
-            >
-              <Icon size={sub ? 14 : 16} weight={active ? 'fill' : 'regular'} />
-              {label}
-            </Link>
+            <div key={`${href}-${idx}`}>
+              {sectionLabel && (
+                <p className="text-[10px] font-black text-zinc-600 uppercase tracking-widest px-3 pt-4 pb-1">
+                  {sectionLabel}
+                </p>
+              )}
+              <Link
+                href={href}
+                className={`flex items-center gap-3 rounded-xl text-sm font-medium transition-all ${
+                  sub ? 'px-3 py-2 ml-5' : 'px-3 py-2.5'
+                } ${
+                  active
+                    ? 'bg-[#0EA5E9]/10 text-[#0EA5E9] border border-[#0EA5E9]/20'
+                    : 'text-zinc-400 hover:text-white hover:bg-zinc-800'
+                }`}
+              >
+                <Icon size={sub ? 14 : 16} weight={active ? 'fill' : 'regular'} />
+                {label}
+              </Link>
+            </div>
           )
         })}
       </nav>
