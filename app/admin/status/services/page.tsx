@@ -1,11 +1,27 @@
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
-import { Server, ExternalLink } from 'lucide-react'
+import { redirect } from 'next/navigation'
+import { Server, ExternalLink, TrendingUp } from 'lucide-react'
 import { ConfirmDeleteButton } from '@/app/admin/_components/ConfirmDeleteButton'
 
 export const dynamic = 'force-dynamic'
 
 // ── Server Actions ────────────────────────────────────────────────────────────
+
+async function saveUptimeSettings(formData: FormData) {
+  'use server'
+  const supabase    = createClient()
+  const uptime_30d  = (formData.get('uptime_30d') as string).trim()
+  const uptime_90d  = (formData.get('uptime_90d') as string).trim()
+  const now         = new Date().toISOString()
+  await supabase.from('site_settings').upsert([
+    { key: 'status_uptime_30d', value: uptime_30d, section: 'status', label: 'Uptime 30 dias', updated_at: now },
+    { key: 'status_uptime_90d', value: uptime_90d, section: 'status', label: 'Uptime 90 dias', updated_at: now },
+  ], { onConflict: 'key' })
+  revalidatePath('/admin/status/services')
+  revalidatePath('/status')
+  redirect('/admin/status/services?saved=1')
+}
 
 async function updateServiceStatus(formData: FormData) {
   'use server'
@@ -18,6 +34,7 @@ async function updateServiceStatus(formData: FormData) {
     .eq('id', id)
   revalidatePath('/admin/status/services')
   revalidatePath('/status')
+  redirect('/admin/status/services?saved=1')
 }
 
 async function addService(formData: FormData) {
@@ -32,6 +49,7 @@ async function addService(formData: FormData) {
   await supabase.from('status_services').insert({ name, category_id, icon_name, latency_br, order_index })
   revalidatePath('/admin/status/services')
   revalidatePath('/status')
+  redirect('/admin/status/services?saved=1')
 }
 
 async function deleteService(formData: FormData) {
@@ -79,6 +97,15 @@ export default async function AdminServicesPage() {
     .from('status_categories')
     .select('id, name, order_index, status_services(id, name, icon_name, status, latency_br, order_index)')
     .order('order_index')
+
+  // Uptime settings (manual override)
+  const { data: uptimeRows } = await supabase
+    .from('site_settings')
+    .select('key, value')
+    .in('key', ['status_uptime_30d', 'status_uptime_90d'])
+  const uptimeMap = Object.fromEntries((uptimeRows ?? []).map((r: any) => [r.key, r.value]))
+  const uptime30val = uptimeMap['status_uptime_30d'] ?? ''
+  const uptime90val = uptimeMap['status_uptime_90d'] ?? ''
 
   return (
     <div>
@@ -178,6 +205,45 @@ export default async function AdminServicesPage() {
             </div>
           )
         })}
+      </div>
+
+      {/* Uptime settings */}
+      <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6 mb-6">
+        <div className="flex items-center gap-2 mb-5">
+          <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center">
+            <TrendingUp size={14} className="text-emerald-400" />
+          </div>
+          <div>
+            <h2 className="text-base font-black text-white">Uptime Exibido</h2>
+            <p className="text-[11px] text-zinc-500 mt-0.5">Valores exibidos na Status Page. Deixe vazio para calcular automaticamente com base nos incidentes.</p>
+          </div>
+        </div>
+        <form action={saveUptimeSettings} className="flex items-end gap-4">
+          <div>
+            <label className="block text-xs font-semibold text-zinc-400 mb-1.5">Uptime 30 dias</label>
+            <input
+              name="uptime_30d"
+              defaultValue={uptime30val}
+              placeholder="ex: 99.99%  (auto se vazio)"
+              className="w-52 bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-2 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-[#0EA5E9]"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-semibold text-zinc-400 mb-1.5">Uptime 90 dias</label>
+            <input
+              name="uptime_90d"
+              defaultValue={uptime90val}
+              placeholder="ex: 99.97%  (auto se vazio)"
+              className="w-52 bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-2 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-[#0EA5E9]"
+            />
+          </div>
+          <button
+            type="submit"
+            className="px-5 py-2 rounded-xl bg-[#0EA5E9] text-white text-sm font-bold hover:bg-[#0284C7] transition-colors shrink-0"
+          >
+            Salvar Uptime
+          </button>
+        </form>
       </div>
 
       {/* Add service form */}

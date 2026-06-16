@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 import { Tag } from 'lucide-react'
 import { ConfirmDeleteButton } from '@/app/admin/_components/ConfirmDeleteButton'
 
@@ -16,6 +17,7 @@ async function addCategory(formData: FormData) {
   await supabase.from('status_categories').insert({ name: name.trim(), order_index })
   revalidatePath('/admin/status/categories')
   revalidatePath('/status')
+  redirect('/admin/status/categories?saved=1')
 }
 
 async function updateCategory(formData: FormData) {
@@ -28,6 +30,7 @@ async function updateCategory(formData: FormData) {
   await supabase.from('status_categories').update({ name: name.trim(), order_index }).eq('id', id)
   revalidatePath('/admin/status/categories')
   revalidatePath('/status')
+  redirect('/admin/status/categories?saved=1')
 }
 
 async function deleteCategory(formData: FormData) {

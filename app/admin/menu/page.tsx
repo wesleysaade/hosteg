@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 import { Navigation, Plus } from 'lucide-react'
 import { ConfirmDeleteButton } from '@/app/admin/_components/ConfirmDeleteButton'
 
@@ -24,6 +25,7 @@ async function addMenuItem(formData: FormData) {
     href, icon_name, badge, order_index,
   })
   revalidatePath('/admin/menu')
+  redirect('/admin/menu?saved=1')
 }
 
 async function updateMenuItem(formData: FormData) {
@@ -44,6 +46,7 @@ async function updateMenuItem(formData: FormData) {
     category: category || null, order_index, is_enabled,
   }).eq('id', id)
   revalidatePath('/admin/menu')
+  redirect('/admin/menu?saved=1')
 }
 
 async function deleteMenuItem(formData: FormData) {

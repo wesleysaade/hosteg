@@ -1,5 +1,7 @@
+import { Suspense } from 'react'
 import { createClient } from '@/lib/supabase/server'
 import AdminSidebar from '@/components/admin/AdminSidebar'
+import { AdminToast } from './_components/AdminToast'
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const supabase = createClient()
@@ -16,6 +18,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <main className="flex-1 min-w-0 p-8 overflow-auto">
         {children}
       </main>
+      <Suspense>
+        <AdminToast />
+      </Suspense>
     </div>
   )
 }

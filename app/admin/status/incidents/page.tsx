@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 import { AlertTriangle, CheckCircle, Wrench } from 'lucide-react'
 import { ConfirmDeleteButton } from '@/app/admin/_components/ConfirmDeleteButton'
 
@@ -23,6 +24,7 @@ async function addIncident(formData: FormData) {
   })
   revalidatePath('/admin/status/incidents')
   revalidatePath('/status')
+  redirect('/admin/status/incidents?saved=1')
 }
 
 async function updateIncident(formData: FormData) {
@@ -42,6 +44,7 @@ async function updateIncident(formData: FormData) {
   }).eq('id', id)
   revalidatePath('/admin/status/incidents')
   revalidatePath('/status')
+  redirect('/admin/status/incidents?saved=1')
 }
 
 async function deleteIncident(formData: FormData) {

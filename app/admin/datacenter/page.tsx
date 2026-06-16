@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 import { MapPin, Cpu, Plus, ExternalLink } from 'lucide-react'
 import { ConfirmDeleteButton } from '@/app/admin/_components/ConfirmDeleteButton'
 
@@ -29,6 +30,7 @@ async function addLocation(formData: FormData) {
   })
   revalidatePath('/admin/datacenter')
   revalidatePath('/datacenter')
+  redirect('/admin/datacenter?saved=1')
 }
 
 async function updateLocation(formData: FormData) {
@@ -55,6 +57,7 @@ async function updateLocation(formData: FormData) {
   }).eq('id', id)
   revalidatePath('/admin/datacenter')
   revalidatePath('/datacenter')
+  redirect('/admin/datacenter?saved=1')
 }
 
 async function deleteLocation(formData: FormData) {
@@ -79,6 +82,7 @@ async function addTechnology(formData: FormData) {
   await supabase.from('datacenter_technologies').insert({ title, description, icon_name, order_index })
   revalidatePath('/admin/datacenter')
   revalidatePath('/datacenter')
+  redirect('/admin/datacenter?saved=1')
 }
 
 async function updateTechnology(formData: FormData) {
@@ -94,6 +98,7 @@ async function updateTechnology(formData: FormData) {
   await supabase.from('datacenter_technologies').update({ title, description, icon_name, is_active, order_index }).eq('id', id)
   revalidatePath('/admin/datacenter')
   revalidatePath('/datacenter')
+  redirect('/admin/datacenter?saved=1')
 }
 
 async function deleteTechnology(formData: FormData) {

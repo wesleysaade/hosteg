@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 import { Settings } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
@@ -18,6 +19,7 @@ async function saveSetting(formData: FormData) {
     .eq('key', key)
   revalidatePath('/admin/settings')
   revalidatePath('/')
+  redirect('/admin/settings?saved=1')
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────

@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 import { FileText, Plus } from 'lucide-react'
 import { ConfirmDeleteButton } from '@/app/admin/_components/ConfirmDeleteButton'
 
@@ -20,6 +21,7 @@ async function addContract(formData: FormData) {
     updated_at: new Date().toISOString(),
   })
   revalidatePath('/admin/contracts')
+  redirect('/admin/contracts?saved=1')
 }
 
 async function updateContract(formData: FormData) {
@@ -35,6 +37,7 @@ async function updateContract(formData: FormData) {
     updated_at: new Date().toISOString(),
   }).eq('id', id)
   revalidatePath('/admin/contracts')
+  redirect('/admin/contracts?saved=1')
 }
 
 async function deleteContract(formData: FormData) {

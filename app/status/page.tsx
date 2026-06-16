@@ -88,9 +88,16 @@ export default async function StatusPage() {
     .eq('type', 'incident')
     .gte('incident_date', days90[days90.length - 1])
 
-  // Uptime calculado (cada incidente ≈ 0.1% de downtime)
-  const uptime30 = Math.max(99.99 - (count30 ?? 0) * 0.1, 99.0).toFixed(2) + '%'
-  const uptime90 = Math.max(99.99 - (count90 ?? 0) * 0.1, 99.0).toFixed(2) + '%'
+  // Uptime override (manual) do admin
+  const { data: uptimeRows } = await supabase
+    .from('site_settings')
+    .select('key, value')
+    .in('key', ['status_uptime_30d', 'status_uptime_90d'])
+  const uptimeMap = Object.fromEntries((uptimeRows ?? []).map((r: any) => [r.key, r.value]))
+
+  // Usa override se definido, senão calcula automaticamente
+  const uptime30 = uptimeMap['status_uptime_30d']?.trim() || (Math.max(99.99 - (count30 ?? 0) * 0.1, 99.0).toFixed(2) + '%')
+  const uptime90 = uptimeMap['status_uptime_90d']?.trim() || (Math.max(99.99 - (count90 ?? 0) * 0.1, 99.0).toFixed(2) + '%')
 
   // Número de incidentes ativos hoje
   const today = days7[0]
