@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { PAGES_CONFIG, SECTION_LABELS } from '@/lib/config/pages-config'
 import { ClonePageButton } from './ClonePageButton'
 import {
-  House, HardDrives, Cloud, Storefront, Buildings, Info, ExternalLink, Pencil, Globe,
+  House, HardDrives, Cloud, Storefront, Buildings, Info, ArrowSquareOut, Pencil, Globe,
 } from '@phosphor-icons/react/dist/ssr'
 
 const CATEGORY_ICONS: Record<string, any> = {
@@ -84,7 +84,7 @@ export default async function AdminContentPage() {
                           className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-zinc-700 text-zinc-400 hover:text-white hover:border-zinc-500 transition-colors text-[11px] font-semibold"
                           onClick={e => e.stopPropagation()}
                         >
-                          <ExternalLink size={11} />
+                          <ArrowSquareOut size={11} />
                           Ver
                         </a>
 
