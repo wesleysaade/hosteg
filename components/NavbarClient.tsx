@@ -30,8 +30,12 @@ function getIcon(name: string): React.ComponentType<any> {
   return phosphorIconMap[name] ?? Globe
 }
 
+// ── Shared menu types ────────────────────────────────────────────────────────
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type NavMenuSection = { category: string; items: { icon: React.ComponentType<any>; title: string; desc: string; href: string; badge: string }[] }
+
 // ── Hardcoded fallbacks ───────────────────────────────────────────────────────
-const defaultProdutosMenu = [
+const defaultProdutosMenu: NavMenuSection[] = [
   {
     category: 'Hospedagem',
     items: [
@@ -67,7 +71,7 @@ const defaultInstitucionalItems = [
   { icon: Heartbeat, title: 'Status',         desc: 'Disponibilidade dos serviços em tempo real', href: '/status' },
 ]
 
-const defaultCloudAppsMenu = [
+const defaultCloudAppsMenu: NavMenuSection[] = [
   {
     category: 'Automação & Comunicação',
     items: [
