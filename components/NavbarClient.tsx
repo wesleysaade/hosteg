@@ -11,7 +11,7 @@ import {
   Cloud, Desktop, Rocket, Star, Fire, Wrench, TerminalWindow,
   ChartBar, Graph, Envelope, Phone, ShoppingCart, CreditCard, Tag, Archive,
   Briefcase, Bank, Book, Folder, File, Warning, CheckCircle, Circle,
-  ArrowRight, House, Bell, Key, Network, Server, Buildings as BuildingsIcon,
+  ArrowRight, House, Bell, Key, Network, ComputerTower, Buildings as BuildingsIcon,
 } from '@phosphor-icons/react'
 import type { NavMenuItem } from '@/lib/utils/nav'
 import { groupByCategory } from '@/lib/utils/nav'
@@ -24,7 +24,7 @@ const phosphorIconMap: Record<string, React.ComponentType<any>> = {
   Cloud, Desktop, Rocket, Star, Fire, Wrench, TerminalWindow,
   ChartBar, Graph, Envelope, Phone, ShoppingCart, CreditCard, Tag, Archive,
   Briefcase, Bank, Book, Folder, File, Warning, CheckCircle, Circle,
-  ArrowRight, House, Bell, Key, Network, Server,
+  ArrowRight, House, Bell, Key, Network, ComputerTower as Server,
 }
 function getIcon(name: string): React.ComponentType<any> {
   return phosphorIconMap[name] ?? Globe

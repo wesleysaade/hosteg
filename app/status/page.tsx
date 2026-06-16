@@ -15,7 +15,8 @@ export const metadata: Metadata = {
 }
 
 // ── ícones por nome armazenado no banco ──────────────────────────────────────
-const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const iconMap: Record<string, React.ComponentType<any>> = {
   server:   Server,
   zap:      Zap,
   globe:    Globe,

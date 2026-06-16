@@ -5,7 +5,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import {
   House, BookOpen, CurrencyDollar, SignOut, Globe, Package, Folders,
-  PencilSimple, PuzzlePiece, Heartbeat, Server, Tag, Warning,
+  PencilSimple, PuzzlePiece, Heartbeat, ComputerTower as Server, Tag, Warning,
   Gear, NavigationArrow, MapPin, FileText,
 } from '@phosphor-icons/react'
 
