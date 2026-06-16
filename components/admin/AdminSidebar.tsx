@@ -5,18 +5,22 @@ import { usePathname, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import {
   House, BookOpen, CurrencyDollar, SignOut, Globe, Package, Folders,
-  PencilSimple, PuzzlePiece,
+  PencilSimple, PuzzlePiece, Heartbeat, Server, Tag, Warning,
 } from '@phosphor-icons/react'
 
 const nav = [
-  { href: '/admin',                       label: 'Dashboard',   icon: House,          sub: false },
-  { href: '/admin/content',               label: 'Conteúdo',    icon: PencilSimple,   sub: false },
-  { href: '/admin/plans',                 label: 'Planos',      icon: CurrencyDollar, sub: false },
-  { href: '/admin/addons',                label: 'Adicionais',  icon: PuzzlePiece,    sub: false },
-  { href: '/admin/docs',                  label: 'Docs',        icon: BookOpen,       sub: false },
-  { href: '/admin/docs/categories',       label: 'Categorias',  icon: Folders,        sub: true  },
-  { href: '/admin/cloud-apps',            label: 'Cloud APPs',  icon: Package,        sub: false },
-  { href: '/admin/cloud-apps/categories', label: 'Categorias',  icon: Folders,        sub: true  },
+  { href: '/admin',                          label: 'Dashboard',   icon: House,          sub: false },
+  { href: '/admin/content',                  label: 'Conteúdo',    icon: PencilSimple,   sub: false },
+  { href: '/admin/plans',                    label: 'Planos',      icon: CurrencyDollar, sub: false },
+  { href: '/admin/addons',                   label: 'Adicionais',  icon: PuzzlePiece,    sub: false },
+  { href: '/admin/docs',                     label: 'Docs',        icon: BookOpen,       sub: false },
+  { href: '/admin/docs/categories',          label: 'Categorias',  icon: Folders,        sub: true  },
+  { href: '/admin/cloud-apps',               label: 'Cloud APPs',  icon: Package,        sub: false },
+  { href: '/admin/cloud-apps/categories',    label: 'Categorias',  icon: Folders,        sub: true  },
+  { href: '/admin/status/services',          label: 'Status',      icon: Heartbeat,      sub: false },
+  { href: '/admin/status/services',          label: 'Serviços',    icon: Server,         sub: true  },
+  { href: '/admin/status/categories',        label: 'Categorias',  icon: Tag,            sub: true  },
+  { href: '/admin/status/incidents',         label: 'Incidentes',  icon: Warning,        sub: true  },
 ]
 
 export default function AdminSidebar({ userEmail }: { userEmail: string }) {
@@ -44,10 +48,14 @@ export default function AdminSidebar({ userEmail }: { userEmail: string }) {
 
       {/* Nav */}
       <nav className="flex-1 px-3 py-4 space-y-0.5">
-        {nav.map(({ href, label, icon: Icon, sub }) => {
+        {nav.map(({ href, label, icon: Icon, sub }, idx) => {
+          // "Status" parent entry should highlight for any /admin/status/* path
+          const isStatusParent = href === '/admin/status/services' && label === 'Status'
           const active = href === '/admin'
             ? pathname === '/admin'
-            : pathname === href || pathname.startsWith(href + '/')
+            : isStatusParent
+              ? pathname.startsWith('/admin/status')
+              : pathname === href || pathname.startsWith(href + '/')
           return (
             <Link
               key={href}
