@@ -1,5 +1,5 @@
 import NavbarClient from './NavbarClient'
-import { getNavMenuItems } from '@/lib/utils/nav'
+import { getNavMenuItems } from '@/lib/utils/nav-server'
 
 /**
  * Server component wrapper: fetches nav items from DB and passes to client Navbar.

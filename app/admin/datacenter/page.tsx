@@ -1,5 +1,3 @@
-'use server'
-
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { MapPin, Cpu, Plus, ExternalLink } from 'lucide-react'

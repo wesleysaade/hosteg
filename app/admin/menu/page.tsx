@@ -1,8 +1,6 @@
-'use server'
-
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
-import { NavigationArrow, Plus } from 'lucide-react'
+import { Navigation, Plus } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
@@ -102,7 +100,7 @@ export default async function AdminMenuPage() {
               {/* Group header */}
               <div className="px-5 py-3 bg-zinc-900 border-b border-zinc-800 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <NavigationArrow size={13} className="text-[#0EA5E9]" />
+                  <Navigation size={13} className="text-[#0EA5E9]" />
                   <span className="text-xs font-black text-zinc-300 uppercase tracking-wider">
                     {groupLabels[group] ?? group}
                   </span>

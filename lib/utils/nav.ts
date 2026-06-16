@@ -1,4 +1,5 @@
-import { createClient } from '@/lib/supabase/server'
+// Pure client-safe module — no server-only imports.
+// Server-side fetch lives in lib/utils/nav-server.ts
 
 export type NavMenuItem = {
   id: string
@@ -11,21 +12,6 @@ export type NavMenuItem = {
   badge: string
   order_index: number
   is_enabled: boolean
-}
-
-/** Busca itens de menu habilitados do banco */
-export async function getNavMenuItems(): Promise<NavMenuItem[]> {
-  try {
-    const supabase = createClient()
-    const { data } = await supabase
-      .from('nav_menu_items')
-      .select('*')
-      .eq('is_enabled', true)
-      .order('order_index')
-    return (data ?? []) as NavMenuItem[]
-  } catch {
-    return []
-  }
 }
 
 /** Agrupa itens por categoria para mega menus */
