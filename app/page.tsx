@@ -1,235 +1,417 @@
 import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
-import { getHero } from '@/lib/utils/hero'
-
-export const dynamic = 'force-dynamic'
 import {
   ArrowRight,
+  Check,
   Zap,
   Shield,
   Clock,
   Server,
   Globe,
-  Cpu,
   HardDrive,
-  Network,
-  CheckCircle2,
+  Wifi,
   Star,
+  Database,
+  Monitor,
+  Package,
+  Share2,
+  ChevronRight,
 } from 'lucide-react'
 
-const vpsHighlights = [
-  {
-    name: 'VPS Starter',
-    ram: '2 GB',
-    cpu: '2 vCPU',
-    storage: '40 GB NVMe',
-    bandwidth: '2 TB',
-    price: 'R$ 39',
-    period: '/mês',
-    popular: false,
-  },
-  {
-    name: 'VPS Basic',
-    ram: '4 GB',
-    cpu: '2 vCPU',
-    storage: '80 GB NVMe',
-    bandwidth: '4 TB',
-    price: 'R$ 69',
-    period: '/mês',
-    popular: false,
-  },
-  {
-    name: 'VPS Standard',
-    ram: '8 GB',
-    cpu: '4 vCPU',
-    storage: '160 GB NVMe',
-    bandwidth: '6 TB',
-    price: 'R$ 119',
-    period: '/mês',
-    popular: true,
-  },
-  {
-    name: 'VPS Advanced',
-    ram: '16 GB',
-    cpu: '6 vCPU',
-    storage: '320 GB NVMe',
-    bandwidth: '8 TB',
-    price: 'R$ 219',
-    period: '/mês',
-    popular: false,
-  },
+export const dynamic = 'force-dynamic'
+
+/* ── Dados estáticos ─────────────────────────────────────────────────────── */
+
+const trustMetrics = [
+  { value: '+5.000',  label: 'Clientes ativos' },
+  { value: '99.9%',  label: 'Uptime garantido' },
+  { value: '24/7',   label: 'Suporte humano' },
+  { value: '10 Gbps',label: 'Uplink de rede' },
 ]
 
-const diferenciais = [
-  {
-    icon: Zap,
-    title: 'NVMe de alta velocidade',
-    desc: 'Discos NVMe Gen4 com até 7.000 MB/s de leitura. Zero gargalo de I/O.',
-  },
-  {
-    icon: Shield,
-    title: 'Anti-DDoS incluso',
-    desc: 'Proteção automática contra ataques DDoS em todos os planos, sem custo adicional.',
-  },
-  {
-    icon: Clock,
-    title: 'Uptime 99.9% garantido',
-    desc: 'SLA de 99.9% com infraestrutura redundante nos dois datacenters.',
-  },
+const products = [
   {
     icon: Server,
-    title: 'Suporte 24/7',
-    desc: 'Time técnico brasileiro disponível a qualquer hora.',
+    label: 'Cloud VPS NVMe',
+    desc: 'VPS com NVMe Gen4, IPv4 dedicado e anti-DDoS incluso.',
+    badge: 'Mais vendido',
+    badgeColor: '#0EA5E9',
+    from: 'R$ 39',
+    href: '/cloud-vps',
+    highlight: true,
   },
   {
-    icon: Network,
-    title: 'Rede 10 Gbps',
-    desc: 'Uplink de 10 Gbps com baixa latência para o Brasil e América Latina.',
+    icon: Zap,
+    label: 'Bare-Metal',
+    desc: 'Servidores Xeon dedicados. Hardware 100% seu, sem compartilhamento.',
+    badge: 'Alta performance',
+    badgeColor: '#8B5CF6',
+    from: 'R$ 599',
+    href: '/bare-metal',
+    highlight: false,
   },
   {
     icon: Globe,
-    title: 'Dois datacenters',
-    desc: 'São Paulo (Ascenty SP4) e Canadá — escolha a região ideal.',
+    label: 'Hospedagem PRO',
+    desc: 'cPanel + LiteSpeed + Redis. Ideal para sites e lojas WordPress.',
+    badge: 'Popular',
+    badgeColor: '#10B981',
+    from: 'R$ 19',
+    href: '/hospedagem-pro',
+    highlight: false,
+  },
+  {
+    icon: HardDrive,
+    label: 'WordPress Hosting',
+    desc: 'Ambiente gerenciado, otimizado 100% para WordPress.',
+    badge: '',
+    badgeColor: '',
+    from: 'R$ 14',
+    href: '/wordpress',
+    highlight: false,
+  },
+  {
+    icon: Database,
+    label: 'Database Cloud',
+    desc: 'MySQL, PostgreSQL, MongoDB e SQL Server gerenciados na nuvem.',
+    badge: '',
+    badgeColor: '',
+    from: 'R$ 29',
+    href: '/database-cloud',
+    highlight: false,
+  },
+  {
+    icon: Share2,
+    label: 'Revenda cPanel',
+    desc: 'White-label completo para agências e revendedores.',
+    badge: 'Novo',
+    badgeColor: '#F59E0B',
+    from: 'R$ 49',
+    href: '/revenda-cpanel',
+    highlight: false,
+  },
+  {
+    icon: Monitor,
+    label: 'Terminal Server',
+    desc: 'Desktop Windows acessível direto no navegador, 24h.',
+    badge: '',
+    badgeColor: '',
+    from: 'R$ 89',
+    href: '/terminal-server',
+    highlight: false,
+  },
+  {
+    icon: Package,
+    label: 'BackupPRO',
+    desc: 'Backup automático gerenciado com tecnologia Acronis.',
+    badge: '',
+    badgeColor: '',
+    from: 'R$ 19',
+    href: '/backup-pro',
+    highlight: false,
   },
 ]
 
-const stats = [
-  { value: '99.9%', label: 'Uptime SLA' },
-  { value: '24/7', label: 'Suporte' },
-  { value: '10 Gbps', label: 'Rede' },
-  { value: '< 1ms', label: 'Latência SP' },
+const vpsPlans = [
+  { name: 'Starter', ram: '2 GB', cpu: '2 vCPU', nvme: '40 GB', traffic: '2 TB', price: 'R$ 39', popular: false },
+  { name: 'Basic',   ram: '4 GB', cpu: '2 vCPU', nvme: '80 GB', traffic: '4 TB', price: 'R$ 69', popular: false },
+  { name: 'Standard',ram: '8 GB', cpu: '4 vCPU', nvme: '160 GB',traffic: '6 TB', price: 'R$ 119',popular: true  },
+  { name: 'Advanced',ram: '16 GB',cpu: '6 vCPU', nvme: '320 GB',traffic: '8 TB', price: 'R$ 219',popular: false },
 ]
 
+const features = [
+  {
+    icon: Zap,
+    title: 'NVMe Gen4 — 7.000 MB/s',
+    desc: 'Storage de última geração com até 7 GB/s de leitura sequencial. Aplicações e bancos de dados respondem em milissegundos.',
+  },
+  {
+    icon: Shield,
+    title: 'Anti-DDoS em todos os planos',
+    desc: 'Mitigação automática de ataques volumétricos nas camadas 3, 4 e 7. Sem custo extra, incluso de série.',
+  },
+  {
+    icon: Wifi,
+    title: 'Rede 10 Gbps redundante',
+    desc: 'Múltiplos uplinks de 10 Gbps com peering direto na IX.br. Latência sub-milissegundo para São Paulo.',
+  },
+  {
+    icon: Clock,
+    title: 'SLA 99.9% garantido em contrato',
+    desc: 'Disponibilidade garantida com infraestrutura redundante em dois datacenters. Compensação automática em downtime.',
+  },
+  {
+    icon: Globe,
+    title: 'SP + Canadá — escolha a região',
+    desc: 'Ascenty SP4 em São Paulo e Montreal no Canadá. Latência otimizada para seu público onde ele estiver.',
+  },
+  {
+    icon: Star,
+    title: 'Suporte humano 24/7 em PT-BR',
+    desc: 'Time técnico brasileiro. Nenhum bot, nenhuma fila de e-mail. Atendimento real a qualquer hora.',
+  },
+]
+
+const testimonials = [
+  {
+    name: 'Rafael Mendes',
+    role: 'CTO · Agência Digital',
+    text: 'Migramos 40 clientes para a Hosteg e o ganho de performance foi imediato. NVMe faz toda a diferença nos scores do Core Web Vitals.',
+    stars: 5,
+  },
+  {
+    name: 'Camila Ferreira',
+    role: 'Fundadora · SaaS B2B',
+    text: 'Anti-DDoS incluso salvou minha aplicação em dois ataques na mesma semana. Nem percebi — o time me avisou depois.',
+    stars: 5,
+  },
+  {
+    name: 'Lucas Oliveira',
+    role: 'DevOps · E-commerce',
+    text: 'O suporte responde em menos de 5 minutos, sempre em português e com conhecimento técnico de verdade. Isso não tem preço.',
+    stars: 5,
+  },
+]
+
+/* ── Componente ─────────────────────────────────────────────────────────── */
+
 export default async function HomePage() {
-  const hero = await getHero('home', {
-    badge:    'NVMe · Anti-DDoS · Suporte 24/7',
-    title:    'Cloud VPS que você confia.',
-    subtitle: 'Vem ser feliz na Hosteg!',
-    desc:     'Infraestrutura cloud de alta performance com NVMe, anti-DDoS e suporte técnico brasileiro 24/7. Do VPS ao Bare-Metal, temos o servidor ideal para você.',
-  })
   return (
     <div className="min-h-screen bg-white text-zinc-900">
       <Navbar />
 
-      {/* ─── HERO ─── */}
-      <section className="relative pt-32 pb-24 overflow-hidden">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] rounded-full opacity-[0.07]"
-            style={{ background: 'radial-gradient(ellipse, #0EA5E9 0%, transparent 70%)' }}
-          />
-          <div className="grid-pattern absolute inset-0 opacity-100" />
-        </div>
+      {/* ══════════════════════════════════════════════════════════════
+          HERO — fundo escuro com glow azul
+      ══════════════════════════════════════════════════════════════ */}
+      <section className="relative overflow-hidden bg-[#020817] pt-32 pb-28">
+        {/* Glow radial */}
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(14,165,233,0.18) 0%, transparent 70%)',
+          }}
+        />
+        {/* Grid sutil */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage:
+              'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)',
+            backgroundSize: '60px 60px',
+          }}
+        />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 mb-6 px-3 py-1.5 rounded-full border border-[#0EA5E9]/25 bg-[#0EA5E9]/6 text-[#0284C7] text-xs font-semibold">
-            <Star size={11} fill="currentColor" />
-            {hero.badge}
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          {/* Badge animado */}
+          <div className="inline-flex items-center gap-2 mb-8 px-4 py-1.5 rounded-full border border-[#0EA5E9]/30 bg-[#0EA5E9]/10 text-[#38BDF8] text-xs font-bold uppercase tracking-widest">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#0EA5E9] animate-pulse" />
+            NVMe Gen4 · Anti-DDoS · Suporte 24/7
           </div>
 
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05] mb-6 text-zinc-900">
-            {hero.title}
+          {/* Headline */}
+          <h1 className="text-5xl sm:text-6xl lg:text-[80px] font-black leading-[1.0] tracking-tight text-white mb-6">
+            Infraestrutura cloud<br />
+            <span
+              style={{
+                background: 'linear-gradient(90deg, #38BDF8 0%, #0EA5E9 50%, #6366F1 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              para quem leva a sério.
+            </span>
           </h1>
 
-          <p className="text-xl sm:text-2xl text-zinc-500 font-medium mb-3">
-            {hero.subtitle}
+          {/* Sub */}
+          <p className="text-lg sm:text-xl text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+            VPS NVMe, Bare-Metal Xeon e hospedagem gerenciada com suporte técnico brasileiro 24/7.
+            Ative em&nbsp;<strong className="text-white">menos de 60 segundos</strong>.
           </p>
 
-          <p className="text-base text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-            {hero.desc}
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          {/* CTAs */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14">
             <Link
               href="/cloud-vps"
-              className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#0EA5E9] hover:bg-[#0284C7] text-white font-semibold rounded-xl text-base transition-all duration-150 shadow-md shadow-[#0EA5E9]/25"
+              className="inline-flex items-center gap-2.5 px-8 py-4 bg-[#0EA5E9] hover:bg-[#0284C7] text-white font-bold rounded-xl text-base transition-all shadow-2xl shadow-[#0EA5E9]/30"
             >
-              Ver planos VPS <ArrowRight size={16} />
+              Ver planos VPS <ArrowRight size={17} />
             </Link>
             <Link
               href="/bare-metal"
-              className="inline-flex items-center gap-2 px-6 py-3.5 bg-white hover:bg-zinc-50 text-zinc-700 font-semibold rounded-xl text-base border border-zinc-200 hover:border-zinc-300 transition-all duration-150"
+              className="inline-flex items-center gap-2.5 px-8 py-4 bg-white/[0.08] hover:bg-white/[0.14] text-white font-semibold rounded-xl text-base border border-white/[0.15] hover:border-white/25 transition-all"
             >
-              Bare-Metal <Server size={15} />
+              Bare-Metal dedicado <Server size={15} />
             </Link>
+          </div>
+
+          {/* Trust strip */}
+          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+            {[
+              '✓ Sem fidelidade',
+              '✓ Ativação em 60s',
+              '✓ Anti-DDoS incluso',
+              '✓ Suporte em PT-BR',
+            ].map((t) => (
+              <span key={t} className="text-sm text-zinc-500 font-medium">{t}</span>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ─── STATS ─── */}
-      <section className="border-y border-zinc-100 bg-zinc-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div className="text-3xl font-black text-zinc-900 mb-1">{stat.value}</div>
-                <div className="text-sm text-zinc-500">{stat.label}</div>
+      {/* ══════════════════════════════════════════════════════════════
+          TRUST METRICS
+      ══════════════════════════════════════════════════════════════ */}
+      <section className="border-b border-zinc-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4">
+            {trustMetrics.map((m, i) => (
+              <div
+                key={m.label}
+                className={`py-10 text-center ${i < trustMetrics.length - 1 ? 'border-r border-zinc-100' : ''}`}
+              >
+                <div className="text-4xl font-black text-zinc-900 mb-1.5">{m.value}</div>
+                <div className="text-sm text-zinc-400 font-medium">{m.label}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ─── VPS PLANS HIGHLIGHT ─── */}
+      {/* ══════════════════════════════════════════════════════════════
+          PRODUTOS — grid de 4 colunas
+      ══════════════════════════════════════════════════════════════ */}
       <section className="py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <p className="text-[#0284C7] text-sm font-semibold uppercase tracking-widest mb-3">
-              Cloud VPS NVMe
-            </p>
-            <h2 className="text-4xl sm:text-5xl font-black text-zinc-900 mb-4">
-              Performance sem compromisso
+          <div className="text-center mb-14">
+            <p className="text-[#0EA5E9] text-xs font-black uppercase tracking-widest mb-3">Soluções completas</p>
+            <h2 className="text-4xl sm:text-5xl font-black text-zinc-900 leading-tight mb-4">
+              Do site pessoal ao data center
             </h2>
-            <p className="text-zinc-500 text-lg max-w-xl mx-auto">
-              Planos com NVMe Gen4, IPv4/IPv6 dedicado e painel de controle completo.
+            <p className="text-zinc-500 text-lg max-w-lg mx-auto">
+              Hospedagem compartilhada, VPS, bare-metal ou cloud apps — tudo numa só empresa.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            {vpsHighlights.map((plan) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {products.map((p) => {
+              const Icon = p.icon
+              return (
+                <Link
+                  key={p.label}
+                  href={p.href}
+                  className={`group relative flex flex-col p-5 rounded-2xl border transition-all duration-200 ${
+                    p.highlight
+                      ? 'border-[#0EA5E9]/40 bg-gradient-to-br from-[#0EA5E9]/[0.05] to-transparent shadow-lg shadow-[#0EA5E9]/[0.08] hover:shadow-[#0EA5E9]/[0.15]'
+                      : 'border-zinc-200 bg-white hover:border-zinc-300 hover:shadow-md hover:shadow-zinc-100'
+                  }`}
+                >
+                  {p.badge && (
+                    <span
+                      className="absolute top-4 right-4 text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wide text-white"
+                      style={{ background: p.badgeColor }}
+                    >
+                      {p.badge}
+                    </span>
+                  )}
+
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center mb-4 transition-colors"
+                    style={{
+                      background: p.highlight ? 'rgba(14,165,233,0.12)' : '#F4F4F5',
+                    }}
+                  >
+                    <Icon
+                      size={18}
+                      style={{ color: p.highlight ? '#0EA5E9' : '#71717A' }}
+                    />
+                  </div>
+
+                  <h3 className="text-sm font-black text-zinc-900 mb-1.5 leading-snug">{p.label}</h3>
+                  <p className="text-xs text-zinc-400 leading-relaxed flex-1 mb-4">{p.desc}</p>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="text-[10px] text-zinc-400 font-medium block">a partir de</span>
+                      <span className="text-lg font-black text-zinc-900">{p.from}<span className="text-xs font-semibold text-zinc-400">/mês</span></span>
+                    </div>
+                    <div
+                      className="w-7 h-7 rounded-full flex items-center justify-center transition-all group-hover:translate-x-0.5"
+                      style={{ background: p.highlight ? '#0EA5E9' : '#F4F4F5' }}
+                    >
+                      <ChevronRight size={13} style={{ color: p.highlight ? '#fff' : '#71717A' }} />
+                    </div>
+                  </div>
+                </Link>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════════════
+          VPS PLANS — destaque
+      ══════════════════════════════════════════════════════════════ */}
+      <section className="py-20 bg-zinc-50 border-y border-zinc-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
+            <div>
+              <p className="text-[#0EA5E9] text-xs font-black uppercase tracking-widest mb-2">Cloud VPS NVMe Gen4</p>
+              <h2 className="text-3xl sm:text-4xl font-black text-zinc-900">Os planos mais populares</h2>
+            </div>
+            <Link href="/cloud-vps" className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-[#0EA5E9] font-semibold transition-colors whitespace-nowrap">
+              Ver todos os 10 planos <ArrowRight size={14} />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {vpsPlans.map((plan) => (
               <div
                 key={plan.name}
-                className={`relative rounded-2xl p-6 border transition-all duration-200 group ${
+                className={`relative flex flex-col rounded-2xl p-6 transition-all duration-200 ${
                   plan.popular
-                    ? 'border-[#0EA5E9] bg-white shadow-lg shadow-[#0EA5E9]/10 ring-1 ring-[#0EA5E9]/20'
-                    : 'border-zinc-200 bg-white hover:border-zinc-300 hover:shadow-md hover:shadow-zinc-100'
+                    ? 'bg-[#020817] text-white shadow-2xl shadow-zinc-900/20 ring-1 ring-[#0EA5E9]/30'
+                    : 'bg-white border border-zinc-200 hover:border-zinc-300 hover:shadow-md'
                 }`}
               >
                 {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#0EA5E9] text-white text-xs font-bold rounded-full">
+                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#0EA5E9] text-white text-[10px] font-black rounded-full uppercase tracking-wide shadow-lg shadow-[#0EA5E9]/40">
                     Mais Popular
                   </div>
                 )}
-                <div className="mb-5">
-                  <p className="text-sm font-semibold text-zinc-400 mb-1">{plan.name}</p>
+
+                <p className={`text-xs font-black uppercase tracking-widest mb-4 ${plan.popular ? 'text-[#38BDF8]' : 'text-zinc-400'}`}>
+                  VPS {plan.name}
+                </p>
+
+                <div className="mb-6">
                   <div className="flex items-baseline gap-1">
-                    <span className="text-3xl font-black text-zinc-900">{plan.price}</span>
-                    <span className="text-zinc-400 text-sm">{plan.period}</span>
+                    <span className={`text-4xl font-black ${plan.popular ? 'text-white' : 'text-zinc-900'}`}>{plan.price}</span>
+                    <span className="text-sm text-zinc-400">/mês</span>
                   </div>
                 </div>
-                <ul className="space-y-2.5 mb-6">
+
+                <ul className="space-y-3 flex-1 mb-6">
                   {[
-                    { icon: HardDrive, text: plan.ram + ' RAM' },
-                    { icon: Cpu, text: plan.cpu },
-                    { icon: Zap, text: plan.storage },
-                    { icon: Network, text: plan.bandwidth + ' tráfego' },
-                  ].map((spec) => {
-                    const Icon = spec.icon
-                    return (
-                      <li key={spec.text} className="flex items-center gap-2.5 text-sm text-zinc-600">
-                        <Icon size={13} className="text-zinc-400 flex-shrink-0" />
-                        {spec.text}
-                      </li>
-                    )
-                  })}
+                    { label: 'RAM',     val: plan.ram },
+                    { label: 'vCPU',    val: plan.cpu },
+                    { label: 'NVMe',    val: plan.nvme },
+                    { label: 'Tráfego', val: plan.traffic },
+                  ].map((s) => (
+                    <li key={s.label} className="flex items-center justify-between">
+                      <span className="text-xs font-semibold text-zinc-400">{s.label}</span>
+                      <span className={`text-sm font-black ${plan.popular ? 'text-white' : 'text-zinc-900'}`}>{s.val}</span>
+                    </li>
+                  ))}
                 </ul>
+
                 <Link
                   href="/cloud-vps"
-                  className={`block text-center text-sm font-semibold py-2.5 rounded-lg transition-all duration-150 ${
+                  className={`block text-center text-sm font-bold py-3 rounded-xl transition-all ${
                     plan.popular
-                      ? 'bg-[#0EA5E9] hover:bg-[#0284C7] text-white'
-                      : 'bg-zinc-100 hover:bg-zinc-200 text-zinc-700'
+                      ? 'bg-[#0EA5E9] hover:bg-[#0284C7] text-white shadow-lg shadow-[#0EA5E9]/30'
+                      : 'bg-zinc-100 hover:bg-zinc-200 text-zinc-800'
                   }`}
                 >
                   Contratar
@@ -238,142 +420,120 @@ export default async function HomePage() {
             ))}
           </div>
 
-          <div className="text-center">
-            <Link
-              href="/cloud-vps"
-              className="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-900 transition-colors"
-            >
-              Ver todos os 10 planos VPS <ArrowRight size={14} />
-            </Link>
+          {/* Incluso em todos */}
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+            {['IPv4 + IPv6 dedicados', 'Anti-DDoS incluso', 'Deploy < 60s', 'SLA 99.9%', 'Suporte 24/7'].map((f) => (
+              <span key={f} className="flex items-center gap-1.5 text-xs text-zinc-500 font-medium">
+                <Check size={11} className="text-[#0EA5E9]" /> {f}
+              </span>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ─── BARE METAL CALLOUT ─── */}
-      <section className="py-16">
+      {/* ══════════════════════════════════════════════════════════════
+          FEATURES — 2 colunas
+      ══════════════════════════════════════════════════════════════ */}
+      <section className="py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-8 sm:p-12 overflow-hidden relative">
-            <div className="relative grid md:grid-cols-2 gap-8 items-center">
-              <div>
-                <div className="inline-flex items-center gap-2 mb-4 px-3 py-1 rounded-full border border-zinc-200 bg-white text-xs font-semibold text-zinc-500">
-                  <Cpu size={11} /> Bare-Metal Dedicado
-                </div>
-                <h2 className="text-3xl sm:text-4xl font-black text-zinc-900 mb-4 leading-tight">
-                  Máximo poder de processamento
-                </h2>
-                <p className="text-zinc-500 leading-relaxed mb-6">
-                  Servidores dedicados com processadores Intel Xeon E5 e Gold. Sem compartilhamento
-                  de recursos — 100% do hardware é seu.
-                </p>
-                <div className="flex flex-wrap gap-2 mb-8">
-                  {['Dual Xeon E5-2680', 'Dual Xeon Gold 6140', 'DDR4 ECC', 'RAID NVMe', '10 Gbps'].map((tag) => (
-                    <span key={tag} className="text-xs px-2.5 py-1 rounded-md border border-zinc-200 bg-white text-zinc-500">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <Link
-                  href="/bare-metal"
-                  className="inline-flex items-center gap-2 px-5 py-3 bg-zinc-900 hover:bg-zinc-800 text-white font-semibold rounded-xl text-sm transition-colors"
-                >
-                  Ver configurações <ArrowRight size={15} />
-                </Link>
-              </div>
-              <div className="hidden md:grid grid-cols-2 gap-3">
-                {[
-                  { label: 'Processadores', value: '2× Xeon' },
-                  { label: 'RAM', value: 'até 512 GB' },
-                  { label: 'Armazenamento', value: 'NVMe + SSD' },
-                  { label: 'Rede', value: '10 Gbps' },
-                ].map((spec) => (
-                  <div key={spec.label} className="rounded-xl border border-zinc-200 bg-white p-4 text-center">
-                    <div className="text-base font-bold text-zinc-900">{spec.value}</div>
-                    <div className="text-xs text-zinc-400 mt-0.5">{spec.label}</div>
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <p className="text-[#0EA5E9] text-xs font-black uppercase tracking-widest mb-4">Por que a Hosteg?</p>
+              <h2 className="text-4xl sm:text-5xl font-black text-zinc-900 leading-tight mb-6">
+                Cada detalhe foi<br />projetado para<br />
+                <span className="text-zinc-400 font-black not-italic">você não se preocupar.</span>
+              </h2>
+              <p className="text-zinc-500 text-lg leading-relaxed mb-8">
+                Infraestrutura enterprise acessível para startups, agências e e-commerces.
+                NVMe, anti-DDoS e suporte real sem custo extra.
+              </p>
+              <Link
+                href="/datacenter"
+                className="inline-flex items-center gap-2 text-sm font-bold text-[#0EA5E9] hover:text-[#0284C7] transition-colors"
+              >
+                Ver nossa infraestrutura <ArrowRight size={14} />
+              </Link>
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-4">
+              {features.map((f) => {
+                const Icon = f.icon
+                return (
+                  <div key={f.title} className="p-5 rounded-2xl border border-zinc-200 bg-white hover:border-[#0EA5E9]/30 hover:shadow-sm transition-all">
+                    <div className="w-9 h-9 rounded-xl bg-[#0EA5E9]/[0.08] flex items-center justify-center mb-3">
+                      <Icon size={16} className="text-[#0EA5E9]" />
+                    </div>
+                    <h3 className="text-sm font-black text-zinc-900 mb-1.5 leading-snug">{f.title}</h3>
+                    <p className="text-xs text-zinc-400 leading-relaxed">{f.desc}</p>
                   </div>
-                ))}
-              </div>
+                )
+              })}
             </div>
           </div>
         </div>
       </section>
 
-      {/* ─── DIFERENCIAIS ─── */}
-      <section className="py-24 border-t border-zinc-100">
+      {/* ══════════════════════════════════════════════════════════════
+          DATACENTERS
+      ══════════════════════════════════════════════════════════════ */}
+      <section className="py-20 border-t border-zinc-100 bg-zinc-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
-            <p className="text-[#0284C7] text-sm font-semibold uppercase tracking-widest mb-3">
-              Por que a Hosteg?
-            </p>
-            <h2 className="text-4xl sm:text-5xl font-black text-zinc-900 mb-4">
-              Infraestrutura que faz diferença
-            </h2>
-            <p className="text-zinc-500 text-lg max-w-xl mx-auto">
-              Cada detalhe foi pensado para garantir a melhor experiência.
-            </p>
+          <div className="text-center mb-12">
+            <p className="text-[#0EA5E9] text-xs font-black uppercase tracking-widest mb-3">Infraestrutura</p>
+            <h2 className="text-3xl sm:text-4xl font-black text-zinc-900 mb-3">Dois datacenters, zero compromisso</h2>
+            <p className="text-zinc-500 max-w-md mx-auto">Escolha a região mais próxima do seu público no momento do pedido.</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {diferenciais.map((item) => {
-              const Icon = item.icon
-              return (
-                <div
-                  key={item.title}
-                  className="p-6 rounded-2xl border border-zinc-200 bg-white hover:border-zinc-300 hover:shadow-sm transition-all duration-200"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-[#0EA5E9]/8 flex items-center justify-center mb-4">
-                    <Icon size={18} className="text-[#0EA5E9]" />
-                  </div>
-                  <h3 className="text-base font-semibold text-zinc-900 mb-2">{item.title}</h3>
-                  <p className="text-sm text-zinc-500 leading-relaxed">{item.desc}</p>
-                </div>
-              )
-            })}
-          </div>
-        </div>
-      </section>
 
-      {/* ─── DATACENTER HIGHLIGHT ─── */}
-      <section className="py-16 border-t border-zinc-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-5">
             {[
               {
                 flag: '🇧🇷',
-                city: 'São Paulo',
-                dc: 'Ascenty SP4',
-                latency: '< 1ms para SP',
-                tags: ['Anti-DDoS', 'Redundante', 'NVMe'],
-                desc: 'Datacenter Tier III certificado em São Paulo, com conectividade premium à IX.br.',
+                city: 'São Paulo — Ascenty SP4',
+                tier: 'Tier III',
+                latency: '< 1 ms',
+                color: '#10B981',
+                specs: ['Conectividade IX.br', 'Anti-DDoS camadas 3/4/7', 'NVMe Gen4', 'Redundância N+1'],
+                desc: 'Datacenter Tier III certificado no coração de São Paulo. Peering direto com os maiores provedores do Brasil.',
               },
               {
                 flag: '🇨🇦',
-                city: 'Canadá',
-                dc: 'Montreal',
-                latency: '< 5ms para NA',
-                tags: ['Anti-DDoS', 'Redundante', '10 Gbps'],
-                desc: 'Localização estratégica na América do Norte para aplicações globais.',
+                city: 'Canadá — Montreal',
+                tier: 'Tier III',
+                latency: '< 5 ms NA',
+                color: '#0EA5E9',
+                specs: ['Conectividade Cogent/GTT', 'Anti-DDoS incluso', 'NVMe Gen4', 'Redundância N+1'],
+                desc: 'Localização estratégica na América do Norte para aplicações globais e audiências internacionais.',
               },
-            ].map((loc) => (
-              <div
-                key={loc.city}
-                className="p-8 rounded-2xl border border-zinc-200 bg-white hover:border-zinc-300 hover:shadow-sm transition-all"
-              >
-                <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <span className="text-3xl mb-2 block">{loc.flag}</span>
-                    <h3 className="text-xl font-bold text-zinc-900">{loc.city}</h3>
-                    <p className="text-sm text-zinc-400">{loc.dc}</p>
-                  </div>
-                  <span className="text-xs px-2.5 py-1 rounded-full border border-emerald-200 bg-emerald-50 text-emerald-700 font-medium">
-                    {loc.latency}
-                  </span>
-                </div>
-                <p className="text-sm text-zinc-500 leading-relaxed mb-4">{loc.desc}</p>
-                <div className="flex flex-wrap gap-2">
-                  {loc.tags.map((tag) => (
-                    <span key={tag} className="text-xs px-2.5 py-1 rounded-md border border-zinc-200 bg-zinc-50 text-zinc-500">
-                      {tag}
+            ].map((dc) => (
+              <div key={dc.city} className="rounded-2xl border border-zinc-200 bg-white overflow-hidden">
+                <div className="p-7">
+                  <div className="flex items-start justify-between mb-5">
+                    <div>
+                      <span className="text-4xl block mb-3">{dc.flag}</span>
+                      <h3 className="text-lg font-black text-zinc-900">{dc.city}</h3>
+                      <p className="text-xs text-zinc-400 mt-0.5 font-medium">{dc.tier} · Certificado</p>
+                    </div>
+                    <span
+                      className="text-xs font-black px-3 py-1.5 rounded-full border"
+                      style={{ color: dc.color, borderColor: dc.color + '40', background: dc.color + '12' }}
+                    >
+                      Latência {dc.latency}
                     </span>
-                  ))}
+                  </div>
+                  <p className="text-sm text-zinc-500 leading-relaxed mb-5">{dc.desc}</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {dc.specs.map((s) => (
+                      <div key={s} className="flex items-center gap-2 text-xs text-zinc-600 font-medium">
+                        <Check size={11} className="text-[#0EA5E9] flex-shrink-0" />
+                        {s}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="border-t border-zinc-100 px-7 py-4 bg-zinc-50">
+                  <Link href="/datacenter" className="text-xs font-bold text-[#0EA5E9] hover:text-[#0284C7] flex items-center gap-1 transition-colors">
+                    Ver certificações e specs completos <ChevronRight size={12} />
+                  </Link>
                 </div>
               </div>
             ))}
@@ -381,41 +541,72 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── CTA FINAL ─── */}
+      {/* ══════════════════════════════════════════════════════════════
+          DEPOIMENTOS
+      ══════════════════════════════════════════════════════════════ */}
       <section className="py-24 border-t border-zinc-100">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="rounded-3xl bg-zinc-900 p-12 sm:p-16 overflow-hidden relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <p className="text-[#0EA5E9] text-xs font-black uppercase tracking-widest mb-3">Depoimentos</p>
+            <h2 className="text-3xl sm:text-4xl font-black text-zinc-900">Quem usa, recomenda</h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-5">
+            {testimonials.map((t) => (
+              <div key={t.name} className="p-7 rounded-2xl border border-zinc-200 bg-white hover:shadow-md hover:border-zinc-300 transition-all">
+                <div className="flex gap-0.5 mb-4">
+                  {Array.from({ length: t.stars }).map((_, i) => (
+                    <Star key={i} size={13} className="text-amber-400 fill-amber-400" />
+                  ))}
+                </div>
+                <p className="text-sm text-zinc-600 leading-relaxed mb-5">&ldquo;{t.text}&rdquo;</p>
+                <div>
+                  <div className="text-sm font-black text-zinc-900">{t.name}</div>
+                  <div className="text-xs text-zinc-400 mt-0.5">{t.role}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════════════
+          CTA FINAL — escuro
+      ══════════════════════════════════════════════════════════════ */}
+      <section className="py-4 px-4 sm:px-6 lg:px-8 pb-24">
+        <div className="max-w-5xl mx-auto">
+          <div
+            className="relative rounded-3xl overflow-hidden py-20 px-8 sm:px-16 text-center"
+            style={{ background: 'linear-gradient(135deg, #020817 0%, #0c1929 100%)' }}
+          >
+            {/* Glow */}
             <div
               className="absolute inset-0 pointer-events-none"
-              style={{ background: 'radial-gradient(ellipse at center top, rgba(14,165,233,0.15) 0%, transparent 60%)' }}
+              style={{ background: 'radial-gradient(ellipse 70% 50% at 50% 0%, rgba(14,165,233,0.2) 0%, transparent 70%)' }}
             />
             <div className="relative">
-              <div className="flex items-center justify-center gap-2 mb-6">
-                <CheckCircle2 size={14} className="text-[#0EA5E9]" />
-                <CheckCircle2 size={14} className="text-[#0EA5E9]" />
-                <CheckCircle2 size={14} className="text-[#0EA5E9]" />
+              <div className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-[#0EA5E9]/30 bg-[#0EA5E9]/10 text-[#38BDF8] text-xs font-bold uppercase tracking-widest">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#0EA5E9] animate-pulse" />
+                Ativo agora · +5.000 servidores em produção
               </div>
               <h2 className="text-4xl sm:text-5xl font-black text-white mb-4 leading-tight">
-                Pronto para começar?
+                Comece em 60 segundos.
               </h2>
-              <p className="text-xl text-zinc-300 mb-3">
-                Vem ser feliz na Hosteg!
-              </p>
-              <p className="text-zinc-400 mb-10 max-w-lg mx-auto">
-                Ative seu servidor em minutos. Sem contrato de fidelidade. Cancele quando quiser.
+              <p className="text-xl text-zinc-400 mb-10 max-w-lg mx-auto">
+                Sem contrato de fidelidade. Sem taxa de setup. Cancele quando quiser.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Link
                   href="/cloud-vps"
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-[#0EA5E9] hover:bg-[#0284C7] text-white font-bold rounded-xl text-base transition-all shadow-xl shadow-[#0EA5E9]/25"
+                  className="inline-flex items-center gap-2.5 px-9 py-4 bg-[#0EA5E9] hover:bg-[#0284C7] text-white font-black rounded-xl text-base transition-all shadow-2xl shadow-[#0EA5E9]/30"
                 >
-                  Começar agora <ArrowRight size={16} />
+                  Escolher meu plano <ArrowRight size={17} />
                 </Link>
                 <Link
                   href="/contato"
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-white/8 hover:bg-white/12 text-white font-semibold rounded-xl text-base border border-white/15 transition-all"
+                  className="inline-flex items-center gap-2.5 px-9 py-4 bg-white/[0.06] hover:bg-white/[0.10] text-white font-semibold rounded-xl text-base border border-white/[0.12] hover:border-white/20 transition-all"
                 >
-                  Falar com suporte
+                  Falar com especialista
                 </Link>
               </div>
             </div>
