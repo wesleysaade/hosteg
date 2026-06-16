@@ -10,7 +10,7 @@ import Link from 'next/link'
 // TipTap editor — carregado apenas no client (evita SSR)
 const RichEditor  = dynamic(() => import('./RichEditor'),    { ssr: false })
 
-interface Category { id: string; name: string; slug: string }
+interface Category { id: string; name: string; slug: string; parent_id?: string | null }
 interface Article {
   id: string
   title: string
@@ -228,16 +228,37 @@ export default function ArticleEditor({ article, categories, defaultCategoryId }
           {/* Categoria */}
           <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-4">
             <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-3">Categoria</h3>
-            <select
-              value={categoryId}
-              onChange={e => setCategoryId(e.target.value)}
-              className="w-full px-3 py-2.5 bg-zinc-800 border border-zinc-700 rounded-xl text-white text-sm focus:outline-none focus:border-[#0EA5E9]/50 transition-colors"
-            >
-              <option value="">Sem categoria</option>
-              {categories.map(c => (
-                <option key={c.id} value={c.id}>{c.name}</option>
-              ))}
-            </select>
+            {(() => {
+              const roots = categories.filter(c => !c.parent_id)
+              const childMap: Record<string, Category[]> = {}
+              for (const c of categories.filter(c => c.parent_id)) {
+                if (!childMap[c.parent_id!]) childMap[c.parent_id!] = []
+                childMap[c.parent_id!].push(c)
+              }
+              return (
+                <select
+                  value={categoryId}
+                  onChange={e => setCategoryId(e.target.value)}
+                  className="w-full px-3 py-2.5 bg-zinc-800 border border-zinc-700 rounded-xl text-white text-sm focus:outline-none focus:border-[#0EA5E9]/50 transition-colors"
+                >
+                  <option value="">Sem categoria</option>
+                  {roots.map(root => {
+                    const subs = childMap[root.id] ?? []
+                    if (subs.length === 0) {
+                      return <option key={root.id} value={root.id}>{root.name}</option>
+                    }
+                    return (
+                      <optgroup key={root.id} label={root.name}>
+                        <option value={root.id}>{root.name} (geral)</option>
+                        {subs.map(sub => (
+                          <option key={sub.id} value={sub.id}>↳ {sub.name}</option>
+                        ))}
+                      </optgroup>
+                    )
+                  })}
+                </select>
+              )
+            })()}
           </div>
 
           {/* Slug */}

@@ -66,7 +66,7 @@ export default async function DocsSlugPage({ params }: Props) {
   // ── 1. Check if it's a category ────────────────────────────────────────────
   const { data: cat } = await supabase
     .from('doc_categories')
-    .select('id, name, slug, icon, color, description')
+    .select('id, name, slug, icon, color, description, parent_id')
     .eq('slug', slug)
     .single()
 
@@ -95,29 +95,53 @@ export default async function DocsSlugPage({ params }: Props) {
 async function CategoryPage({ cat }: { cat: any }) {
   const supabase = createClient()
 
-  const { data: articles } = await supabase
-    .from('doc_articles')
-    .select('id, title, slug, excerpt, views, updated_at')
-    .eq('category_id', cat.id)
-    .eq('published', true)
-    .order('position')
+  // If this is a root category, also fetch subcategories + their articles
+  const isRoot = !cat.parent_id
 
-  // Views 24h per article
-  const articleIds = (articles ?? []).map((a: any) => a.id)
-  const oneDayAgo  = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+  const [
+    { data: directArticles },
+    { data: subcategories },
+  ] = await Promise.all([
+    supabase
+      .from('doc_articles')
+      .select('id, title, slug, excerpt, views, updated_at')
+      .eq('category_id', cat.id)
+      .eq('published', true)
+      .order('position'),
+    isRoot
+      ? supabase
+          .from('doc_categories')
+          .select(`id, name, slug, icon, color, description,
+            doc_articles(id, title, slug, excerpt, views, updated_at, position, published)`)
+          .eq('parent_id', cat.id)
+          .order('position')
+      : Promise.resolve({ data: [] }),
+  ])
+
+  const articles    = directArticles ?? []
+  const subs        = (subcategories ?? []) as any[]
+
+  // Collect all article IDs for 24h view tracking
+  const subArticles = subs.flatMap((s: any) =>
+    (s.doc_articles ?? []).filter((a: any) => a.published)
+  )
+  const allIds  = [...articles, ...subArticles].map((a: any) => a.id)
+  const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
   const views24hMap: Record<string, number> = {}
 
-  if (articleIds.length > 0) {
+  if (allIds.length > 0) {
     const { data: recentViews } = await supabase
       .from('doc_views')
       .select('article_id')
-      .in('article_id', articleIds)
+      .in('article_id', allIds)
       .gte('viewed_at', oneDayAgo)
 
     for (const row of recentViews ?? []) {
       views24hMap[row.article_id] = (views24hMap[row.article_id] ?? 0) + 1
     }
   }
+
+  const totalCount = articles.length + subArticles.length
 
   return (
     <div className="min-h-screen bg-white text-zinc-900">
@@ -144,61 +168,110 @@ async function CategoryPage({ cat }: { cat: any }) {
               {cat.description && <p className="text-zinc-500 text-sm mt-0.5">{cat.description}</p>}
             </div>
           </div>
-          <p className="text-zinc-400 text-sm">{articles?.length ?? 0} artigos nesta categoria</p>
+          <p className="text-zinc-400 text-sm">{totalCount} artigos nesta categoria</p>
         </div>
       </section>
 
       <section className="pb-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          {!articles || articles.length === 0 ? (
+
+          {/* Subcategories — only for root categories that have them */}
+          {subs.length > 0 && (
+            <div className="mb-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                {subs.map((sub: any) => {
+                  const pubArticles = (sub.doc_articles ?? []).filter((a: any) => a.published)
+                  return (
+                    <Link
+                      key={sub.id}
+                      href={`/docs/${sub.slug}`}
+                      className="flex items-center gap-4 p-4 rounded-2xl border border-zinc-200 bg-zinc-50 hover:border-zinc-300 hover:shadow-sm transition-all group"
+                    >
+                      <div
+                        className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                        style={{ background: `${sub.color}18` }}
+                      >
+                        <BookOpen size={16} weight="fill" style={{ color: sub.color }} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold text-zinc-900 group-hover:text-[#0EA5E9] transition-colors">
+                          {sub.name}
+                        </p>
+                        {sub.description && (
+                          <p className="text-xs text-zinc-500 truncate mt-0.5">{sub.description}</p>
+                        )}
+                        <p className="text-xs text-zinc-400 mt-0.5">{pubArticles.length} artigos</p>
+                      </div>
+                      <ArrowRight size={14} className="text-zinc-300 group-hover:text-[#0EA5E9] flex-shrink-0 transition-colors" />
+                    </Link>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Direct articles in this category */}
+          {articles.length === 0 && subs.length === 0 ? (
             <div className="text-center py-20 text-zinc-400">
               <BookOpen size={40} className="mx-auto mb-4 opacity-30" />
               <p>Nenhum artigo publicado ainda nesta categoria.</p>
             </div>
-          ) : (
-            <div className="divide-y divide-zinc-100">
-              {articles.map((art: any) => (
-                <Link
-                  key={art.id}
-                  href={`/docs/${art.slug}`}
-                  className="flex items-start justify-between py-5 group hover:bg-zinc-50 -mx-4 px-4 rounded-xl transition-colors"
-                >
-                  <div className="flex-1 min-w-0 pr-6">
-                    <h2 className="text-base font-semibold text-zinc-900 group-hover:text-[#0EA5E9] transition-colors mb-1">
-                      {art.title}
-                    </h2>
-                    {art.excerpt && (
-                      <p className="text-sm text-zinc-500 line-clamp-2 leading-relaxed">{art.excerpt}</p>
-                    )}
-                    <div className="flex items-center gap-3 mt-2">
-                      {(art.views ?? 0) > 0 && (
-                        <span className="text-xs text-zinc-400">
-                          {art.views.toLocaleString('pt-BR')} visualizações
-                        </span>
-                      )}
-                      {(views24hMap[art.id] ?? 0) > 0 && (
-                        <span className="inline-flex items-center gap-1 text-xs text-emerald-600 font-medium">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                          {views24hMap[art.id]} nas últimas 24h
-                        </span>
-                      )}
-                      {art.updated_at && (
-                        <span className="text-xs text-zinc-300">
-                          Atualizado em {new Date(art.updated_at).toLocaleDateString('pt-BR')}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                  <ArrowRight size={16} className="text-zinc-300 group-hover:text-[#0EA5E9] flex-shrink-0 mt-1 transition-colors" />
-                </Link>
-              ))}
-            </div>
+          ) : articles.length > 0 && (
+            <>
+              {subs.length > 0 && (
+                <h2 className="text-sm font-bold text-zinc-500 uppercase tracking-widest mb-4">
+                  Artigos gerais
+                </h2>
+              )}
+              <div className="divide-y divide-zinc-100">
+                {articles.map((art: any) => (
+                  <ArticleRow key={art.id} art={art} views24h={views24hMap[art.id] ?? 0} />
+                ))}
+              </div>
+            </>
           )}
         </div>
       </section>
 
       <Footer />
     </div>
+  )
+}
+
+function ArticleRow({ art, views24h }: { art: any; views24h: number }) {
+  return (
+    <Link
+      href={`/docs/${art.slug}`}
+      className="flex items-start justify-between py-5 group hover:bg-zinc-50 -mx-4 px-4 rounded-xl transition-colors"
+    >
+      <div className="flex-1 min-w-0 pr-6">
+        <h2 className="text-base font-semibold text-zinc-900 group-hover:text-[#0EA5E9] transition-colors mb-1">
+          {art.title}
+        </h2>
+        {art.excerpt && (
+          <p className="text-sm text-zinc-500 line-clamp-2 leading-relaxed">{art.excerpt}</p>
+        )}
+        <div className="flex items-center gap-3 mt-2">
+          {(art.views ?? 0) > 0 && (
+            <span className="text-xs text-zinc-400">
+              {(art.views as number).toLocaleString('pt-BR')} visualizações
+            </span>
+          )}
+          {views24h > 0 && (
+            <span className="inline-flex items-center gap-1 text-xs text-emerald-600 font-medium">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              {views24h} nas últimas 24h
+            </span>
+          )}
+          {art.updated_at && (
+            <span className="text-xs text-zinc-300">
+              Atualizado em {new Date(art.updated_at).toLocaleDateString('pt-BR')}
+            </span>
+          )}
+        </div>
+      </div>
+      <ArrowRight size={16} className="text-zinc-300 group-hover:text-[#0EA5E9] flex-shrink-0 mt-1 transition-colors" />
+    </Link>
   )
 }
 

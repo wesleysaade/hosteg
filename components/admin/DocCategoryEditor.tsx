@@ -6,10 +6,11 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { ArrowLeft, FloppyDisk, Trash } from '@phosphor-icons/react'
 
-// Ícones disponíveis no iconMap do /docs/page.tsx
 const ICON_OPTIONS = [
   'HardDrives', 'Globe', 'Envelope', 'Lock', 'Lightning',
   'HardDrive', 'Terminal', 'Stack', 'Browser', 'Server', 'Layers',
+  'Folder', 'FolderOpen', 'BookOpen', 'FileText', 'Code', 'Gear',
+  'Cloud', 'Database', 'Shield', 'Key', 'Monitor', 'Desktop',
 ]
 
 interface DocCategory {
@@ -20,9 +21,16 @@ interface DocCategory {
   color: string
   description: string
   position: number
+  parent_id?: string | null
 }
 
-interface Props { category?: DocCategory }
+interface Props {
+  category?: DocCategory
+  /** All top-level categories (for the parent selector — excludes self) */
+  allCategories?: DocCategory[]
+  /** Pre-select a parent when clicking "Adicionar subcategoria" */
+  defaultParentId?: string
+}
 
 function slugify(str: string) {
   return str
@@ -32,7 +40,7 @@ function slugify(str: string) {
     .replace(/^-|-$/g, '')
 }
 
-export default function DocCategoryEditor({ category }: Props) {
+export default function DocCategoryEditor({ category, allCategories = [], defaultParentId }: Props) {
   const router = useRouter()
   const [, startTransition] = useTransition()
   const isNew = !category?.id
@@ -43,10 +51,16 @@ export default function DocCategoryEditor({ category }: Props) {
   const [color,       setColor]       = useState(category?.color       ?? '#0EA5E9')
   const [description, setDescription] = useState(category?.description ?? '')
   const [position,    setPosition]    = useState(category?.position    ?? 0)
+  const [parentId,    setParentId]    = useState<string>(category?.parent_id ?? defaultParentId ?? '')
 
   const [saving, setSaving] = useState(false)
   const [saved,  setSaved]  = useState(false)
   const [error,  setError]  = useState('')
+
+  // Candidate parents: top-level categories that are not the current category
+  const parentOptions = allCategories.filter(
+    (c) => !c.parent_id && c.id !== category?.id
+  )
 
   function handleNameChange(val: string) {
     setName(val)
@@ -58,13 +72,14 @@ export default function DocCategoryEditor({ category }: Props) {
     if (!slug.trim()) { setError('Slug é obrigatório'); return }
     setSaving(true); setError(''); setSaved(false)
 
-    const payload = {
+    const payload: Record<string, unknown> = {
       name: name.trim(),
       slug: slug.trim(),
       icon: icon.trim(),
       color: color.trim(),
       description: description.trim(),
       position,
+      parent_id: parentId || null,
     }
 
     const supabase = createClient()
@@ -86,14 +101,14 @@ export default function DocCategoryEditor({ category }: Props) {
 
   async function handleDelete() {
     if (!category?.id) return
-    if (!confirm(`Excluir categoria "${name}"?\n\nTodos os artigos desta categoria serão desvinculados.`)) return
+    if (!confirm(`Excluir categoria "${name}"?\n\nTodos os artigos e subcategorias serão desvinculados.`)) return
     const supabase = createClient()
     await supabase.from('doc_categories').delete().eq('id', category.id)
     router.push('/admin/docs/categories')
   }
 
-  const inputClass  = 'w-full px-3 py-2.5 bg-zinc-800 border border-zinc-700 rounded-xl text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-[#0EA5E9]/50 transition-colors'
-  const labelClass  = 'block text-xs font-medium text-zinc-400 mb-1.5'
+  const inputClass = 'w-full px-3 py-2.5 bg-zinc-800 border border-zinc-700 rounded-xl text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-[#0EA5E9]/50 transition-colors'
+  const labelClass = 'block text-xs font-medium text-zinc-400 mb-1.5'
 
   return (
     <div className="max-w-2xl">
@@ -130,17 +145,40 @@ export default function DocCategoryEditor({ category }: Props) {
 
       <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5 space-y-5">
 
+        {/* Categoria pai */}
+        <div>
+          <label className={labelClass}>
+            Categoria pai{' '}
+            <span className="text-zinc-600 font-normal">(deixe vazio para categoria raiz)</span>
+          </label>
+          <select
+            value={parentId}
+            onChange={e => setParentId(e.target.value)}
+            className={inputClass}
+          >
+            <option value="">— Nenhuma (categoria raiz) —</option>
+            {parentOptions.map(c => (
+              <option key={c.id} value={c.id}>{c.name}</option>
+            ))}
+          </select>
+          {parentId && (
+            <p className="mt-1.5 text-[11px] text-[#0EA5E9]">
+              Esta será uma subcategoria de "{parentOptions.find(c => c.id === parentId)?.name}"
+            </p>
+          )}
+        </div>
+
         {/* Nome + Slug */}
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className={labelClass}>Nome da categoria *</label>
             <input value={name} onChange={e => handleNameChange(e.target.value)}
-              className={inputClass} placeholder="ex: Cloud VPS" />
+              className={inputClass} placeholder="ex: cPanel" />
           </div>
           <div>
             <label className={labelClass}>Slug (URL) *</label>
             <input value={slug} onChange={e => setSlug(e.target.value)}
-              className={inputClass} placeholder="ex: cloud-vps" />
+              className={inputClass} placeholder="ex: cpanel" />
           </div>
         </div>
 
@@ -151,7 +189,6 @@ export default function DocCategoryEditor({ category }: Props) {
             <select value={icon} onChange={e => setIcon(e.target.value)} className={inputClass}>
               {ICON_OPTIONS.map(i => <option key={i} value={i}>{i}</option>)}
             </select>
-            <p className="mt-1.5 text-[11px] text-zinc-600">Nome do componente Phosphor usado no /docs</p>
           </div>
           <div>
             <label className={labelClass}>Cor (hex)</label>
@@ -171,6 +208,11 @@ export default function DocCategoryEditor({ category }: Props) {
             <span className="text-xs font-black" style={{ color }}>{icon.slice(0, 2)}</span>
           </div>
           <div>
+            {parentId && (
+              <p className="text-[10px] text-zinc-500 mb-0.5">
+                {parentOptions.find(c => c.id === parentId)?.name} /
+              </p>
+            )}
             <p className="text-sm font-semibold text-white">{name || 'Nome da categoria'}</p>
             <p className="text-xs text-zinc-500">/{slug || 'slug'}</p>
           </div>
@@ -181,7 +223,7 @@ export default function DocCategoryEditor({ category }: Props) {
           <label className={labelClass}>Descrição</label>
           <textarea value={description} onChange={e => setDescription(e.target.value)}
             rows={2} className={inputClass}
-            placeholder="ex: Criação, configuração e gerenciamento de VPS" />
+            placeholder="ex: Guias e tutoriais do cPanel" />
         </div>
 
         {/* Posição */}

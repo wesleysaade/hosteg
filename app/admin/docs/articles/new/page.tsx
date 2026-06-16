@@ -10,7 +10,7 @@ export default async function NewArticlePage({ searchParams }: Props) {
 
   const { data: categories } = await supabase
     .from('doc_categories')
-    .select('id, name, slug')
+    .select('id, name, slug, parent_id')
     .order('position')
 
   return (

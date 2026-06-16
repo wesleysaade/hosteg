@@ -17,7 +17,7 @@ export default async function EditArticlePage({ params }: Props) {
       .single(),
     supabase
       .from('doc_categories')
-      .select('id, name, slug')
+      .select('id, name, slug, parent_id')
       .order('position'),
   ])
 
