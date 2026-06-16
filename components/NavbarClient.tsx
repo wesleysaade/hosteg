@@ -24,7 +24,7 @@ const phosphorIconMap: Record<string, React.ComponentType<any>> = {
   Cloud, Desktop, Rocket, Star, Fire, Wrench, TerminalWindow,
   ChartBar, Graph, Envelope, Phone, ShoppingCart, CreditCard, Tag, Archive,
   Briefcase, Bank, Book, Folder, File, Warning, CheckCircle, Circle,
-  ArrowRight, House, Bell, Key, Network, ComputerTower as Server,
+  ArrowRight, House, Bell, Key, Network, Server: ComputerTower,
 }
 function getIcon(name: string): React.ComponentType<any> {
   return phosphorIconMap[name] ?? Globe
