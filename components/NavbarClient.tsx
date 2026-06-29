@@ -130,7 +130,7 @@ function buildMenus(navItems: NavMenuItem[]) {
 
 // ─────────────────────────────────────────────────────────────────────────────
 
-type MenuName = 'produtos' | 'cloud-apps' | 'institucional'
+type MenuName = 'produtos' | 'cloud-apps' | 'institucional' | 'cliente'
 
 export default function NavbarClient({ navItems = [] }: { navItems?: NavMenuItem[] }) {
   const [openMenu, setOpenMenu]                       = useState<MenuName | null>(null)
@@ -146,9 +146,11 @@ export default function NavbarClient({ navItems = [] }: { navItems?: NavMenuItem
 
   // Derived CTA data
   const supportHref      = ctaItems?.find(i => i.label.toLowerCase().includes('suporte'))?.href ?? '/contato'
-  const loginHref        = ctaItems?.find(i => i.label.toLowerCase().includes('login'))?.href ?? 'https://painelcliente.com.br'
-  const clientAreaHref   = ctaItems?.find(i => i.label.toLowerCase().includes('área') || i.label.toLowerCase().includes('cliente'))?.href ?? 'https://painelcliente.com.br'
   const clientAreaLabel  = ctaItems?.find(i => i.label.toLowerCase().includes('área') || i.label.toLowerCase().includes('cliente'))?.label ?? 'Área do Cliente'
+
+  // Áreas do cliente — migração em 29/06/2026
+  const newAreaHref = 'https://painel.hosteg.com.br'
+  const oldAreaHref = 'https://painelcliente.com.br'
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10)
@@ -321,15 +323,58 @@ export default function NavbarClient({ navItems = [] }: { navItems?: NavMenuItem
               <Link href={supportHref} className="px-3 py-2 text-[15px] font-medium text-zinc-500 hover:text-zinc-900 transition-colors">
                 Suporte
               </Link>
-              <a href={loginHref} target="_blank" rel="noopener noreferrer"
-                className="px-3 py-2 text-[15px] font-medium text-zinc-500 hover:text-zinc-900 transition-colors">
-                Login
-              </a>
-              <a href={clientAreaHref} target="_blank" rel="noopener noreferrer"
-                className="ml-2 group/cta inline-flex items-center gap-1.5 pl-4 pr-3.5 py-2.5 text-sm font-semibold text-white rounded-full bg-zinc-900 hover:bg-[#0EA5E9] transition-all duration-200 shadow-sm">
-                {clientAreaLabel}
-                <ArrowRight size={15} weight="bold" className="transition-transform duration-200 group-hover/cta:translate-x-0.5" />
-              </a>
+
+              <div className="relative ml-2">
+                <button
+                  onClick={() => toggle('cliente')}
+                  className="inline-flex items-center gap-1.5 pl-4 pr-3 py-2.5 text-sm font-semibold text-white rounded-full bg-zinc-900 hover:bg-[#0EA5E9] transition-all duration-200 shadow-sm"
+                >
+                  {clientAreaLabel}
+                  <CaretDown size={13} weight="bold" className={`transition-transform duration-200 ${openMenu === 'cliente' ? 'rotate-180' : ''}`} />
+                </button>
+                {openMenu === 'cliente' && (
+                  <div className="absolute top-full right-0 mt-2.5 w-[300px] bg-white border border-zinc-200/80 rounded-[20px] shadow-[0_24px_70px_-20px_rgba(15,23,42,0.28)] ring-1 ring-black/[0.02] overflow-hidden z-50">
+                    <div className="px-4 pt-4 pb-1">
+                      <p className="text-[11px] font-bold text-[#0EA5E9] uppercase tracking-[0.13em]">Acessar painel</p>
+                    </div>
+                    <div className="p-2">
+                      <a
+                        href={newAreaHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-start gap-3 p-3 rounded-xl hover:bg-[#0EA5E9]/5 transition-colors group"
+                        onClick={() => setOpenMenu(null)}
+                      >
+                        <div className="w-9 h-9 rounded-xl bg-[#0EA5E9]/12 flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <Rocket size={17} weight="fill" className="text-[#0EA5E9]" />
+                        </div>
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-[15px] font-semibold text-zinc-900">Nova Área</span>
+                            <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-[#0EA5E9]/10 text-[#0284C7] border border-[#0EA5E9]/20 uppercase tracking-wide">Atual</span>
+                          </div>
+                          <p className="text-[13px] text-zinc-500 mt-0.5 leading-snug">painel.hosteg.com.br</p>
+                        </div>
+                      </a>
+                      <a
+                        href={oldAreaHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-start gap-3 p-3 rounded-xl hover:bg-zinc-50 transition-colors group"
+                        onClick={() => setOpenMenu(null)}
+                      >
+                        <div className="w-9 h-9 rounded-xl bg-zinc-100 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-zinc-200/70 transition-colors">
+                          <Archive size={17} weight="fill" className="text-zinc-400 group-hover:text-zinc-600 transition-colors" />
+                        </div>
+                        <div className="min-w-0">
+                          <span className="text-[15px] font-semibold text-zinc-800">Área Antiga</span>
+                          <p className="text-[13px] text-zinc-500 mt-0.5 leading-snug">Contas criadas antes de 29/06/2026</p>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Mobile hamburger */}
@@ -467,13 +512,15 @@ export default function NavbarClient({ navItems = [] }: { navItems?: NavMenuItem
                 className="block text-center px-4 py-3 text-base font-semibold text-zinc-700 border border-zinc-200 rounded-xl hover:bg-zinc-50 transition-colors">
                 Suporte
               </Link>
-              <a href={loginHref} target="_blank" rel="noopener noreferrer"
-                className="block text-center px-4 py-3 text-base font-semibold text-zinc-700 border border-zinc-200 rounded-xl hover:bg-zinc-50 transition-colors">
-                Login
+              <p className="px-1 pt-1 text-[11px] font-bold text-[#0EA5E9] uppercase tracking-[0.13em]">Acessar painel</p>
+              <a href={newAreaHref} target="_blank" rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 px-4 py-3 text-base font-bold bg-[#0EA5E9] hover:bg-[#0284C7] text-white rounded-xl transition-colors">
+                <Rocket size={16} weight="fill" /> Nova Área
               </a>
-              <a href={clientAreaHref} target="_blank" rel="noopener noreferrer"
-                className="block text-center px-4 py-3 text-base font-bold bg-[#0EA5E9] hover:bg-[#0284C7] text-white rounded-xl transition-colors">
-                {clientAreaLabel}
+              <a href={oldAreaHref} target="_blank" rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 px-4 py-3 text-sm font-semibold text-zinc-700 border border-zinc-200 rounded-xl hover:bg-zinc-50 transition-colors">
+                <Archive size={15} weight="fill" className="text-zinc-400" /> Área Antiga
+                <span className="text-zinc-400 font-normal">· antes de 29/06/2026</span>
               </a>
             </div>
           </div>
