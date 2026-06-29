@@ -114,7 +114,11 @@ function buildMenus(navItems: NavMenuItem[]) {
   const cloudAppsBase = cloudAppsFromDb.length ? cloudAppsFromDb : defaultCloudAppsMenu
 
   // Cloud APPs deixou de ser menu de topo: agora é uma categoria dentro de "Produtos"
-  const cloudAppsItems = cloudAppsBase.flatMap(s => s.items)
+  const APPS_HIDE = new Set(['odoo', 'easypanel'])
+  const cloudAppsItems = cloudAppsBase
+    .flatMap(s => s.items)
+    .filter(it => !APPS_HIDE.has((it.title || '').trim().toLowerCase()))
+    .map(it => /^hot$/i.test((it.badge || '').trim()) ? { ...it, badge: 'Novo' } : it)
   const produtosMenu = cloudAppsItems.length
     ? [...produtosBase, { category: 'Cloud APPs', items: cloudAppsItems }]
     : produtosBase
@@ -180,6 +184,19 @@ export default function NavbarClient({ navItems = [] }: { navItems?: NavMenuItem
             <div className="space-y-px">
               {section.items.map((item) => {
                 const Icon = item.icon
+                // "Ver todos" → texto pequeno, sem ícone
+                if (/ver todos/i.test(item.title)) {
+                  return (
+                    <Link
+                      key={item.title}
+                      href={item.href}
+                      onClick={() => setOpenMenu(null)}
+                      className="block px-2.5 pt-2 text-xs font-semibold text-[#0284C7] hover:text-[#0EA5E9] transition-colors"
+                    >
+                      {item.title}
+                    </Link>
+                  )
+                }
                 return (
                   <Link
                     key={item.title}
