@@ -119,7 +119,7 @@ export default function PlanBillingSection({
       {/* ── Period selector tabs ──────────────────────────────────────────── */}
       {periods.length > 1 && (
         <div className="flex flex-col items-center mb-10 gap-4">
-          <div className="inline-flex bg-zinc-100 border border-zinc-200 rounded-2xl p-1.5 gap-1 flex-wrap justify-center">
+          <div className="inline-flex bg-zinc-100/80 rounded-full p-1 gap-0.5 flex-wrap justify-center">
             {periods.map(p => {
               const active = p.id === selectedId
               const pct = periodDiscounts[p.id] ?? 0
@@ -127,16 +127,16 @@ export default function PlanBillingSection({
                 <button
                   key={p.id}
                   onClick={() => setSelectedId(p.id)}
-                  className={`relative px-5 py-2.5 rounded-xl text-sm font-bold transition-all whitespace-nowrap ${
+                  className={`relative px-5 py-2 rounded-full text-sm font-semibold transition-all whitespace-nowrap ${
                     active
-                      ? 'bg-white text-zinc-900 shadow border border-zinc-200'
-                      : 'text-zinc-500 hover:text-zinc-700 hover:bg-white/60'
+                      ? 'bg-white text-zinc-900 shadow-sm ring-1 ring-zinc-200'
+                      : 'text-zinc-500 hover:text-zinc-900'
                   }`}
                 >
                   <span className="flex flex-col items-center leading-none gap-0.5">
                     <span>{p.label}</span>
                     {pct > 0 && (
-                      <span className={`text-[11px] font-black leading-none ${
+                      <span className={`text-[11px] font-bold leading-none ${
                         active ? 'text-emerald-600' : 'text-emerald-500'
                       }`}>
                         -{pct}%
@@ -150,19 +150,19 @@ export default function PlanBillingSection({
 
           {/* ── Savings callout ─────────────────────────────────────────── */}
           {calloutData && selectedId !== 'mensal' && (
-            <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-2xl px-5 py-2.5 text-sm">
-              <span className="text-emerald-600 font-black text-base">🎉</span>
+            <div className="inline-flex items-center gap-2.5 bg-emerald-50 border border-emerald-200/80 rounded-full px-5 py-2.5 text-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" />
               <span className="text-zinc-600">
                 Pague{' '}
-                <span className="font-black text-zinc-900">
+                <span className="font-bold text-zinc-900 tnum">
                   R$ {fmtBRL(calloutData.total)}
                 </span>{' '}
                 no {selectedPeriodCfg.label.toLowerCase()} e{' '}
-                <span className="font-black text-emerald-600">
+                <span className="font-bold text-emerald-600">
                   ganhe {calloutData.pct}% de desconto
                 </span>
                 {calloutData.save > 0 && (
-                  <span className="text-zinc-400 ml-1 text-xs font-normal">
+                  <span className="text-zinc-400 ml-1 text-xs font-normal tnum">
                     (economize R$ {fmtBRL(calloutData.save)})
                   </span>
                 )}
@@ -187,10 +187,10 @@ export default function PlanBillingSection({
           return (
             <div
               key={plan.name}
-              className={`relative rounded-2xl border flex flex-col transition-all duration-200 ${
+              className={`relative rounded-3xl border flex flex-col transition-all duration-300 ${
                 plan.popular
-                  ? 'border-[#0EA5E9]/50 bg-gradient-to-b from-[#0EA5E9]/8 to-[#0EA5E9]/3 shadow-xl shadow-[#0EA5E9]/15'
-                  : 'border-zinc-200 bg-zinc-50 hover:border-zinc-300 hover:shadow-lg hover:shadow-zinc-100'
+                  ? 'border-[#0EA5E9]/40 bg-white ring-1 ring-[#0EA5E9]/30 shadow-2xl shadow-[#0EA5E9]/15 lg:-translate-y-2'
+                  : 'border-zinc-200 bg-white hover:border-zinc-300 hover:shadow-xl hover:shadow-zinc-900/5'
               }`}
             >
               {plan.popular && (
@@ -213,18 +213,18 @@ export default function PlanBillingSection({
 
               {/* Name + pricing */}
               <div className="px-7 pb-0 mb-4">
-                <p className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-3">
+                <p className="font-display text-lg font-bold text-zinc-900 mb-3">
                   {plan.name}
                 </p>
 
-                <div className="flex items-baseline gap-1 mb-0.5">
-                  <span className="text-sm text-zinc-400">R$</span>
-                  <span className="text-4xl font-black text-zinc-900">{fmtBRL(monthlyEq)}</span>
-                  <span className="text-zinc-400 text-sm">/mês</span>
+                <div className="flex items-baseline gap-1.5 mb-0.5">
+                  <span className="text-sm font-semibold text-zinc-400">R$</span>
+                  <span className="font-display text-5xl font-bold text-zinc-900 tracking-[-0.04em] tnum">{fmtBRL(monthlyEq)}</span>
+                  <span className="text-zinc-400 text-sm font-medium">/mês</span>
                 </div>
 
                 {!isMonthly && (
-                  <p className="text-[11px] text-zinc-400 leading-relaxed mt-1">
+                  <p className="text-[11px] text-zinc-500 leading-relaxed mt-1 tnum">
                     {period.months}x de R$ {fmtBRL(monthlyEq)} · Total R$ {fmtBRL(total)}
                     {discountPct > 0 && (
                       <span className="text-emerald-500 font-bold"> · -{discountPct}%</span>
@@ -232,20 +232,20 @@ export default function PlanBillingSection({
                   </p>
                 )}
 
-                <p className="text-xs text-zinc-500 leading-relaxed mt-2">{plan.desc}</p>
+                <p className="text-sm text-zinc-500 leading-relaxed mt-2">{plan.desc}</p>
               </div>
 
               {/* Specs grid */}
               {plan.specs.length > 0 && (
                 <div className="px-7 grid grid-cols-2 gap-2 mb-5">
                   {plan.specs.map(s => (
-                    <div key={s.label} className={`rounded-lg p-2.5 text-center border ${
+                    <div key={s.label} className={`rounded-xl p-3 text-center border ${
                       plan.popular
-                        ? 'bg-[#0EA5E9]/10 border-[#0EA5E9]/20'
-                        : 'bg-white border-zinc-200'
+                        ? 'bg-[#0EA5E9]/[0.07] border-[#0EA5E9]/20'
+                        : 'bg-zinc-50 border-zinc-200'
                     }`}>
-                      <div className="text-xs font-bold text-zinc-900">{s.value}</div>
-                      <div className="text-[10px] text-zinc-500 mt-0.5 flex items-center justify-center gap-0.5">
+                      <div className="font-display text-sm font-bold text-zinc-900 tnum">{s.value}</div>
+                      <div className="text-[11px] text-zinc-500 mt-0.5 flex items-center justify-center gap-0.5">
                         {s.label}
                         {s.tip && <Tip text={s.tip} />}
                       </div>
@@ -272,10 +272,10 @@ export default function PlanBillingSection({
                       href={href}
                       target={external ? '_blank' : undefined}
                       rel={external ? 'noopener noreferrer' : undefined}
-                      className={`block text-center text-sm font-bold py-3 rounded-xl transition-all ${
+                      className={`block text-center text-sm font-bold py-3.5 rounded-xl transition-all ${
                         plan.popular
                           ? 'bg-[#0EA5E9] hover:bg-[#0284C7] text-white shadow-lg shadow-[#0EA5E9]/30'
-                          : 'bg-white hover:bg-zinc-100 text-zinc-900 border border-zinc-200'
+                          : 'bg-zinc-900 hover:bg-[#0EA5E9] text-white'
                       }`}
                     >
                       {ctaLabel}

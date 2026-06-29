@@ -34,7 +34,8 @@ export default async function Footer() {
 
   const cnpj        = settings.company_cnpj       || 'XX.XXX.XXX/0001-XX'
   const tagline     = settings.footer_tagline      || 'Infraestrutura cloud de alta performance no Brasil, Canadá e EUA.'
-  const datacenters = settings.footer_datacenters  || '🇧🇷 São Paulo · 🇨🇦 Toronto · 🇺🇸 Washington'
+  // 3 datacenters fixos (não usa site_settings para garantir o DC dos EUA)
+  const datacenters = '🇧🇷 São Paulo · 🇨🇦 Toronto · 🇺🇸 Washington'
   const clientUrl   = settings.area_cliente_url    || 'https://painelcliente.com.br'
   const ticketUrl   = settings.ticket_url          || 'https://painelcliente.com.br/supporttickets.php'
   const termsUrl    = settings.terms_url           || '/contratos'
