@@ -18,8 +18,15 @@ import {
   Share2,
   ChevronRight,
 } from 'lucide-react'
+import { fetchBillingPlans } from '@/lib/utils/plans'
+import type { BillingPlan } from '@/components/PlanBillingSection'
 
 export const dynamic = 'force-dynamic'
+
+/* Lê o valor de uma spec do plano pelo label (case-insensitive) */
+function spec(plan: BillingPlan, label: string): string {
+  return plan.specs?.find((s) => s.label.toLowerCase() === label.toLowerCase())?.value ?? '—'
+}
 
 /* ── Dados estáticos ─────────────────────────────────────────────────────── */
 
@@ -113,13 +120,6 @@ const products = [
   },
 ]
 
-const vpsPlans = [
-  { name: 'Starter', ram: '2 GB', cpu: '2 vCPU', nvme: '40 GB', traffic: '2 TB', price: 'R$ 39', popular: false },
-  { name: 'Basic',   ram: '4 GB', cpu: '2 vCPU', nvme: '80 GB', traffic: '4 TB', price: 'R$ 69', popular: false },
-  { name: 'Standard',ram: '8 GB', cpu: '4 vCPU', nvme: '160 GB',traffic: '6 TB', price: 'R$ 119',popular: true  },
-  { name: 'Advanced',ram: '16 GB',cpu: '6 vCPU', nvme: '320 GB',traffic: '8 TB', price: 'R$ 219',popular: false },
-]
-
 const features = [
   {
     icon: Zap,
@@ -177,6 +177,16 @@ const testimonials = [
 /* ── Componente ─────────────────────────────────────────────────────────── */
 
 export default async function HomePage() {
+  // Planos reais do Cloud VPS (mesma fonte da página /cloud-vps)
+  const { plans: vpsPlans } = await fetchBillingPlans('cloud-vps')
+
+  // 4 planos em destaque, garantindo incluir o marcado como "popular"
+  let featuredVps = vpsPlans.slice(0, 4)
+  if (vpsPlans.length > 4 && !featuredVps.some((p) => p.popular)) {
+    const popular = vpsPlans.find((p) => p.popular)
+    if (popular) featuredVps = [...vpsPlans.slice(0, 3), popular]
+  }
+
   return (
     <div className="min-h-screen bg-white text-zinc-900">
       <Navbar />
@@ -353,83 +363,110 @@ export default async function HomePage() {
       {/* ══════════════════════════════════════════════════════════════
           VPS PLANS — destaque
       ══════════════════════════════════════════════════════════════ */}
-      <section className="py-20 bg-zinc-50 border-y border-zinc-100">
+      {featuredVps.length > 0 && (
+      <section className="py-24 bg-zinc-50 border-y border-zinc-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
-            <div>
-              <p className="text-[#0EA5E9] text-xs font-black uppercase tracking-widest mb-2">Cloud VPS NVMe</p>
-              <h2 className="text-3xl sm:text-4xl font-black text-zinc-900">Os planos mais populares</h2>
+          <div className="text-center mb-14">
+            <div className="inline-flex items-center gap-2 mb-4 px-3.5 py-1.5 rounded-full border border-[#0EA5E9]/25 bg-[#0EA5E9]/8 text-[#0EA5E9] text-[11px] font-black uppercase tracking-widest">
+              <HardDrive size={13} /> Cloud VPS NVMe
             </div>
-            <Link href="/cloud-vps" className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-[#0EA5E9] font-semibold transition-colors whitespace-nowrap">
-              Ver todos os 10 planos <ArrowRight size={14} />
-            </Link>
+            <h2 className="text-3xl sm:text-5xl font-black text-zinc-900 tracking-tight">Escolha seu VPS</h2>
+            <p className="mt-4 text-zinc-500 text-base sm:text-lg max-w-xl mx-auto">
+              NVMe Gen4, IPv4/IPv6 dedicados e anti-DDoS incluso. Ative em menos de 60 segundos.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {vpsPlans.map((plan) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6 items-stretch">
+            {featuredVps.map((plan) => (
               <div
                 key={plan.name}
-                className={`relative flex flex-col rounded-2xl p-6 transition-all duration-200 ${
+                className={`group relative flex flex-col rounded-3xl p-7 transition-all duration-300 ${
                   plan.popular
-                    ? 'bg-[#020817] text-white shadow-2xl shadow-zinc-900/20 ring-1 ring-[#0EA5E9]/30'
-                    : 'bg-white border border-zinc-200 hover:border-zinc-300 hover:shadow-md'
+                    ? 'bg-[#020817] text-white shadow-2xl shadow-[#0EA5E9]/20 ring-1 ring-[#0EA5E9]/40 lg:-translate-y-3'
+                    : 'bg-white border border-zinc-200 hover:border-[#0EA5E9]/40 hover:shadow-xl hover:shadow-zinc-900/5 hover:-translate-y-1'
                 }`}
               >
                 {plan.popular && (
-                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#0EA5E9] text-white text-[10px] font-black rounded-full uppercase tracking-wide shadow-lg shadow-[#0EA5E9]/40">
-                    Mais Popular
-                  </div>
+                  <>
+                    <div
+                      className="pointer-events-none absolute inset-0 rounded-3xl opacity-60"
+                      style={{ background: 'radial-gradient(ellipse 90% 50% at 50% 0%, rgba(14,165,233,0.18) 0%, transparent 70%)' }}
+                    />
+                    <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 bg-[#0EA5E9] text-white text-[10px] font-black rounded-full uppercase tracking-widest shadow-lg shadow-[#0EA5E9]/40">
+                      Mais Popular
+                    </div>
+                  </>
                 )}
 
-                <p className={`text-xs font-black uppercase tracking-widest mb-4 ${plan.popular ? 'text-[#38BDF8]' : 'text-zinc-400'}`}>
-                  VPS {plan.name}
-                </p>
+                <div className="relative">
+                  <p className={`text-[11px] font-black uppercase tracking-widest mb-1 ${plan.popular ? 'text-[#38BDF8]' : 'text-[#0EA5E9]'}`}>
+                    VPS
+                  </p>
+                  <p className={`text-xl font-black mb-5 ${plan.popular ? 'text-white' : 'text-zinc-900'}`}>
+                    {plan.name}
+                  </p>
 
-                <div className="mb-6">
-                  <div className="flex items-baseline gap-1">
-                    <span className={`text-4xl font-black ${plan.popular ? 'text-white' : 'text-zinc-900'}`}>{plan.price}</span>
-                    <span className="text-sm text-zinc-400">/mês</span>
+                  <div className="mb-7">
+                    <div className="flex items-baseline gap-1.5">
+                      <span className={`text-[13px] font-semibold ${plan.popular ? 'text-zinc-400' : 'text-zinc-400'}`}>R$</span>
+                      <span className={`text-5xl font-black tracking-tight ${plan.popular ? 'text-white' : 'text-zinc-900'}`}>
+                        {plan.monthlyPrice.toLocaleString('pt-BR')}
+                      </span>
+                      <span className="text-sm text-zinc-400 font-medium">/mês</span>
+                    </div>
                   </div>
+
+                  <ul className={`space-y-0 mb-7 rounded-2xl overflow-hidden ${plan.popular ? 'bg-white/[0.04]' : 'bg-zinc-50'}`}>
+                    {[
+                      { label: 'RAM',     val: spec(plan, 'RAM') },
+                      { label: 'vCPU',    val: spec(plan, 'vCPU') },
+                      { label: 'NVMe',    val: spec(plan, 'NVMe') },
+                      { label: 'Tráfego', val: spec(plan, 'Tráfego') },
+                    ].map((s, i) => (
+                      <li
+                        key={s.label}
+                        className={`flex items-center justify-between px-4 py-3 ${i > 0 ? (plan.popular ? 'border-t border-white/[0.06]' : 'border-t border-zinc-100') : ''}`}
+                      >
+                        <span className="text-xs font-semibold text-zinc-400">{s.label}</span>
+                        <span className={`text-sm font-black ${plan.popular ? 'text-white' : 'text-zinc-900'}`}>{s.val}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <Link
+                    href="/cloud-vps"
+                    className={`flex items-center justify-center gap-1.5 text-sm font-bold py-3.5 rounded-xl transition-all ${
+                      plan.popular
+                        ? 'bg-[#0EA5E9] hover:bg-[#0284C7] text-white shadow-lg shadow-[#0EA5E9]/30'
+                        : 'bg-zinc-900 hover:bg-[#0EA5E9] text-white'
+                    }`}
+                  >
+                    Contratar <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
+                  </Link>
                 </div>
-
-                <ul className="space-y-3 flex-1 mb-6">
-                  {[
-                    { label: 'RAM',     val: plan.ram },
-                    { label: 'vCPU',    val: plan.cpu },
-                    { label: 'NVMe',    val: plan.nvme },
-                    { label: 'Tráfego', val: plan.traffic },
-                  ].map((s) => (
-                    <li key={s.label} className="flex items-center justify-between">
-                      <span className="text-xs font-semibold text-zinc-400">{s.label}</span>
-                      <span className={`text-sm font-black ${plan.popular ? 'text-white' : 'text-zinc-900'}`}>{s.val}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <Link
-                  href="/cloud-vps"
-                  className={`block text-center text-sm font-bold py-3 rounded-xl transition-all ${
-                    plan.popular
-                      ? 'bg-[#0EA5E9] hover:bg-[#0284C7] text-white shadow-lg shadow-[#0EA5E9]/30'
-                      : 'bg-zinc-100 hover:bg-zinc-200 text-zinc-800'
-                  }`}
-                >
-                  Contratar
-                </Link>
               </div>
             ))}
           </div>
 
-          {/* Incluso em todos */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-            {['IPv4 + IPv6 dedicados', 'Anti-DDoS incluso', 'Deploy < 60s', 'SLA 99.9%', 'Suporte 24/7'].map((f) => (
-              <span key={f} className="flex items-center gap-1.5 text-xs text-zinc-500 font-medium">
-                <Check size={11} className="text-[#0EA5E9]" /> {f}
-              </span>
-            ))}
+          <div className="mt-12 flex flex-col items-center gap-6">
+            {/* Incluso em todos */}
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+              {['IPv4 + IPv6 dedicados', 'Anti-DDoS incluso', 'Deploy < 60s', 'SLA 99.9%', 'Suporte 24/7'].map((f) => (
+                <span key={f} className="flex items-center gap-1.5 text-xs text-zinc-500 font-medium">
+                  <Check size={12} className="text-[#0EA5E9]" /> {f}
+                </span>
+              ))}
+            </div>
+            <Link
+              href="/cloud-vps"
+              className="inline-flex items-center gap-1.5 text-sm font-bold text-[#0EA5E9] hover:text-[#0284C7] transition-colors"
+            >
+              Ver todos os {vpsPlans.length} planos <ArrowRight size={15} />
+            </Link>
           </div>
         </div>
       </section>
+      )}
 
       {/* ══════════════════════════════════════════════════════════════
           FEATURES — 2 colunas
