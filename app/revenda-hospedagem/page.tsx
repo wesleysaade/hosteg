@@ -42,6 +42,10 @@ export default async function RevendaDirectAdminPage() {
       desc:     'White-label total, WHMCS compatível e migração grátis de cPanel.',
     }),
   ])
+  // White-label: troca termos antigos vindos do banco
+  const fix = (s: string) => (s || '')
+    .replace(/direct\s*admin/gi, 'Painel Hosteg')
+    .replace(/\bDA\b/g, 'RevHosteg')
   return (
     <div className="min-h-screen bg-white text-zinc-900">
       <Navbar />
@@ -58,13 +62,10 @@ export default async function RevendaDirectAdminPage() {
             <Users size={12} weight="fill" /> Agências & Revendas
           </div>
           <div className="flex items-center justify-center gap-4 mb-6">
-            <img
-              src="https://cdn.simpleicons.org/directadmin/1F6FEB"
-              alt="Painel Hosteg"
-              width={40}
-              height={40}
-              style={{ filter: 'drop-shadow(0 2px 8px rgba(31,111,235,0.3))' }}
-            />
+            <div className="w-10 h-10 rounded-xl bg-[#0EA5E9]/10 flex items-center justify-center"
+              style={{ boxShadow: '0 2px 8px rgba(14,165,233,0.25)' }}>
+              <Desktop size={24} weight="fill" className="text-[#0EA5E9]" />
+            </div>
             <img
               src="/logos/litespeed.svg"
               alt="LiteSpeed"
@@ -77,10 +78,10 @@ export default async function RevendaDirectAdminPage() {
             Revenda Hospedagem
           </h1>
           <p className="text-xl text-zinc-500 max-w-xl mx-auto mb-4">
-            {hero.subtitle}
+            {fix(hero.subtitle)}
           </p>
           <p className="text-zinc-400 max-w-lg mx-auto">
-            {hero.desc}
+            {fix(hero.desc)}
           </p>
         </div>
       </section>
@@ -97,7 +98,7 @@ export default async function RevendaDirectAdminPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-8 flex flex-col sm:flex-row items-center gap-6">
             <div className="w-14 h-14 rounded-2xl bg-emerald-100 flex items-center justify-center flex-shrink-0">
-              <img src="https://cdn.simpleicons.org/directadmin/1F6FEB" alt="Painel Hosteg" width={28} height={28} />
+              <Desktop size={28} weight="fill" className="text-emerald-600" />
             </div>
             <div className="text-center sm:text-left flex-1">
               <h3 className="text-xl font-black text-zinc-900 mb-2">Migração gratuita de cPanel ou qualquer painel</h3>
