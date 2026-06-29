@@ -18,7 +18,7 @@ import {
 
 export const metadata: Metadata = {
   title: 'Cloud VPS NVMe',
-  description: '10 planos de Cloud VPS com discos NVMe Gen4, IPv4/IPv6 dedicado, anti-DDoS incluso e suporte 24/7. Preços em BRL a partir de R$ 39/mês.',
+  description: '10 planos de Cloud VPS com discos NVMe Enterprise, IPv4/IPv6 dedicado, anti-DDoS incluso e suporte 24/7. Preços em BRL a partir de R$ 39/mês.',
 }
 
 const vpsPlans = [
@@ -208,13 +208,13 @@ export default function VPSPage() {
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center gap-2 mb-6 px-3 py-1.5 rounded-full border border-[#0EA5E9]/20 bg-[#0EA5E9]/8 text-[#0EA5E9] text-xs font-semibold">
-            <Zap size={11} /> Cloud VPS NVMe Gen4
+            <Zap size={11} /> Cloud VPS NVMe Enterprise
           </div>
           <h1 className="text-5xl sm:text-6xl font-black text-zinc-900 mb-4 leading-tight">
             Cloud VPS
           </h1>
           <p className="text-xl text-zinc-500 max-w-2xl mx-auto mb-3">
-            10 planos com NVMe Gen4, anti-DDoS incluso e rede 10 Gbps.
+            10 planos com NVMe Enterprise, anti-DDoS incluso e rede 10 Gbps.
           </p>
           <p className="text-zinc-500 max-w-xl mx-auto">
             Ative em segundos. Suporte 24/7 em português. SLA 99.9%.

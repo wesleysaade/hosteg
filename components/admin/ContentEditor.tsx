@@ -48,7 +48,7 @@ function HeroEditor({ content, onChange }: { content: HeroContent; onChange: (v:
 
   return (
     <div className="grid grid-cols-2 gap-3">
-      {f('badge',     'Badge',          'Ex: Cloud VPS NVMe Gen4')}
+      {f('badge',     'Badge',          'Ex: Cloud VPS NVMe Enterprise')}
       {f('title',     'Título',         'Título principal da página')}
       {f('subtitle',  'Subtítulo',      'Texto em destaque abaixo do título')}
       {f('desc',      'Descrição',      'Parágrafo descritivo', 'textarea')}

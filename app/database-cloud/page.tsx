@@ -80,7 +80,7 @@ const databases = [
 
 const features = [
   { icon: ShieldCheck,     title: 'Backups automáticos',    desc: 'Backups diários inclusos em todos os planos, com retenção de 7 dias. Planos Pro e Enterprise têm backups mais frequentes.' },
-  { icon: Lightning,       title: 'Alta performance NVMe',  desc: 'Planos Business em diante usam NVMe Gen4 com IOPS extremamente alto para consultas e escritas rápidas.' },
+  { icon: Lightning,       title: 'Alta performance NVMe',  desc: 'Planos Business em diante usam NVMe Enterprise com IOPS extremamente alto para consultas e escritas rápidas.' },
   { icon: HardDrives,      title: 'Acesso remoto seguro',   desc: 'Conecte seu app ao banco via endereço IP dedicado com autenticação SSL/TLS. Porta configurada e firewall incluso.' },
   { icon: ArrowsClockwise, title: 'Escalabilidade fácil',   desc: 'Faça upgrade de plano sem migração manual de dados. Nosso time cuida de tudo com tempo mínimo de downtime.' },
   { icon: Database,        title: 'Monitoramento 24/7',     desc: 'Monitoramos disk I/O, conexões ativas, queries lentas e performance em tempo real com alertas proativos.' },

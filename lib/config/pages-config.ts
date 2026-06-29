@@ -91,10 +91,10 @@ export const PAGES_CONFIG: CategoryConfig[] = [
       {
         slug: 'cloud-vps', name: 'Cloud VPS', path: '/cloud-vps', sections: ['hero', 'stats', 'shared_features'],
         defaults: {
-          hero: { badge: 'Cloud VPS NVMe Gen4', title: 'Cloud VPS', subtitle: 'NVMe Gen4, anti-DDoS incluso e rede 10 Gbps.', desc: 'Ative em segundos. Suporte 24/7. SLA 99.9% garantido.' },
+          hero: { badge: 'Cloud VPS NVMe Enterprise', title: 'Cloud VPS', subtitle: 'NVMe Enterprise, anti-DDoS incluso e rede 10 Gbps.', desc: 'Ative em segundos. Suporte 24/7. SLA 99.9% garantido.' },
           stats: { items: [
             { value: '< 60s',    label: 'Ativação' },
-            { value: 'NVMe Gen4', label: 'Storage' },
+            { value: 'NVMe Enterprise', label: 'Storage' },
             { value: '10 Gbps',  label: 'Rede' },
             { value: '99.9%',    label: 'SLA' },
           ]},
@@ -164,7 +164,7 @@ export const PAGES_CONFIG: CategoryConfig[] = [
       {
         slug: 'datacenter', name: 'Datacenter', path: '/datacenter', sections: ['hero', 'content'],
         defaults: {
-          hero: { badge: 'Infraestrutura', title: 'Datacenter', subtitle: 'Infraestrutura de nível enterprise no Brasil e Canadá.', desc: 'Tier III certificado, anti-DDoS, NVMe Gen4 e rede 10 Gbps.' },
+          hero: { badge: 'Infraestrutura', title: 'Datacenter', subtitle: 'Infraestrutura de nível enterprise no Brasil e Canadá.', desc: 'Tier III certificado, anti-DDoS, NVMe Enterprise e rede 10 Gbps.' },
         },
       },
       {

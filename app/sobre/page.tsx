@@ -21,7 +21,7 @@ const values = [
   {
     icon: Target,
     title: 'Performance real',
-    desc: 'Não vendemos especificações no papel. Entregamos performance mensurável com NVMe Gen4, baixa latência e SLA documentado.',
+    desc: 'Não vendemos especificações no papel. Entregamos performance mensurável com NVMe Enterprise, baixa latência e SLA documentado.',
   },
   {
     icon: Users,
@@ -68,7 +68,7 @@ const timeline = [
   },
   {
     year: '2024',
-    title: 'NVMe Gen4',
+    title: 'NVMe Enterprise',
     desc: 'Migramos toda a frota de storage para NVMe de 4ª geração, multiplicando a performance de I/O.',
   },
   {

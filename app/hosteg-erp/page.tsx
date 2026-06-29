@@ -59,7 +59,7 @@ export default async function HostegERPPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a
-              href="https://www.hosteg.cloud"
+              href="https://www.erpy.com.br"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#0EA5E9] hover:bg-[#0284C7] text-white font-bold rounded-xl transition-colors shadow-lg shadow-[#0EA5E9]/30"
@@ -114,16 +114,16 @@ export default async function HostegERPPage() {
               <Lock size={24} className="text-[#0EA5E9]" />
             </div>
             <div>
-              <h3 className="text-xl font-black text-zinc-900 mb-2">Acesse via hosteg.cloud</h3>
+              <h3 className="text-xl font-black text-zinc-900 mb-2">Acesse via erpy.com.br</h3>
               <p className="text-zinc-500 leading-relaxed mb-4">
                 O ErpY está disponível em{' '}
-                <a href="https://www.hosteg.cloud" target="_blank" rel="noopener noreferrer" className="text-[#0EA5E9] font-semibold hover:underline">
-                  www.hosteg.cloud
+                <a href="https://www.erpy.com.br" target="_blank" rel="noopener noreferrer" className="text-[#0EA5E9] font-semibold hover:underline">
+                  www.erpy.com.br
                 </a>
                 . Você pode solicitar uma demonstração gratuita para ver todos os módulos em funcionamento antes de contratar.
               </p>
               <a
-                href="https://www.hosteg.cloud"
+                href="https://www.erpy.com.br"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-sm font-bold text-[#0EA5E9] hover:text-[#0284C7] transition-colors"

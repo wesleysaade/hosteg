@@ -82,7 +82,7 @@ export default async function CloudAppsPage() {
             N8N, Evolution API, Odoo, Supabase, Chatwoot e muito mais — prontos em minutos.
           </p>
           <div className="flex flex-wrap justify-center gap-3 text-sm">
-            {[['< 5 min', 'Pronto para uso'], ['NVMe Gen4', 'Alta performance'], ['Root access', 'Controle total'], ['Suporte 24/7', 'Em português']].map(([v, l]) => (
+            {[['< 5 min', 'Pronto para uso'], ['NVMe Enterprise', 'Alta performance'], ['Root access', 'Controle total'], ['Suporte 24/7', 'Em português']].map(([v, l]) => (
               <div key={l} className="flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-100 border border-zinc-200">
                 <span className="font-black text-[#0EA5E9]">{v}</span>
                 <span className="text-zinc-500">{l}</span>

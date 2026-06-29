@@ -41,7 +41,7 @@ const products = [
   {
     icon: Server,
     label: 'Cloud VPS NVMe',
-    desc: 'VPS com NVMe Gen4, IPv4 dedicado e anti-DDoS incluso.',
+    desc: 'VPS com NVMe Enterprise, IPv4 dedicado e anti-DDoS incluso.',
     badge: 'Mais vendido',
     badgeColor: '#0EA5E9',
     from: 'R$ 39',
@@ -372,7 +372,7 @@ export default async function HomePage() {
             </div>
             <h2 className="text-3xl sm:text-5xl font-black text-zinc-900 tracking-tight">Escolha seu VPS</h2>
             <p className="mt-4 text-zinc-500 text-base sm:text-lg max-w-xl mx-auto">
-              NVMe Gen4, IPv4/IPv6 dedicados e anti-DDoS incluso. Ative em menos de 60 segundos.
+              NVMe Enterprise, IPv4/IPv6 dedicados e anti-DDoS incluso. Ative em menos de 60 segundos.
             </p>
           </div>
 

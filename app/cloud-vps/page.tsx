@@ -17,7 +17,7 @@ export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Cloud VPS NVMe — Hosteg',
-  description: 'Cloud VPS com discos NVMe Gen4, IPv4/IPv6 dedicado, anti-DDoS incluso e suporte 24/7.',
+  description: 'Cloud VPS com discos NVMe Enterprise, IPv4/IPv6 dedicado, anti-DDoS incluso e suporte 24/7.',
 }
 
 // OS logos via devicons / simpleicons CDN
@@ -66,16 +66,16 @@ export default async function CloudVPSPage() {
     fetchPageSection('cloud-vps', 'shared_features'),
     fetchPageSection('cloud-vps', 'stats'),
     getHero('cloud-vps', {
-      badge:    'Cloud VPS NVMe Gen4',
+      badge:    'Cloud VPS NVMe Enterprise',
       title:    'Cloud VPS',
-      subtitle: 'NVMe Gen4, anti-DDoS incluso e rede 10 Gbps.',
+      subtitle: 'NVMe Enterprise, anti-DDoS incluso e rede 10 Gbps.',
       desc:     'Ative em segundos. Suporte 24/7. SLA 99.9% garantido.',
     }),
   ])
 
   const defaultStats = [
     { value: '< 60s',    label: 'Ativação' },
-    { value: 'NVMe Gen4', label: 'Storage' },
+    { value: 'NVMe Enterprise', label: 'Storage' },
     { value: '10 Gbps',  label: 'Rede' },
     { value: '99.9%',    label: 'SLA' },
   ]
@@ -98,18 +98,18 @@ export default async function CloudVPSPage() {
           <div className="grid-pattern absolute inset-0 opacity-30" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full border border-[#0EA5E9]/30 bg-[#0EA5E9]/8 text-[#0EA5E9] text-xs font-black uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full border border-[#0EA5E9]/30 bg-[#0EA5E9]/8 text-[#0EA5E9] text-[11px] font-semibold uppercase tracking-[0.15em]">
             <Lightning size={13} weight="fill" /> {hero.badge}
           </div>
-          <h1 className="text-5xl sm:text-7xl font-black text-zinc-900 mb-5 leading-tight">{hero.title}</h1>
+          <h1 className="text-5xl sm:text-7xl font-black text-zinc-900 mb-5 leading-[1.03] tracking-[-0.04em]">{hero.title}</h1>
           <p className="text-xl sm:text-2xl text-zinc-500 max-w-2xl mx-auto mb-3 font-medium">
             {hero.subtitle}
           </p>
-          <p className="text-zinc-400 max-w-xl mx-auto mb-8">{hero.desc}</p>
+          <p className="text-zinc-500 max-w-xl mx-auto mb-8">{hero.desc}</p>
           <div className="flex flex-wrap justify-center gap-3 text-sm">
             {statItems.map((s) => (
               <div key={s.label} className="flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-100 border border-zinc-200">
-                <span className="font-black text-[#0EA5E9]">{s.value}</span>
+                <span className="font-display font-bold text-[#0EA5E9] tnum">{s.value}</span>
                 <span className="text-zinc-500">{s.label}</span>
               </div>
             ))}
@@ -129,7 +129,7 @@ export default async function CloudVPSPage() {
         <section className="py-10 pb-16 border-b border-zinc-100">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-6">
-              <div className="inline-flex items-center gap-2 text-[#0EA5E9] text-xs font-black uppercase tracking-widest mb-2">
+              <div className="inline-flex items-center gap-2 text-[#0EA5E9] text-[11px] font-semibold uppercase tracking-[0.2em] mb-2">
                 <CheckCircle size={13} weight="fill" /> Incluso em todos os planos
               </div>
             </div>
@@ -149,7 +149,7 @@ export default async function CloudVPSPage() {
       <section className="py-12 border-t border-zinc-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 text-[#0EA5E9] text-xs font-black uppercase tracking-widest mb-3">
+            <div className="inline-flex items-center gap-2 text-[#0EA5E9] text-[11px] font-semibold uppercase tracking-[0.2em] mb-3">
               <Lightning size={13} weight="fill" /> Sistemas Operacionais
             </div>
             <h2 className="text-2xl font-black text-zinc-900 mb-2">Escolha o SO no pedido</h2>
@@ -182,7 +182,7 @@ export default async function CloudVPSPage() {
       <section className="py-16 border-t border-zinc-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 text-[#0EA5E9] text-xs font-black uppercase tracking-widest mb-3">
+            <div className="inline-flex items-center gap-2 text-[#0EA5E9] text-[11px] font-semibold uppercase tracking-[0.2em] mb-3">
               <Package size={13} weight="fill" /> Apps Pré-instalados
             </div>
             <h2 className="text-3xl font-black text-zinc-900 mb-3">Suba qualquer app com um clique</h2>
@@ -210,7 +210,7 @@ export default async function CloudVPSPage() {
                   </div>
                   <div className="text-center">
                     <div className="text-sm font-black text-zinc-900">{app.label}</div>
-                    <div className="text-[10px] text-zinc-400 mt-0.5">{app.desc}</div>
+                    <div className="text-[11px] text-zinc-500 mt-0.5">{app.desc}</div>
                   </div>
                 </div>
               )
@@ -233,7 +233,7 @@ export default async function CloudVPSPage() {
       <section className="py-16 border-t border-zinc-200 bg-zinc-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 text-[#0EA5E9] text-xs font-black uppercase tracking-widest mb-3">
+            <div className="inline-flex items-center gap-2 text-[#0EA5E9] text-[11px] font-semibold uppercase tracking-[0.2em] mb-3">
               <CheckCircle size={14} weight="fill" /> Incluso em todos os planos
             </div>
             <h2 className="text-3xl font-black text-zinc-900 mb-2">Sem cobranças ocultas</h2>
@@ -265,13 +265,13 @@ export default async function CloudVPSPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-zinc-200 bg-zinc-50">
-                    <th className="text-left px-5 py-4 text-xs font-black text-zinc-500 uppercase tracking-wider">Plano</th>
-                    <th className="text-center px-4 py-4 text-xs font-black text-zinc-500 uppercase tracking-wider">RAM</th>
-                    <th className="text-center px-4 py-4 text-xs font-black text-zinc-500 uppercase tracking-wider">vCPU</th>
-                    <th className="text-center px-4 py-4 text-xs font-black text-zinc-500 uppercase tracking-wider">NVMe</th>
-                    <th className="text-center px-4 py-4 text-xs font-black text-zinc-500 uppercase tracking-wider">Tráfego</th>
-                    <th className="text-center px-4 py-4 text-xs font-black text-zinc-500 uppercase tracking-wider">Preço/mês</th>
-                    <th className="text-center px-4 py-4 text-xs font-black text-zinc-500 uppercase tracking-wider">Ação</th>
+                    <th className="text-left px-5 py-4 text-[11px] font-semibold text-zinc-500 uppercase tracking-[0.12em]">Plano</th>
+                    <th className="text-center px-4 py-4 text-[11px] font-semibold text-zinc-500 uppercase tracking-[0.12em]">RAM</th>
+                    <th className="text-center px-4 py-4 text-[11px] font-semibold text-zinc-500 uppercase tracking-[0.12em]">vCPU</th>
+                    <th className="text-center px-4 py-4 text-[11px] font-semibold text-zinc-500 uppercase tracking-[0.12em]">NVMe</th>
+                    <th className="text-center px-4 py-4 text-[11px] font-semibold text-zinc-500 uppercase tracking-[0.12em]">Tráfego</th>
+                    <th className="text-center px-4 py-4 text-[11px] font-semibold text-zinc-500 uppercase tracking-[0.12em]">Preço/mês</th>
+                    <th className="text-center px-4 py-4 text-[11px] font-semibold text-zinc-500 uppercase tracking-[0.12em]">Ação</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-zinc-100">
@@ -291,7 +291,7 @@ export default async function CloudVPSPage() {
                       <td className="text-center px-4 py-4 text-zinc-700 font-semibold">{spec(plan, 'vCPU')}</td>
                       <td className="text-center px-4 py-4 text-zinc-700 font-semibold">{spec(plan, 'NVMe')}</td>
                       <td className="text-center px-4 py-4 text-zinc-700 font-semibold">{spec(plan, 'Tráfego')}</td>
-                      <td className="text-center px-4 py-4 font-black text-zinc-900">R$ {plan.monthlyPrice}</td>
+                      <td className="text-center px-4 py-4 font-display font-bold text-zinc-900 tnum">R$ {plan.monthlyPrice.toLocaleString('pt-BR')}</td>
                       <td className="text-center px-4 py-4">
                         <a href="https://painelcliente.com.br" target="_blank" rel="noopener noreferrer"
                           className={`inline-flex items-center gap-1 px-3 py-1.5 text-xs font-black rounded-lg transition-colors ${

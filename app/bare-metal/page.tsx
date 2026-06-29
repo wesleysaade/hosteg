@@ -84,7 +84,7 @@ export default async function BareMetalPage() {
             {hero.desc}
           </p>
           <div className="flex flex-wrap justify-center gap-3 text-sm">
-            {[['Intel Xeon','CPU'],['DDR4 ECC','Memória'],['NVMe Gen4','Storage'],['99.9%','SLA']].map(([v,l]) => (
+            {[['Intel Xeon','CPU'],['DDR4 ECC','Memória'],['NVMe Enterprise','Storage'],['99.9%','SLA']].map(([v,l]) => (
               <div key={l} className="flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-100 border border-zinc-200">
                 <span className="font-black text-[#0EA5E9]">{v}</span>
                 <span className="text-zinc-500">{l}</span>
