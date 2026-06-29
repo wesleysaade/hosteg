@@ -162,8 +162,8 @@ export default function NavbarClient({ navItems = [] }: { navItems?: NavMenuItem
   const toggle   = (name: MenuName) => setOpenMenu(prev => prev === name ? null : name)
 
   const linkCls = (active: boolean) =>
-    `px-3.5 py-2 text-sm font-semibold rounded-lg transition-colors duration-150 whitespace-nowrap ${
-      active ? 'text-zinc-900 bg-zinc-100' : 'text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50'
+    `px-3.5 py-2 text-[15px] font-medium rounded-full transition-all duration-200 whitespace-nowrap ${
+      active ? 'text-zinc-900 bg-zinc-100' : 'text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100/70'
     }`
 
   const MegaMenuContent = ({ sections }: { sections: typeof produtosMenu }) => (
@@ -171,7 +171,7 @@ export default function NavbarClient({ navItems = [] }: { navItems?: NavMenuItem
       <div className="p-6" style={{ display: 'grid', gridTemplateColumns: `repeat(${sections.length}, 1fr)`, gap: '1.5rem' }}>
         {sections.map((section) => (
           <div key={section.category}>
-            <p className="text-[10px] font-black text-[#0EA5E9] uppercase tracking-widest mb-3 pb-2 border-b border-zinc-100">
+            <p className="text-[11px] font-bold text-[#0EA5E9] uppercase tracking-[0.13em] mb-3 pb-2.5 border-b border-zinc-100">
               {section.category}
             </p>
             <div className="space-y-px">
@@ -189,14 +189,14 @@ export default function NavbarClient({ navItems = [] }: { navItems?: NavMenuItem
                     </div>
                     <div className="min-w-0">
                       <div className="flex items-center gap-1.5 flex-wrap">
-                        <span className="text-sm font-bold text-zinc-800 group-hover:text-zinc-900">{item.title}</span>
+                        <span className="text-[15px] font-semibold text-zinc-800 group-hover:text-zinc-900">{item.title}</span>
                         {item.badge && (
-                          <span className="text-[9px] font-black px-1.5 py-0.5 rounded-full bg-[#0EA5E9]/10 text-[#0284C7] border border-[#0EA5E9]/20 uppercase tracking-wide">
+                          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-[#0EA5E9]/10 text-[#0284C7] border border-[#0EA5E9]/20 uppercase tracking-wide">
                             {item.badge}
                           </span>
                         )}
                       </div>
-                      <p className="text-xs text-zinc-400 mt-0.5 leading-relaxed">{item.desc}</p>
+                      <p className="text-[13px] text-zinc-500 mt-0.5 leading-snug">{item.desc}</p>
                     </div>
                   </Link>
                 )
@@ -225,18 +225,24 @@ export default function NavbarClient({ navItems = [] }: { navItems?: NavMenuItem
       )}
 
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 bg-white ${
-          scrolled ? 'border-b border-zinc-200 shadow-sm' : 'border-b border-transparent'
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? 'bg-white/80 backdrop-blur-xl border-b border-zinc-200/70 shadow-[0_1px_24px_rgba(0,0,0,0.05)]'
+            : 'bg-white/60 backdrop-blur-md border-b border-transparent'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div ref={navRef} className="relative flex items-center h-16">
 
             {/* Logo */}
-            <Link href="/" className="flex-shrink-0 z-10">
-              <span className="text-2xl font-black tracking-tight" style={{ color: '#0EA5E9' }}>
+            <Link href="/" className="flex-shrink-0 z-10 flex items-baseline gap-px group/logo">
+              <span
+                className="font-display text-[26px] font-bold leading-none tracking-[-0.05em] transition-colors duration-200"
+                style={{ color: '#0EA5E9' }}
+              >
                 HOSTEG
               </span>
+              <span className="font-display text-[26px] font-bold leading-none text-zinc-900 transition-opacity duration-200 group-hover/logo:opacity-40">.</span>
             </Link>
 
             {/* Desktop nav */}
@@ -283,7 +289,7 @@ export default function NavbarClient({ navItems = [] }: { navItems?: NavMenuItem
                   </span>
                 </button>
                 {openMenu === 'institucional' && (
-                  <div className="absolute top-full right-0 mt-2.5 w-64 bg-white border border-zinc-200 rounded-2xl shadow-2xl shadow-black/10 overflow-hidden z-50">
+                  <div className="absolute top-full right-0 mt-2.5 w-64 bg-white border border-zinc-200/80 rounded-[20px] shadow-[0_24px_70px_-20px_rgba(15,23,42,0.28)] ring-1 ring-black/[0.02] overflow-hidden z-50">
                     <div className="p-2">
                       {institucionalItems.map((item) => {
                         const Icon = item.icon
@@ -298,8 +304,8 @@ export default function NavbarClient({ navItems = [] }: { navItems?: NavMenuItem
                               <Icon size={15} weight="fill" className="text-zinc-400 group-hover:text-[#0EA5E9] transition-colors" />
                             </div>
                             <div>
-                              <div className="text-sm font-bold text-zinc-800 group-hover:text-zinc-900">{item.title}</div>
-                              <div className="text-xs text-zinc-400 mt-0.5">{item.desc}</div>
+                              <div className="text-[15px] font-semibold text-zinc-800 group-hover:text-zinc-900">{item.title}</div>
+                              <div className="text-[13px] text-zinc-500 mt-0.5 leading-snug">{item.desc}</div>
                             </div>
                           </Link>
                         )
@@ -311,17 +317,18 @@ export default function NavbarClient({ navItems = [] }: { navItems?: NavMenuItem
             </nav>
 
             {/* CTAs */}
-            <div className="ml-auto hidden lg:flex items-center gap-3 z-10 flex-shrink-0">
-              <Link href={supportHref} className="text-sm font-semibold text-zinc-500 hover:text-zinc-900 transition-colors">
+            <div className="ml-auto hidden lg:flex items-center gap-1 z-10 flex-shrink-0">
+              <Link href={supportHref} className="px-3 py-2 text-[15px] font-medium text-zinc-500 hover:text-zinc-900 transition-colors">
                 Suporte
               </Link>
               <a href={loginHref} target="_blank" rel="noopener noreferrer"
-                className="text-sm font-semibold text-zinc-500 hover:text-zinc-900 transition-colors">
+                className="px-3 py-2 text-[15px] font-medium text-zinc-500 hover:text-zinc-900 transition-colors">
                 Login
               </a>
               <a href={clientAreaHref} target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-bold bg-[#0EA5E9] hover:bg-[#0284C7] text-white rounded-lg transition-colors shadow-sm shadow-[#0EA5E9]/30">
+                className="ml-2 group/cta inline-flex items-center gap-1.5 pl-4 pr-3.5 py-2.5 text-sm font-semibold text-white rounded-full bg-zinc-900 hover:bg-[#0EA5E9] transition-all duration-200 shadow-sm">
                 {clientAreaLabel}
+                <ArrowRight size={15} weight="bold" className="transition-transform duration-200 group-hover/cta:translate-x-0.5" />
               </a>
             </div>
 
@@ -336,7 +343,7 @@ export default function NavbarClient({ navItems = [] }: { navItems?: NavMenuItem
             {/* Mega menus */}
             {openMenu === 'produtos' && (
               <div
-                className="absolute top-full left-1/2 -translate-x-1/2 mt-2.5 w-[1000px] bg-white border border-zinc-200 rounded-2xl shadow-2xl shadow-black/10 overflow-hidden z-50"
+                className="absolute top-full left-1/2 -translate-x-1/2 mt-2.5 w-[1000px] bg-white border border-zinc-200/80 rounded-[20px] shadow-[0_24px_70px_-20px_rgba(15,23,42,0.28)] ring-1 ring-black/[0.02] overflow-hidden z-50"
                 style={{ maxWidth: 'calc(100vw - 2rem)' }}
               >
                 <MegaMenuContent sections={produtosMenu} />
@@ -344,7 +351,7 @@ export default function NavbarClient({ navItems = [] }: { navItems?: NavMenuItem
             )}
             {openMenu === 'cloud-apps' && (
               <div
-                className="absolute top-full left-1/2 -translate-x-1/2 mt-2.5 w-[660px] bg-white border border-zinc-200 rounded-2xl shadow-2xl shadow-black/10 overflow-hidden z-50"
+                className="absolute top-full left-1/2 -translate-x-1/2 mt-2.5 w-[660px] bg-white border border-zinc-200/80 rounded-[20px] shadow-[0_24px_70px_-20px_rgba(15,23,42,0.28)] ring-1 ring-black/[0.02] overflow-hidden z-50"
                 style={{ maxWidth: 'calc(100vw - 2rem)' }}
               >
                 <MegaMenuContent sections={cloudAppsMenu} />
