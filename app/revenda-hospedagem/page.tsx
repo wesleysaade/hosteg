@@ -44,8 +44,20 @@ export default async function RevendaDirectAdminPage() {
   ])
   // White-label: troca termos antigos vindos do banco
   const fix = (s: string) => (s || '')
+    .replace(/painel\s+direct\s*admin/gi, 'Painel Hosteg')
     .replace(/direct\s*admin/gi, 'Painel Hosteg')
     .replace(/\bDA\b/g, 'RevHosteg')
+    .replace(/Painel(\s+Painel)+\s+Hosteg/gi, 'Painel Hosteg')
+    .replace(/\bPainel\s+Painel\b/gi, 'Painel')
+
+  // Sanitiza os planos vindos do banco (nome, descrição, specs, features)
+  const cleanPlans = plans.map(p => ({
+    ...p,
+    name: fix(p.name),
+    desc: fix(p.desc),
+    specs: p.specs?.map(s => ({ ...s, label: fix(s.label), value: fix(s.value), tip: s.tip ? fix(s.tip) : s.tip })),
+    features: p.features?.map(f => typeof f === 'string' ? fix(f) : { ...f, text: fix(f.text), tip: f.tip ? fix(f.tip) : f.tip }),
+  }))
   return (
     <div className="min-h-screen bg-white text-zinc-900">
       <Navbar />
@@ -89,7 +101,7 @@ export default async function RevendaDirectAdminPage() {
       {/* Plans */}
       <section className="pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <PlanBillingSection plans={plans} availablePeriods={availablePeriods} productSlug="revenda-directadmin" />
+          <PlanBillingSection plans={cleanPlans} availablePeriods={availablePeriods} productSlug="revenda-directadmin" />
         </div>
       </section>
 
