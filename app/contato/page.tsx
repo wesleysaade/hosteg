@@ -3,6 +3,7 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { ExternalLink, MessageSquare, Clock, Mail, Phone, Ticket, HelpCircle } from 'lucide-react'
 import { getHero } from '@/lib/utils/hero'
+import ContatoForm from '@/components/ContatoForm'
 
 export const dynamic = 'force-dynamic'
 
@@ -35,9 +36,9 @@ const channels = [
   {
     icon: Mail,
     title: 'E-mail',
-    desc: 'Para solicitações formais, contratos e questões comerciais.',
-    action: 'contato@hosteg.com.br',
-    href: 'mailto:contato@hosteg.com.br',
+    desc: 'Para solicitações formais, contratos e questões comerciais. Preencha o formulário e nós respondemos.',
+    action: 'Preencher formulário',
+    href: '#form-email',
     external: false,
     highlight: false,
     badge: '24h úteis',
@@ -154,6 +155,24 @@ export default async function ContatoPage() {
                 </div>
               )
             })}
+          </div>
+        </div>
+      </section>
+
+      {/* Formulário de e-mail */}
+      <section id="form-email" className="scroll-mt-24 pb-20">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="rounded-2xl border border-zinc-200 bg-zinc-50/60 p-7 sm:p-10">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 rounded-xl bg-[#0EA5E9]/10 flex items-center justify-center">
+                <Mail size={18} className="text-[#0EA5E9]" />
+              </div>
+              <h2 className="text-2xl font-black text-zinc-900">Envie uma mensagem</h2>
+            </div>
+            <p className="text-sm text-zinc-500 leading-relaxed mb-7">
+              Preencha os campos abaixo e direcionaremos sua mensagem ao setor responsável.
+            </p>
+            <ContatoForm />
           </div>
         </div>
       </section>
