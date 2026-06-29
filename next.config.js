@@ -12,6 +12,12 @@ const nextConfig = {
         destination: '/cloud-vps',
         permanent: true,
       },
+      {
+        // Página "Sobre" temporariamente desativada (reverter: remover este bloco)
+        source: '/sobre',
+        destination: '/',
+        permanent: false,
+      },
     ]
   },
   webpack(config) {

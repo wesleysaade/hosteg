@@ -59,14 +59,13 @@ const defaultProdutosMenu: NavMenuSection[] = [
       { icon: Cpu,          title: 'Bare-Metal',          desc: 'Servidores Xeon dedicados, hardware exclusivo', href: '/bare-metal',      badge: '' },
       { icon: Database,     title: 'Database Cloud',      desc: 'MySQL, PostgreSQL, MongoDB, SQL Server',      href: '/database-cloud',   badge: '' },
       { icon: HardDrives,   title: 'BackupPRO',           desc: 'Backup gerenciado com tecnologia Acronis',    href: '/backup-pro',       badge: '' },
-      { icon: GridFour,     title: 'Hosteg ERP',          desc: 'ERP completo na nuvem via hosteg.cloud',      href: '/hosteg-erp',       badge: '' },
+      { icon: GridFour,     title: 'ErpY',                desc: 'O Erp da Hosteg',                             href: '/hosteg-erp',       badge: '' },
       { icon: Monitor,      title: 'Terminal Server',     desc: 'Desktop Windows acessível pelo navegador',    href: '/terminal-server',  badge: '' },
     ],
   },
 ]
 
 const defaultInstitucionalItems = [
-  { icon: Info,      title: 'Sobre a Hosteg', desc: 'Nossa história, missão e valores',           href: '/sobre' },
   { icon: MapPin,    title: 'Datacenter',     desc: 'Infraestrutura física e certificações',      href: '/datacenter' },
   { icon: Heartbeat, title: 'Status',         desc: 'Disponibilidade dos serviços em tempo real', href: '/status' },
 ]
@@ -283,7 +282,7 @@ export default function NavbarClient({ navItems = [] }: { navItems?: NavMenuItem
               <div className="relative">
                 <button
                   onClick={() => toggle('institucional')}
-                  className={linkCls(openMenu === 'institucional' || isActive('/sobre') || isActive('/datacenter') || isActive('/contratos') || isActive('/status'))}
+                  className={linkCls(openMenu === 'institucional' || isActive('/datacenter') || isActive('/contratos') || isActive('/status'))}
                 >
                   <span className="flex items-center gap-1">
                     Institucional

@@ -14,7 +14,7 @@ export const dynamic = 'force-dynamic'
 
 
 export const metadata: Metadata = {
-  title: 'Hosteg ERP — Sistema ERP Completo na Nuvem',
+  title: 'ErpY — O ERP da Hosteg',
   description: 'ERP completo e acessível na nuvem. Financeiro, vendas, estoque, RH, NF-e e muito mais. Acesse pelo navegador em qualquer dispositivo.',
 }
 
@@ -49,10 +49,10 @@ export default async function HostegERPPage() {
             <LayoutGrid size={12} /> Corporativo
           </div>
           <h1 className="text-5xl sm:text-6xl font-black text-zinc-900 mb-5 leading-tight">
-            Hosteg ERP
+            ErpY
           </h1>
           <p className="text-xl text-zinc-500 max-w-xl mx-auto mb-4">
-            Gestão completa da sua empresa em um único sistema na nuvem.
+            O ERP da Hosteg — gestão completa da sua empresa em um único sistema na nuvem.
           </p>
           <p className="text-zinc-400 max-w-lg mx-auto mb-8">
             Financeiro, vendas, estoque, RH, NF-e e muito mais. Acesse de qualquer lugar.
@@ -116,7 +116,7 @@ export default async function HostegERPPage() {
             <div>
               <h3 className="text-xl font-black text-zinc-900 mb-2">Acesse via hosteg.cloud</h3>
               <p className="text-zinc-500 leading-relaxed mb-4">
-                O Hosteg ERP está disponível em{' '}
+                O ErpY está disponível em{' '}
                 <a href="https://www.hosteg.cloud" target="_blank" rel="noopener noreferrer" className="text-[#0EA5E9] font-semibold hover:underline">
                   www.hosteg.cloud
                 </a>

@@ -25,10 +25,10 @@ const channels = [
   {
     icon: MessageSquare,
     title: 'Chat ao Vivo',
-    desc: 'Para dúvidas rápidas. Disponível no painel de cliente durante horário comercial.',
-    action: 'Acessar painel',
-    href: 'https://painelcliente.com.br',
-    external: true,
+    desc: 'Para dúvidas rápidas, fale com a gente pelo WhatsApp durante o horário comercial.',
+    action: 'WhatsApp no canto inferior direito ↘',
+    href: '',
+    external: false,
     highlight: false,
     badge: 'Horário comercial',
   },
@@ -132,19 +132,25 @@ export default async function ContatoPage() {
                   </div>
                   <h3 className="text-lg font-bold text-zinc-900 mb-2">{ch.title}</h3>
                   <p className="text-sm text-zinc-500 leading-relaxed flex-1 mb-5">{ch.desc}</p>
-                  <a
-                    href={ch.href}
-                    target={ch.external ? '_blank' : undefined}
-                    rel={ch.external ? 'noopener noreferrer' : undefined}
-                    className={`inline-flex items-center justify-center gap-2 text-sm font-semibold py-3 rounded-xl transition-all ${
-                      ch.highlight
-                        ? 'bg-[#0EA5E9] hover:bg-[#0284C7] text-zinc-900 shadow-lg shadow-[#0EA5E9]/20'
-                        : 'bg-zinc-100 hover:bg-zinc-100 text-zinc-900'
-                    }`}
-                  >
-                    {ch.action}
-                    {ch.external && <ExternalLink size={13} />}
-                  </a>
+                  {ch.href ? (
+                    <a
+                      href={ch.href}
+                      target={ch.external ? '_blank' : undefined}
+                      rel={ch.external ? 'noopener noreferrer' : undefined}
+                      className={`inline-flex items-center justify-center gap-2 text-sm font-semibold py-3 rounded-xl transition-all ${
+                        ch.highlight
+                          ? 'bg-[#0EA5E9] hover:bg-[#0284C7] text-zinc-900 shadow-lg shadow-[#0EA5E9]/20'
+                          : 'bg-zinc-100 hover:bg-zinc-100 text-zinc-900'
+                      }`}
+                    >
+                      {ch.action}
+                      {ch.external && <ExternalLink size={13} />}
+                    </a>
+                  ) : (
+                    <div className="inline-flex items-center justify-center gap-2 text-sm font-semibold py-3 rounded-xl bg-[#25D366]/10 text-[#0f7a36] border border-[#25D366]/25">
+                      {ch.action}
+                    </div>
+                  )}
                 </div>
               )
             })}

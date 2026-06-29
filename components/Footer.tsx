@@ -18,13 +18,12 @@ const footerLinks = {
   Corporativo: [
     { label: 'Database Cloud',   href: '/database-cloud' },
     { label: 'BackupPRO',        href: '/backup-pro' },
-    { label: 'Hosteg ERP',       href: '/hosteg-erp' },
+    { label: 'ErpY',             href: '/hosteg-erp' },
     { label: 'Terminal Server',  href: '/terminal-server' },
   ],
   Suporte: [
     { label: 'Abrir Ticket',          href: 'TICKET_URL', external: true },
     { label: 'Base de Conhecimento',  href: '/suporte' },
-    { label: 'Sobre a Hosteg',        href: '/sobre' },
     { label: 'Contato',               href: '/contato' },
     { label: 'Área do Cliente',       href: 'CLIENT_URL', external: true },
   ],
@@ -34,8 +33,8 @@ export default async function Footer() {
   const settings = await getSiteSettings()
 
   const cnpj        = settings.company_cnpj       || 'XX.XXX.XXX/0001-XX'
-  const tagline     = settings.footer_tagline      || 'Infraestrutura cloud de alta performance no Brasil e Canadá.'
-  const datacenters = settings.footer_datacenters  || '🇧🇷 São Paulo · 🇨🇦 Toronto'
+  const tagline     = settings.footer_tagline      || 'Infraestrutura cloud de alta performance no Brasil, Canadá e EUA.'
+  const datacenters = settings.footer_datacenters  || '🇧🇷 São Paulo · 🇨🇦 Toronto · 🇺🇸 Washington'
   const clientUrl   = settings.area_cliente_url    || 'https://painelcliente.com.br'
   const ticketUrl   = settings.ticket_url          || 'https://painelcliente.com.br/supporttickets.php'
   const termsUrl    = settings.terms_url           || '/contratos'

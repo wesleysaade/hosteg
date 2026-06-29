@@ -143,8 +143,8 @@ export const PAGES_CONFIG: CategoryConfig[] = [
         },
       },
       {
-        slug: 'erp', name: 'Hosteg ERP', path: '/erp', sections: ['hero'],
-        defaults: { hero: { badge: 'Corporativo', title: 'Hosteg ERP', subtitle: '', desc: '' } },
+        slug: 'erp', name: 'ErpY', path: '/erp', sections: ['hero'],
+        defaults: { hero: { badge: 'Corporativo', title: 'ErpY', subtitle: 'O Erp da Hosteg', desc: '' } },
       },
       {
         slug: 'terminal-server', name: 'Terminal Server', path: '/terminal-server', sections: ['hero'],
