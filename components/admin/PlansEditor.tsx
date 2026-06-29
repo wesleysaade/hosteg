@@ -52,6 +52,7 @@ const ALL_PERIODS = [
   { value: 'semestral',   label: 'Semestral',   months: 6,  priceKey: 'price_semestral'      },
   { value: 'anual',       label: 'Anual',       months: 12, priceKey: 'price_anual'          },
   { value: 'bianual',     label: 'Bianual',     months: 24, priceKey: 'price_bianual'        },
+  { value: 'trienal',     label: 'Trienal (36 meses)', months: 36, priceKey: 'price_36months' },
 ] as const
 
 // ── Main component ─────────────────────────────────────────────────────────────
@@ -66,7 +67,7 @@ export default function PlansEditor({ product, initialPlans, showFeatures = true
   const [openIdx, setOpenIdx] = useState<number | null>(initialPlans.length > 0 ? 0 : null)
   const [periods, setPeriods] = useState<string[]>(
     product.available_periods?.length ? product.available_periods
-    : ['mensal', 'trimestral', 'semestral', 'anual', 'bianual']
+    : ['mensal', 'trimestral', 'semestral', 'anual', 'bianual', 'trienal']
   )
 
   function togglePeriod(val: string) {

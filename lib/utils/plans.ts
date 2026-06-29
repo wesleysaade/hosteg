@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import type { BillingPlan, PeriodKey } from '@/components/PlanBillingSection'
 
-const VALID_PERIODS: PeriodKey[] = ['mensal','trimestral','semestral','anual','bianual']
+const VALID_PERIODS: PeriodKey[] = ['mensal','trimestral','semestral','anual','bianual','trienal']
 
 export async function fetchBillingPlans(slug: string): Promise<{
   plans: BillingPlan[]
@@ -73,6 +73,7 @@ export async function fetchBillingPlans(slug: string): Promise<{
         ...(p.price_semestral  != null ? { semestral:  Number(p.price_semestral)  } : {}),
         ...(p.price_anual      != null ? { anual:      Number(p.price_anual)      } : {}),
         ...(p.price_bianual    != null ? { bianual:    Number(p.price_bianual)    } : {}),
+        ...(p.price_36months   != null ? { trienal:    Number(p.price_36months)   } : {}),
       },
       specs:    (specsByPlan[p.id]    ?? []).map((s: any) => ({ label: s.label, value: s.value, tip: s.tip || undefined })),
       features: (featuresByPlan[p.id] ?? []).map((f: any) => ({ text: f.text, tip: f.tip || undefined })),
@@ -80,11 +81,15 @@ export async function fetchBillingPlans(slug: string): Promise<{
 
     const rawPeriods: string[] = product.available_periods?.length
       ? product.available_periods
-      : ['mensal','trimestral','semestral','anual','bianual']
+      : ['mensal','trimestral','semestral','anual','bianual','trienal']
+
+    const availablePeriods = rawPeriods.filter((p): p is PeriodKey => VALID_PERIODS.includes(p as PeriodKey))
+    // Trienal (36 meses) habilitado em todos os produtos
+    if (!availablePeriods.includes('trienal')) availablePeriods.push('trienal')
 
     return {
       plans: billingPlans,
-      availablePeriods: rawPeriods.filter((p): p is PeriodKey => VALID_PERIODS.includes(p as PeriodKey)),
+      availablePeriods,
     }
   } catch (err) {
     console.error('[fetchBillingPlans] erro:', err)

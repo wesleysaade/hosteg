@@ -5,7 +5,7 @@ import Tip from './Tip'
 import PlanFeatureList, { type PlanFeature } from './PlanFeatureList'
 
 // ── Period definitions ────────────────────────────────────────────────────────
-export type PeriodKey = 'mensal' | 'trimestral' | 'semestral' | 'anual' | 'bianual'
+export type PeriodKey = 'mensal' | 'trimestral' | 'semestral' | 'anual' | 'bianual' | 'trienal'
 
 export interface PeriodConfig {
   id: PeriodKey
@@ -19,6 +19,7 @@ export const DEFAULT_PERIODS: PeriodConfig[] = [
   { id: 'semestral',  label: 'Semestral',  months: 6  },
   { id: 'anual',      label: 'Anual',      months: 12 },
   { id: 'bianual',    label: 'Bianual',    months: 24 },
+  { id: 'trienal',    label: 'Trienal',    months: 36 },
 ]
 
 // ── Data types ────────────────────────────────────────────────────────────────
@@ -74,7 +75,7 @@ interface Props {
 // ── Component ─────────────────────────────────────────────────────────────────
 export default function PlanBillingSection({
   plans,
-  availablePeriods = ['mensal', 'trimestral', 'semestral', 'anual', 'bianual'],
+  availablePeriods = ['mensal', 'trimestral', 'semestral', 'anual', 'bianual', 'trienal'],
   ctaHref = 'https://painelcliente.com.br',
   ctaLabel = 'Contratar',
   hideFeatures = false,
