@@ -221,7 +221,7 @@ export default async function HomePage() {
           </div>
 
           {/* Headline */}
-          <h1 className="text-5xl sm:text-6xl lg:text-[80px] font-black leading-[1.0] tracking-tight text-white mb-6">
+          <h1 className="text-5xl sm:text-6xl lg:text-[82px] font-bold leading-[0.98] tracking-[-0.045em] text-white mb-6">
             Infraestrutura cloud<br />
             <span
               style={{
@@ -281,8 +281,8 @@ export default async function HomePage() {
                 key={m.label}
                 className={`py-10 text-center ${i < trustMetrics.length - 1 ? 'border-r border-zinc-100' : ''}`}
               >
-                <div className="text-4xl font-black text-zinc-900 mb-1.5">{m.value}</div>
-                <div className="text-sm text-zinc-400 font-medium">{m.label}</div>
+                <div className="font-display text-4xl sm:text-[44px] font-bold text-zinc-900 mb-1.5 tracking-[-0.04em] tnum">{m.value}</div>
+                <div className="text-sm text-zinc-500 font-medium">{m.label}</div>
               </div>
             ))}
           </div>
@@ -295,7 +295,7 @@ export default async function HomePage() {
       <section className="py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
-            <p className="text-[#0EA5E9] text-xs font-black uppercase tracking-widest mb-3">Soluções completas</p>
+            <p className="text-[#0EA5E9] text-[11px] font-semibold uppercase tracking-[0.2em] mb-3">Soluções completas</p>
             <h2 className="text-4xl sm:text-5xl font-black text-zinc-900 leading-tight mb-4">
               Do site pessoal ao data center
             </h2>
@@ -338,13 +338,13 @@ export default async function HomePage() {
                     />
                   </div>
 
-                  <h3 className="text-sm font-black text-zinc-900 mb-1.5 leading-snug">{p.label}</h3>
-                  <p className="text-xs text-zinc-400 leading-relaxed flex-1 mb-4">{p.desc}</p>
+                  <h3 className="text-base font-bold text-zinc-900 mb-1.5 leading-snug">{p.label}</h3>
+                  <p className="text-sm text-zinc-500 leading-relaxed flex-1 mb-4">{p.desc}</p>
 
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="text-[10px] text-zinc-400 font-medium block">a partir de</span>
-                      <span className="text-lg font-black text-zinc-900">{p.from}<span className="text-xs font-semibold text-zinc-400">/mês</span></span>
+                      <span className="text-[11px] text-zinc-400 font-medium block tracking-wide">a partir de</span>
+                      <span className="font-display text-xl font-bold text-zinc-900 tnum">{p.from}<span className="text-xs font-semibold text-zinc-400">/mês</span></span>
                     </div>
                     <div
                       className="w-7 h-7 rounded-full flex items-center justify-center transition-all group-hover:translate-x-0.5"
@@ -409,7 +409,7 @@ export default async function HomePage() {
                   <div className="mb-7">
                     <div className="flex items-baseline gap-1.5">
                       <span className={`text-[13px] font-semibold ${plan.popular ? 'text-zinc-400' : 'text-zinc-400'}`}>R$</span>
-                      <span className={`text-5xl font-black tracking-tight ${plan.popular ? 'text-white' : 'text-zinc-900'}`}>
+                      <span className={`font-display text-5xl font-bold tracking-[-0.04em] tnum ${plan.popular ? 'text-white' : 'text-zinc-900'}`}>
                         {plan.monthlyPrice.toLocaleString('pt-BR')}
                       </span>
                       <span className="text-sm text-zinc-400 font-medium">/mês</span>
@@ -475,7 +475,7 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <p className="text-[#0EA5E9] text-xs font-black uppercase tracking-widest mb-4">Por que a Hosteg?</p>
+              <p className="text-[#0EA5E9] text-[11px] font-semibold uppercase tracking-[0.2em] mb-4">Por que a Hosteg?</p>
               <h2 className="text-4xl sm:text-5xl font-black text-zinc-900 leading-tight mb-6">
                 Cada detalhe foi<br />projetado para<br />
                 <span className="text-zinc-400 font-black not-italic">você não se preocupar.</span>
@@ -500,8 +500,8 @@ export default async function HomePage() {
                     <div className="w-9 h-9 rounded-xl bg-[#0EA5E9]/[0.08] flex items-center justify-center mb-3">
                       <Icon size={16} className="text-[#0EA5E9]" />
                     </div>
-                    <h3 className="text-sm font-black text-zinc-900 mb-1.5 leading-snug">{f.title}</h3>
-                    <p className="text-xs text-zinc-400 leading-relaxed">{f.desc}</p>
+                    <h3 className="text-base font-bold text-zinc-900 mb-1.5 leading-snug">{f.title}</h3>
+                    <p className="text-sm text-zinc-500 leading-relaxed">{f.desc}</p>
                   </div>
                 )
               })}
@@ -516,7 +516,7 @@ export default async function HomePage() {
       <section className="py-20 border-t border-zinc-100 bg-zinc-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <p className="text-[#0EA5E9] text-xs font-black uppercase tracking-widest mb-3">Infraestrutura</p>
+            <p className="text-[#0EA5E9] text-[11px] font-semibold uppercase tracking-[0.2em] mb-3">Infraestrutura</p>
             <h2 className="text-3xl sm:text-4xl font-black text-zinc-900 mb-3">Três datacenters, zero compromisso</h2>
             <p className="text-zinc-500 max-w-md mx-auto">Escolha a região mais próxima do seu público no momento do pedido.</p>
           </div>
@@ -593,7 +593,7 @@ export default async function HomePage() {
       <section className="py-24 border-t border-zinc-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <p className="text-[#0EA5E9] text-xs font-black uppercase tracking-widest mb-3">Depoimentos</p>
+            <p className="text-[#0EA5E9] text-[11px] font-semibold uppercase tracking-[0.2em] mb-3">Depoimentos</p>
             <h2 className="text-3xl sm:text-4xl font-black text-zinc-900">Quem usa, recomenda</h2>
           </div>
 
