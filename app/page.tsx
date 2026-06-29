@@ -34,7 +34,7 @@ const trustMetrics = [
   { value: '+5.000',  label: 'Clientes ativos' },
   { value: '99.9%',  label: 'Uptime garantido' },
   { value: '24/7',   label: 'Suporte humano' },
-  { value: '10 Gbps',label: 'Uplink de rede' },
+  { value: '12 mil', label: 'Produtos ativos' },
 ]
 
 const products = [
