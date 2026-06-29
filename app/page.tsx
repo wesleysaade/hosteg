@@ -133,8 +133,8 @@ const features = [
   },
   {
     icon: Wifi,
-    title: 'Rede 10 Gbps redundante',
-    desc: 'Múltiplos uplinks de 10 Gbps com peering direto na IX.br. Latência sub-milissegundo para São Paulo.',
+    title: 'Rede 360 Gbps redundante',
+    desc: 'Backbone de 360 Gbps com peering direto na IX.br. Latência sub-milissegundo para São Paulo.',
   },
   {
     icon: Clock,
