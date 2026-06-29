@@ -93,55 +93,55 @@ const defaultCloudAppsMenu: NavMenuSection[] = [
 
 // ── Build menu structures from DB navItems ────────────────────────────────────
 function buildMenus(navItems: NavMenuItem[]) {
-  if (!navItems.length) return { produtosMenu: defaultProdutosMenu, cloudAppsMenu: defaultCloudAppsMenu, institucionalItems: defaultInstitucionalItems, mainItems: null, ctaItems: null }
-
+  const empty = !navItems.length
   const byGroup = (group: string) => navItems.filter(i => i.menu_group === group)
 
-  // Mega menus
-  const produtosGroups = groupByCategory(byGroup('produtos'))
-  const cloudAppsGroups = groupByCategory(byGroup('cloud-apps'))
+  const produtosGroups  = empty ? [] : groupByCategory(byGroup('produtos'))
+  const cloudAppsGroups = empty ? [] : groupByCategory(byGroup('cloud-apps'))
 
-  const produtosMenu = produtosGroups.map(g => ({
+  const produtosFromDb = produtosGroups.map(g => ({
+    category: g.category,
+    items: g.items.map(i => ({ icon: getIcon(i.icon_name), title: i.label, desc: i.description, href: i.href, badge: i.badge })),
+  }))
+  const cloudAppsFromDb = cloudAppsGroups.map(g => ({
     category: g.category,
     items: g.items.map(i => ({ icon: getIcon(i.icon_name), title: i.label, desc: i.description, href: i.href, badge: i.badge })),
   }))
 
-  const cloudAppsMenu = cloudAppsGroups.map(g => ({
-    category: g.category,
-    items: g.items.map(i => ({ icon: getIcon(i.icon_name), title: i.label, desc: i.description, href: i.href, badge: i.badge })),
-  }))
+  const produtosBase  = produtosFromDb.length  ? produtosFromDb  : defaultProdutosMenu
+  const cloudAppsBase = cloudAppsFromDb.length ? cloudAppsFromDb : defaultCloudAppsMenu
 
-  const institucionalItems = byGroup('institucional').map(i => ({
+  // Cloud APPs deixou de ser menu de topo: agora é uma categoria dentro de "Produtos"
+  const cloudAppsItems = cloudAppsBase.flatMap(s => s.items)
+  const produtosMenu = cloudAppsItems.length
+    ? [...produtosBase, { category: 'Cloud APPs', items: cloudAppsItems }]
+    : produtosBase
+
+  const institucionalDb = empty ? [] : byGroup('institucional').map(i => ({
     icon: getIcon(i.icon_name), title: i.label, desc: i.description, href: i.href,
   }))
+  const institucionalItems = institucionalDb.length ? institucionalDb : defaultInstitucionalItems
 
-  const mainItems = byGroup('main').length ? byGroup('main') : null
-  const ctaItems  = byGroup('cta').length  ? byGroup('cta')  : null
+  const mainItems = (!empty && byGroup('main').length) ? byGroup('main') : null
+  const ctaItems  = (!empty && byGroup('cta').length)  ? byGroup('cta')  : null
 
-  return {
-    produtosMenu:  produtosMenu.length  ? produtosMenu  : defaultProdutosMenu,
-    cloudAppsMenu: cloudAppsMenu.length ? cloudAppsMenu : defaultCloudAppsMenu,
-    institucionalItems: institucionalItems.length ? institucionalItems : defaultInstitucionalItems,
-    mainItems,
-    ctaItems,
-  }
+  return { produtosMenu, institucionalItems, mainItems, ctaItems }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 
-type MenuName = 'produtos' | 'cloud-apps' | 'institucional' | 'cliente'
+type MenuName = 'produtos' | 'institucional' | 'cliente'
 
 export default function NavbarClient({ navItems = [] }: { navItems?: NavMenuItem[] }) {
   const [openMenu, setOpenMenu]                       = useState<MenuName | null>(null)
   const [mobileOpen, setMobileOpen]                   = useState(false)
   const [scrolled, setScrolled]                       = useState(false)
   const [mobileProdutos, setMobileProdutos]           = useState(false)
-  const [mobileApps, setMobileApps]                   = useState(false)
   const [mobileInstitucional, setMobileInstitucional] = useState(false)
   const pathname                                      = usePathname()
   const navRef                                        = useRef<HTMLDivElement>(null)
 
-  const { produtosMenu, cloudAppsMenu, institucionalItems, mainItems, ctaItems } = buildMenus(navItems)
+  const { produtosMenu, institucionalItems, mainItems, ctaItems } = buildMenus(navItems)
 
   // Derived CTA data
   const supportHref      = ctaItems?.find(i => i.label.toLowerCase().includes('suporte'))?.href ?? '/contato'
@@ -270,14 +270,6 @@ export default function NavbarClient({ navItems = [] }: { navItems?: NavMenuItem
                 </span>
               </button>
 
-              {/* Cloud APPs */}
-              <button onClick={() => toggle('cloud-apps')} className={linkCls(openMenu === 'cloud-apps')}>
-                <span className="flex items-center gap-1">
-                  Cloud APPs
-                  <CaretDown size={13} weight="bold" className={`transition-transform duration-200 ${openMenu === 'cloud-apps' ? 'rotate-180' : ''}`} />
-                </span>
-              </button>
-
               {/* Institucional */}
               <div className="relative">
                 <button
@@ -384,21 +376,13 @@ export default function NavbarClient({ navItems = [] }: { navItems?: NavMenuItem
               {mobileOpen ? <X size={22} weight="bold" /> : <List size={22} weight="bold" />}
             </button>
 
-            {/* Mega menus */}
+            {/* Mega menu — Produtos (inclui Cloud APPs como categoria) */}
             {openMenu === 'produtos' && (
               <div
-                className="absolute top-full left-1/2 -translate-x-1/2 mt-2.5 w-[1000px] bg-white border border-zinc-200/80 rounded-[20px] shadow-[0_24px_70px_-20px_rgba(15,23,42,0.28)] ring-1 ring-black/[0.02] overflow-hidden z-50"
+                className="absolute top-full left-1/2 -translate-x-1/2 mt-2.5 w-[1180px] bg-white border border-zinc-200/80 rounded-[20px] shadow-[0_24px_70px_-20px_rgba(15,23,42,0.28)] ring-1 ring-black/[0.02] overflow-hidden z-50"
                 style={{ maxWidth: 'calc(100vw - 2rem)' }}
               >
                 <MegaMenuContent sections={produtosMenu} />
-              </div>
-            )}
-            {openMenu === 'cloud-apps' && (
-              <div
-                className="absolute top-full left-1/2 -translate-x-1/2 mt-2.5 w-[660px] bg-white border border-zinc-200/80 rounded-[20px] shadow-[0_24px_70px_-20px_rgba(15,23,42,0.28)] ring-1 ring-black/[0.02] overflow-hidden z-50"
-                style={{ maxWidth: 'calc(100vw - 2rem)' }}
-              >
-                <MegaMenuContent sections={cloudAppsMenu} />
               </div>
             )}
           </div>
@@ -459,31 +443,6 @@ export default function NavbarClient({ navItems = [] }: { navItems?: NavMenuItem
               </div>
             )}
 
-            {/* Mobile Cloud APPs */}
-            <button onClick={() => setMobileApps(!mobileApps)}
-              className="w-full flex items-center justify-between px-4 py-3 text-base font-semibold text-zinc-700 hover:bg-zinc-50 rounded-xl transition-colors">
-              Cloud APPs
-              <CaretDown size={16} weight="bold" className={`transition-transform duration-200 ${mobileApps ? 'rotate-180' : ''}`} />
-            </button>
-            {mobileApps && (
-              <div className="ml-4 border-l-2 border-[#0EA5E9]/20 pl-4 space-y-0.5">
-                {cloudAppsMenu.flatMap((s) => s.items).map((item) => {
-                  const Icon = item.icon
-                  return (
-                    <Link key={item.title} href={item.href}
-                      className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 rounded-lg transition-colors">
-                      <Icon size={15} weight="fill" className="text-zinc-400 flex-shrink-0" />
-                      {item.title}
-                      {item.badge && (
-                        <span className="text-[9px] font-black px-1.5 py-0.5 rounded-full bg-[#0EA5E9]/10 text-[#0284C7] uppercase tracking-wide">
-                          {item.badge}
-                        </span>
-                      )}
-                    </Link>
-                  )
-                })}
-              </div>
-            )}
 
             {/* Mobile Institucional */}
             <button onClick={() => setMobileInstitucional(!mobileInstitucional)}
