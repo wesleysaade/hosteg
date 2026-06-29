@@ -68,7 +68,7 @@ export const PAGES_CONFIG: CategoryConfig[] = [
       {
         slug: 'hospedagem', name: 'Hospedagem Compartilhada', path: '/hospedagem', sections: ['hero', 'shared_features'],
         defaults: {
-          hero: { badge: 'Hospedagem Web', title: 'Hospedagem Web', subtitle: 'Painel Hosteg Hospedagem, SSL grátis e e-mail profissional incluso.', desc: 'Perfeito para sites, blogs e pequenas empresas que precisam de confiabilidade.' },
+          hero: { badge: 'Hospedagem Web', title: 'Hospedagem Web', subtitle: 'Painel Hosteg, SSL grátis e e-mail profissional incluso.', desc: 'Perfeito para sites, blogs e pequenas empresas que precisam de confiabilidade.' },
         },
       },
       {
@@ -120,9 +120,9 @@ export const PAGES_CONFIG: CategoryConfig[] = [
         },
       },
       {
-        slug: 'revenda-directadmin', name: 'Revenda Painel Hosteg Hospedagem', path: '/revenda-directadmin', sections: ['hero', 'shared_features'],
+        slug: 'revenda-directadmin', name: 'Revenda Hospedagem', path: '/revenda-hospedagem', sections: ['hero', 'shared_features'],
         defaults: {
-          hero: { badge: 'Revenda Painel Hosteg Hospedagem', title: 'Revenda de Hospedagem com Painel Hosteg Hospedagem', subtitle: 'O painel mais leve e rápido do mercado. Mais performance para seus clientes.', desc: 'White-label total, WHMCS compatível e migração grátis de cPanel.' },
+          hero: { badge: 'Revenda Painel Hosteg', title: 'Revenda de Hospedagem com Painel Hosteg', subtitle: 'O painel mais leve e rápido do mercado. Mais performance para seus clientes.', desc: 'White-label total, WHMCS compatível e migração grátis de cPanel.' },
         },
       },
     ],

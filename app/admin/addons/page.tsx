@@ -16,7 +16,7 @@ const PRODUCTS = [
   { slug: 'hospedagem-pro',      label: 'Hospedagem PRO'     },
   { slug: 'wordpress',           label: 'WordPress'          },
   { slug: 'revenda-cpanel',      label: 'Revenda cPanel'     },
-  { slug: 'revenda-directadmin', label: 'Revenda Painel Hosteg Hospedagem'},
+  { slug: 'revenda-directadmin', label: 'Revenda Hospedagem'},
   { slug: 'backup-pro',          label: 'BackupPRO'          },
   { slug: 'terminal-server',     label: 'Terminal Server'    },
 ]

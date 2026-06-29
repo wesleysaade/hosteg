@@ -39,7 +39,7 @@ const defaultProdutosMenu: NavMenuSection[] = [
   {
     category: 'Hospedagem',
     items: [
-      { icon: Globe,        title: 'Hospedagem Web',      desc: 'Sites e e-mail profissional com Painel Hosteg Hospedagem', href: '/hospedagem',        badge: '' },
+      { icon: Globe,        title: 'Hospedagem Web',      desc: 'Sites e e-mail profissional com Painel Hosteg', href: '/hospedagem',        badge: '' },
       { icon: Lightning,    title: 'Hospedagem PRO',      desc: 'cPanel + LiteSpeed + Redis + Anti-spam',      href: '/hospedagem-pro',    badge: 'Popular' },
       { icon: Stack,        title: 'WordPress Hosting',   desc: 'Ambiente otimizado para WordPress',           href: '/wordpress',         badge: '' },
       { icon: WindowsLogo,  title: 'Hospedagem ASP.NET',  desc: 'Windows Server + Plesk + SQL Server',         href: '/hospedagem-aspnet', badge: 'Novo' },
@@ -49,7 +49,7 @@ const defaultProdutosMenu: NavMenuSection[] = [
     category: 'Agências e Revendas',
     items: [
       { icon: ShareNetwork, title: 'Revenda cPanel',      desc: 'Hospedagem white-label com cPanel',           href: '/revenda-cpanel',      badge: 'Novo' },
-      { icon: ShareNetwork, title: 'Revenda Painel Hosteg Hospedagem', desc: 'Hospedagem white-label com Painel Hosteg Hospedagem',      href: '/revenda-directadmin', badge: 'Novo' },
+      { icon: ShareNetwork, title: 'Revenda Painel Hosteg', desc: 'Hospedagem white-label com Painel Hosteg',      href: '/revenda-hospedagem', badge: 'Novo' },
       { icon: WindowsLogo,  title: 'Revenda ASP.NET',     desc: 'Revenda Windows white-label com Plesk',       href: '/revenda-aspnet',      badge: 'Novo' },
     ],
   },
@@ -95,17 +95,19 @@ const defaultCloudAppsMenu: NavMenuSection[] = [
 function buildMenus(navItems: NavMenuItem[]) {
   const empty = !navItems.length
   const byGroup = (group: string) => navItems.filter(i => i.menu_group === group)
+  // White-label: nunca exibir "DirectAdmin" no menu, mesmo vindo do banco
+  const clean = (s: string) => (s ?? '').replace(/direct\s*admin/gi, 'Painel Hosteg')
 
   const produtosGroups  = empty ? [] : groupByCategory(byGroup('produtos'))
   const cloudAppsGroups = empty ? [] : groupByCategory(byGroup('cloud-apps'))
 
   const produtosFromDb = produtosGroups.map(g => ({
     category: g.category,
-    items: g.items.map(i => ({ icon: getIcon(i.icon_name), title: i.label, desc: i.description, href: i.href, badge: i.badge })),
+    items: g.items.map(i => ({ icon: getIcon(i.icon_name), title: clean(i.label), desc: clean(i.description), href: i.href, badge: i.badge })),
   }))
   const cloudAppsFromDb = cloudAppsGroups.map(g => ({
     category: g.category,
-    items: g.items.map(i => ({ icon: getIcon(i.icon_name), title: i.label, desc: i.description, href: i.href, badge: i.badge })),
+    items: g.items.map(i => ({ icon: getIcon(i.icon_name), title: clean(i.label), desc: clean(i.description), href: i.href, badge: i.badge })),
   }))
 
   const produtosBase  = produtosFromDb.length  ? produtosFromDb  : defaultProdutosMenu
@@ -118,7 +120,7 @@ function buildMenus(navItems: NavMenuItem[]) {
     : produtosBase
 
   const institucionalDb = empty ? [] : byGroup('institucional').map(i => ({
-    icon: getIcon(i.icon_name), title: i.label, desc: i.description, href: i.href,
+    icon: getIcon(i.icon_name), title: clean(i.label), desc: clean(i.description), href: i.href,
   }))
   const institucionalItems = institucionalDb.length ? institucionalDb : defaultInstitucionalItems
 

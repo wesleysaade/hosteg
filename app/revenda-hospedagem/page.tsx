@@ -12,32 +12,32 @@ import {
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Revenda de Hospedagem com Painel Hosteg Hospedagem — Hosteg',
-  description: 'Revenda hospedagem com Painel Hosteg Hospedagem. White-label, painel leve e rápido, WHMCS compatível. A partir de R$ 79/mês.',
+  title: 'Revenda Hospedagem — Hosteg',
+  description: 'Revenda de hospedagem white-label: painel leve e rápido, WHMCS compatível e migração grátis. A partir de R$ 79/mês.',
 }
 
 const directAdminVantagens = [
-  { icon: Lightning,   title: 'Painel Mais Leve do Mercado',   desc: 'Painel Hosteg Hospedagem usa menos recursos que cPanel, resultando em mais performance para os sites dos seus clientes com o mesmo hardware.' },
+  { icon: Lightning,   title: 'Painel Mais Leve do Mercado',   desc: 'Painel Hosteg usa menos recursos que cPanel, resultando em mais performance para os sites dos seus clientes com o mesmo hardware.' },
   { icon: Globe,       title: 'White-label 100%',               desc: 'Configure seus próprios nameservers e ofereça hospedagem totalmente brandada com a identidade da sua empresa.' },
   { icon: ShieldCheck, title: 'Segurança Avançada',             desc: 'ModSecurity, CSF Firewall, Imunify360 e proteção contra brute-force configurados por padrão em todos os planos.' },
   { icon: Users,       title: 'Gestão Simplificada',            desc: 'Crie, suspenda e delete contas de clientes em segundos. Defina limites de recursos individuais por conta.' },
-  { icon: Desktop,     title: 'Preço Mais Competitivo',         desc: 'Painel Hosteg Hospedagem tem licença mais acessível que cPanel, permitindo oferecer preços competitivos para seus clientes finais.' },
-  { icon: CheckCircle, title: 'Migração do cPanel Incluída',    desc: 'Se você tem clientes em cPanel, migramos tudo para Painel Hosteg Hospedagem gratuitamente. O processo é transparente para seus clientes.' },
+  { icon: Desktop,     title: 'Preço Mais Competitivo',         desc: 'Painel Hosteg tem licença mais acessível que cPanel, permitindo oferecer preços competitivos para seus clientes finais.' },
+  { icon: CheckCircle, title: 'Migração do cPanel Incluída',    desc: 'Se você tem clientes em cPanel, migramos tudo para Painel Hosteg gratuitamente. O processo é transparente para seus clientes.' },
 ]
 
 const faqs = [
-  { q: 'Painel Hosteg Hospedagem é igual ao cPanel?', a: 'É similar em funcionalidades — os clientes gerenciam arquivos, e-mails, bancos de dados e domínios — mas é mais leve e rápido. Tem pequenas diferenças de interface que a maioria dos usuários adapta em poucos minutos.' },
-  { q: 'WHMCS funciona com Painel Hosteg Hospedagem?', a: 'Sim! Painel Hosteg Hospedagem tem integração oficial com WHMCS via módulo de hospedagem. Você pode automatizar toda a gestão de clientes e cobranças.' },
-  { q: 'Posso migrar do cPanel para Painel Hosteg Hospedagem?', a: 'Sim, nossa equipe cuida de toda a migração gratuitamente. Sites, e-mails e bancos de dados são migrados sem downtime.' },
-  { q: 'Qual a diferença de preço entre cPanel e o Painel Hosteg Hospedagem?', a: 'Os planos Painel Hosteg Hospedagem são em média 20% mais baratos que os equivalentes cPanel, pois a licença tem custo inferior.' },
+  { q: 'Painel Hosteg é igual ao cPanel?', a: 'É similar em funcionalidades — os clientes gerenciam arquivos, e-mails, bancos de dados e domínios — mas é mais leve e rápido. Tem pequenas diferenças de interface que a maioria dos usuários adapta em poucos minutos.' },
+  { q: 'WHMCS funciona com Painel Hosteg?', a: 'Sim! Painel Hosteg tem integração oficial com WHMCS via módulo de hospedagem. Você pode automatizar toda a gestão de clientes e cobranças.' },
+  { q: 'Posso migrar do cPanel para Painel Hosteg?', a: 'Sim, nossa equipe cuida de toda a migração gratuitamente. Sites, e-mails e bancos de dados são migrados sem downtime.' },
+  { q: 'Qual a diferença de preço entre cPanel e o Painel Hosteg?', a: 'Os planos Painel Hosteg são em média 20% mais baratos que os equivalentes cPanel, pois a licença tem custo inferior.' },
 ]
 
 export default async function RevendaDirectAdminPage() {
   const [{ plans, availablePeriods }, hero] = await Promise.all([
     fetchBillingPlans('revenda-directadmin'),
     getHero('revenda-directadmin', {
-      badge:    'Revenda Painel Hosteg Hospedagem',
-      title:    'Revenda de Hospedagem com Painel Hosteg Hospedagem',
+      badge:    'Revenda Hospedagem',
+      title:    'Revenda Hospedagem',
       subtitle: 'O painel mais leve e rápido do mercado. Mais performance para seus clientes.',
       desc:     'White-label total, WHMCS compatível e migração grátis de cPanel.',
     }),
@@ -60,7 +60,7 @@ export default async function RevendaDirectAdminPage() {
           <div className="flex items-center justify-center gap-4 mb-6">
             <img
               src="https://cdn.simpleicons.org/directadmin/1F6FEB"
-              alt="Painel Hosteg Hospedagem"
+              alt="Painel Hosteg"
               width={40}
               height={40}
               style={{ filter: 'drop-shadow(0 2px 8px rgba(31,111,235,0.3))' }}
@@ -74,7 +74,7 @@ export default async function RevendaDirectAdminPage() {
             />
           </div>
           <h1 className="text-5xl sm:text-6xl font-black text-zinc-900 mb-5 leading-tight">
-            {hero.title}
+            Revenda Hospedagem
           </h1>
           <p className="text-xl text-zinc-500 max-w-xl mx-auto mb-4">
             {hero.subtitle}
@@ -97,7 +97,7 @@ export default async function RevendaDirectAdminPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-8 flex flex-col sm:flex-row items-center gap-6">
             <div className="w-14 h-14 rounded-2xl bg-emerald-100 flex items-center justify-center flex-shrink-0">
-              <img src="https://cdn.simpleicons.org/directadmin/1F6FEB" alt="Painel Hosteg Hospedagem" width={28} height={28} />
+              <img src="https://cdn.simpleicons.org/directadmin/1F6FEB" alt="Painel Hosteg" width={28} height={28} />
             </div>
             <div className="text-center sm:text-left flex-1">
               <h3 className="text-xl font-black text-zinc-900 mb-2">Migração gratuita de cPanel ou qualquer painel</h3>
@@ -113,15 +113,15 @@ export default async function RevendaDirectAdminPage() {
         </div>
       </section>
 
-      {/* Por que Painel Hosteg Hospedagem */}
+      {/* Por que Painel Hosteg */}
       <section className="py-16 border-t border-zinc-200 bg-zinc-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
             <div className="inline-flex items-center gap-2 text-[#0EA5E9] text-xs font-bold uppercase tracking-widest mb-3">
-              <Lightning size={13} weight="fill" /> Por que Painel Hosteg Hospedagem?
+              <Lightning size={13} weight="fill" /> Por que Painel Hosteg?
             </div>
             <h2 className="text-3xl font-black text-zinc-900 mb-3">Mais performance, menor custo</h2>
-            <p className="text-zinc-500 max-w-lg mx-auto">Painel Hosteg Hospedagem é a escolha de quem quer entregar mais por menos.</p>
+            <p className="text-zinc-500 max-w-lg mx-auto">Painel Hosteg é a escolha de quem quer entregar mais por menos.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {directAdminVantagens.map((v) => {
@@ -143,7 +143,7 @@ export default async function RevendaDirectAdminPage() {
       {/* FAQ */}
       <section className="py-16 border-t border-zinc-200">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-black text-zinc-900 mb-8 text-center">Dúvidas sobre Painel Hosteg Hospedagem</h2>
+          <h2 className="text-3xl font-black text-zinc-900 mb-8 text-center">Dúvidas sobre Painel Hosteg</h2>
           <div className="space-y-3">
             {faqs.map((faq, i) => (
               <details key={i} className="group rounded-xl border border-zinc-200 bg-white overflow-hidden hover:border-zinc-300 transition-colors">

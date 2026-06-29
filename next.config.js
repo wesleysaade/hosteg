@@ -18,6 +18,12 @@ const nextConfig = {
         destination: '/',
         permanent: false,
       },
+      {
+        // Revenda renomeada: URL antiga redireciona para a nova
+        source: '/revenda-directadmin',
+        destination: '/revenda-hospedagem',
+        permanent: true,
+      },
     ]
   },
   webpack(config) {

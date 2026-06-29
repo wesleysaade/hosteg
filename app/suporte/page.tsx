@@ -43,7 +43,7 @@ const categories = [
     count: 24,
     articles: [
       'Como apontar domínio para a Hosteg',
-      'Criando contas de e-mail no Painel Hosteg Hospedagem',
+      'Criando contas de e-mail no Painel Hosteg',
       'Instalando WordPress em um clique',
       'Configurando SSL no seu site',
       'Como usar o gerenciador de arquivos',
