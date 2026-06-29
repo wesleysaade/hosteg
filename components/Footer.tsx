@@ -12,7 +12,7 @@ const footerLinks = {
   ],
   Revendas: [
     { label: 'Revenda cPanel',       href: '/revenda-cpanel' },
-    { label: 'Revenda DirectAdmin',  href: '/revenda-directadmin' },
+    { label: 'Revenda Painel Hosteg Hospedagem',  href: '/revenda-directadmin' },
     { label: 'Cloud APPs',           href: '/cloud-apps' },
   ],
   Corporativo: [

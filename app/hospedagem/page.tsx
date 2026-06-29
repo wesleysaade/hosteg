@@ -13,7 +13,7 @@ export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Hospedagem Web',
-  description: 'Hospedagem profissional com DirectAdmin, SSL grátis, e-mail profissional e suporte 24/7. Planos a partir de R$ 19/mês.',
+  description: 'Hospedagem profissional com Painel Hosteg Hospedagem, SSL grátis, e-mail profissional e suporte 24/7. Planos a partir de R$ 19/mês.',
 }
 
 const features = [
@@ -22,7 +22,7 @@ const features = [
   { icon: ShieldCheck, title: 'Anti-Spam', desc: 'Proteção contra spam e vírus em todos os e-mails.', tip: 'Filtros baseados em listas negras, DKIM, SPF e análise de conteúdo.' },
   { icon: Lightning, title: 'PHP 8.x Moderno', desc: 'Suporte às versões mais recentes do PHP com extensões.', tip: 'PHP 8.1, 8.2 e 8.3 disponíveis com múltiplas extensões instaladas.' },
   { icon: HardDrive, title: 'Backup Diário', desc: 'Seus dados protegidos com backup automático diário.', tip: 'Backups realizados fora do horário de pico para zero impacto no desempenho.' },
-  { icon: Desktop, title: 'DirectAdmin', desc: 'Painel de controle simples e eficiente para gerenciar seu hosting.', tip: 'Interface limpa com gerenciador de arquivos, DNS, banco de dados e e-mails.' },
+  { icon: Desktop, title: 'Painel Hosteg Hospedagem', desc: 'Painel de controle simples e eficiente para gerenciar seu hosting.', tip: 'Interface limpa com gerenciador de arquivos, DNS, banco de dados e e-mails.' },
 ]
 
 
@@ -32,7 +32,7 @@ export default async function HospedagemPage() {
     getHero('hospedagem', {
       badge:    'Hospedagem Web',
       title:    'Hospedagem Web',
-      subtitle: 'DirectAdmin, SSL grátis e e-mail profissional incluso.',
+      subtitle: 'Painel Hosteg Hospedagem, SSL grátis e e-mail profissional incluso.',
       desc:     'Perfeito para sites, blogs e pequenas empresas que precisam de confiabilidade.',
     }),
   ])

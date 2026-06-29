@@ -39,7 +39,7 @@ const defaultProdutosMenu: NavMenuSection[] = [
   {
     category: 'Hospedagem',
     items: [
-      { icon: Globe,        title: 'Hospedagem Web',      desc: 'Sites e e-mail profissional com DirectAdmin', href: '/hospedagem',        badge: '' },
+      { icon: Globe,        title: 'Hospedagem Web',      desc: 'Sites e e-mail profissional com Painel Hosteg Hospedagem', href: '/hospedagem',        badge: '' },
       { icon: Lightning,    title: 'Hospedagem PRO',      desc: 'cPanel + LiteSpeed + Redis + Anti-spam',      href: '/hospedagem-pro',    badge: 'Popular' },
       { icon: Stack,        title: 'WordPress Hosting',   desc: 'Ambiente otimizado para WordPress',           href: '/wordpress',         badge: '' },
       { icon: WindowsLogo,  title: 'Hospedagem ASP.NET',  desc: 'Windows Server + Plesk + SQL Server',         href: '/hospedagem-aspnet', badge: 'Novo' },
@@ -49,7 +49,7 @@ const defaultProdutosMenu: NavMenuSection[] = [
     category: 'Agências e Revendas',
     items: [
       { icon: ShareNetwork, title: 'Revenda cPanel',      desc: 'Hospedagem white-label com cPanel',           href: '/revenda-cpanel',      badge: 'Novo' },
-      { icon: ShareNetwork, title: 'Revenda DirectAdmin', desc: 'Hospedagem white-label com DirectAdmin',      href: '/revenda-directadmin', badge: 'Novo' },
+      { icon: ShareNetwork, title: 'Revenda Painel Hosteg Hospedagem', desc: 'Hospedagem white-label com Painel Hosteg Hospedagem',      href: '/revenda-directadmin', badge: 'Novo' },
       { icon: WindowsLogo,  title: 'Revenda ASP.NET',     desc: 'Revenda Windows white-label com Plesk',       href: '/revenda-aspnet',      badge: 'Novo' },
     ],
   },

@@ -127,7 +127,7 @@ export default async function HospedagemProPage() {
             <div className="text-center sm:text-left flex-1">
               <h3 className="text-xl font-black text-zinc-900 mb-2">Migração gratuita para Hospedagem PRO</h3>
               <p className="text-zinc-500 text-sm leading-relaxed">
-                Migramos seu site de qualquer provedor gratuitamente — cPanel, Plesk, DirectAdmin ou painel próprio. Sem downtime, sem perda de dados.
+                Migramos seu site de qualquer provedor gratuitamente — cPanel, Plesk, Painel Hosteg Hospedagem ou painel próprio. Sem downtime, sem perda de dados.
               </p>
             </div>
             <Link href="/contato"
