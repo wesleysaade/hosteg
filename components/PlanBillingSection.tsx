@@ -109,11 +109,11 @@ export default function PlanBillingSection({
     const normalTotal = plan.monthlyPrice * selectedPeriodCfg.months
     const save = parseFloat((normalTotal - pp).toFixed(2))
     const pct  = calcDiscount(plan.monthlyPrice, pp, selectedPeriodCfg.months)
-    return { total: pp, save, pct }
-  }).filter(Boolean) as { total: number; save: number; pct: number }[]
+    return { name: plan.name, popular: !!plan.popular, total: pp, save, pct }
+  }).filter(Boolean) as { name: string; popular: boolean; total: number; save: number; pct: number }[]
 
-  // Representante do callout = primeiro plano popular ou o primeiro com desconto
-  const calloutData = savingsLines.find((_, i) => plans[i]?.popular) ?? savingsLines[0] ?? null
+  // Representante do callout = plano "Mais Popular" ou o primeiro com desconto
+  const calloutData = savingsLines.find(s => s.popular) ?? savingsLines[0] ?? null
 
   return (
     <div>
@@ -158,7 +158,7 @@ export default function PlanBillingSection({
                 <span className="font-bold text-zinc-900 tnum">
                   R$ {fmtBRL(calloutData.total)}
                 </span>{' '}
-                no {selectedPeriodCfg.label.toLowerCase()} e{' '}
+                no {selectedPeriodCfg.label.toLowerCase()}{calloutData.popular ? ' do Mais Popular' : ''} e{' '}
                 <span className="font-bold text-emerald-600">
                   ganhe {calloutData.pct}% de desconto
                 </span>
